@@ -46,10 +46,10 @@ public class SkillTreeEditorScreen extends Screen {
   private final Set<ResourceLocation> selectedSkills = new LinkedHashSet<>();
   private final PassiveSkillTree skillTree;
   private Tools selectedTools = Tools.MAIN;
-  protected double scrollSpeedX;
-  protected double scrollSpeedY;
-  protected double scrollX;
-  protected double scrollY;
+  protected float scrollSpeedX;
+  protected float scrollSpeedY;
+  protected float scrollX;
+  protected float scrollY;
   protected int maxScrollX;
   protected int maxScrollY;
   protected int toolsY;
@@ -282,16 +282,17 @@ public class SkillTreeEditorScreen extends Screen {
         closeOnEsc = false;
         return true;
       }
+      if (shouldCloseOnEsc()) {
+        onClose();
+        return true;
+      }
     }
     if (keyCode == GLFW.GLFW_KEY_N && Screen.hasControlDown()) {
       createNewSkill(0, 0, null);
       rebuildWidgets();
       return true;
     }
-    if (keyPressedOnTextField(keyCode, scanCode, modifiers)) {
-      return true;
-    }
-    return super.keyPressed(keyCode, scanCode, modifiers);
+    return keyPressedOnTextField(keyCode, scanCode, modifiers);
   }
 
   private boolean keyPressedOnTextField(int keyCode, int scanCode, int modifiers) {
@@ -1178,10 +1179,10 @@ public class SkillTreeEditorScreen extends Screen {
   private void updateScroll(float partialTick) {
     scrollX += scrollSpeedX * partialTick;
     scrollX = Math.max(-maxScrollX * zoom, Math.min(maxScrollX * zoom, scrollX));
-    scrollSpeedX *= 0.8;
+    scrollSpeedX *= 0.8f;
     scrollY += scrollSpeedY * partialTick;
     scrollY = Math.max(-maxScrollY * zoom, Math.min(maxScrollY * zoom, scrollY));
-    scrollSpeedY *= 0.8;
+    scrollSpeedY *= 0.8f;
   }
 
   private void renderOverlay(GuiGraphics graphics) {
@@ -1216,8 +1217,8 @@ public class SkillTreeEditorScreen extends Screen {
       moveSelectedSkills((float) dragAmountX / zoom, (float) dragAmountY / zoom);
       return true;
     }
-    if (maxScrollX > 0) scrollSpeedX += dragAmountX * 0.25;
-    if (maxScrollY > 0) scrollSpeedY += dragAmountY * 0.25;
+    if (maxScrollX > 0) scrollSpeedX += (float) (dragAmountX * 0.25f);
+    if (maxScrollY > 0) scrollSpeedY += (float) (dragAmountY * 0.25f);
     return true;
   }
 
