@@ -5,7 +5,7 @@
       "type": "skilltree:attribute",
       "amount": 6.0,
       "attribute": "minecraft:generic.max_health",
-      "id": "45d54067-90e1-4e74-bc08-249e349ab14f",
+      "id": "89479d8b-7bce-41fb-963f-f7b1db460c23",
       "name": "SkillBonus",
       "operation": 0,
       "player_condition": {
@@ -26,5 +26,6 @@
   "longConnections": [],
   "oneWayConnections": [],
   "positionX": 0.0029907227,
-  "positionY": 245.52727
+  "positionY": 245.52727,
+  "tags": []
 }

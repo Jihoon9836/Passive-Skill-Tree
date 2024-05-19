@@ -44,7 +44,7 @@
       }
     }
   ],
-  "borderTexture": "skilltree:textures/tooltip/keystone.png",
+  "borderTexture": "skilltree:textures/tooltip/lesser.png",
   "buttonSize": 24,
   "directConnections": [
     "skilltree:cook_subclass_1_offensive_1",
@@ -56,5 +56,6 @@
   "longConnections": [],
   "oneWayConnections": [],
   "positionX": 144.96991,
-  "positionY": -315.07144
+  "positionY": -315.07144,
+  "tags": []
 }

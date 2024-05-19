@@ -40,7 +40,7 @@
       }
     }
   ],
-  "borderTexture": "skilltree:textures/tooltip/keystone.png",
+  "borderTexture": "skilltree:textures/tooltip/lesser.png",
   "buttonSize": 24,
   "directConnections": [
     "skilltree:alchemist_subclass_1_offensive_1",
@@ -52,5 +52,6 @@
   "longConnections": [],
   "oneWayConnections": [],
   "positionX": -144.95734,
-  "positionY": 315.07642
+  "positionY": 315.07642,
+  "tags": []
 }

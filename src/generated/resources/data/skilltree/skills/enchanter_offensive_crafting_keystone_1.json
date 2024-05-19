@@ -10,13 +10,14 @@
     }
   ],
   "borderTexture": "skilltree:textures/tooltip/keystone.png",
-  "buttonSize": 24,
+  "buttonSize": 32,
   "directConnections": [],
   "iconTexture": "skilltree:textures/icons/enchanter_offensive_crafting_keystone_1.png",
   "id": "skilltree:enchanter_offensive_crafting_keystone_1",
   "isStartingPoint": false,
   "longConnections": [],
   "oneWayConnections": [],
-  "positionX": 336.65372,
-  "positionY": -86.993515
+  "positionX": 340.1179,
+  "positionY": -88.99341,
+  "tags": []
 }

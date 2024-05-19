@@ -589,6 +589,5 @@
     "skilltree:cook_subclass_2_crafting_3",
     "skilltree:cook_subclass_2_crafting_4",
     "skilltree:blacksmith_offensive_crafting_keystone_1"
-  ],
-  "skillLimitations": {}
+  ]
 }

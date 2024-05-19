@@ -12,7 +12,7 @@
       }
     }
   ],
-  "borderTexture": "skilltree:textures/tooltip/keystone.png",
+  "borderTexture": "skilltree:textures/tooltip/lesser.png",
   "buttonSize": 24,
   "directConnections": [
     "skilltree:alchemist_subclass_2_crafting_1",
@@ -24,5 +24,6 @@
   "longConnections": [],
   "oneWayConnections": [],
   "positionX": 144.95734,
-  "positionY": 315.08533
+  "positionY": 315.08533,
+  "tags": []
 }

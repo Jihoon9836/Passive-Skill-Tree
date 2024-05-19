@@ -13,7 +13,7 @@
       }
     }
   ],
-  "borderTexture": "skilltree:textures/tooltip/keystone.png",
+  "borderTexture": "skilltree:textures/tooltip/lesser.png",
   "buttonSize": 24,
   "directConnections": [
     "skilltree:miner_defensive_1",
@@ -28,5 +28,6 @@
   "longConnections": [],
   "oneWayConnections": [],
   "positionX": -131.63829,
-  "positionY": 75.99579
+  "positionY": 75.99579,
+  "tags": []
 }

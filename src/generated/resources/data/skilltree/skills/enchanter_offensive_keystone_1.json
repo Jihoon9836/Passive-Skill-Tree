@@ -27,13 +27,14 @@
     }
   ],
   "borderTexture": "skilltree:textures/tooltip/keystone.png",
-  "buttonSize": 24,
+  "buttonSize": 32,
   "directConnections": [],
   "iconTexture": "skilltree:textures/icons/enchanter_offensive_keystone_1.png",
   "id": "skilltree:enchanter_offensive_keystone_1",
   "isStartingPoint": false,
   "longConnections": [],
   "oneWayConnections": [],
-  "positionX": 355.68784,
-  "positionY": -142.9921
+  "positionX": 359.152,
+  "positionY": -144.99197,
+  "tags": []
 }

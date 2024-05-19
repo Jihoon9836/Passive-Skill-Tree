@@ -600,11 +600,11 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add("recipe.skilltree.weapon_poisoning", "Отравление Оружия");
     add(
         "recipe.skilltree.weapon_poisoning.info",
-        "(Объедините оружие ближнего боя и вредящее зелье на верстаке что бы отравить оружие)");
+        "(Объедините оружие ближнего боя и вредящее зелье на верстаке, чтобы отравить оружие)");
     add("recipe.skilltree.potion_mixing", "Смешивание Зелий");
     add(
         "recipe.skilltree.potion_mixing.info",
-        "(Объедините два разных зелья на верстаке что бы создать микстуру)");
+        "(Объедините два разных зелья на верстаке, чтобы создать микстуру)");
     // potions info
     add("potion.superior", "Качественное %s");
     add("item.minecraft.potion.mixture", "Микстура");

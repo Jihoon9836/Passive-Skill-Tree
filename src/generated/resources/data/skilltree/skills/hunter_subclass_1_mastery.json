@@ -5,7 +5,7 @@
       "type": "skilltree:attribute",
       "amount": 10.0,
       "attribute": "skilltree:stealth",
-      "id": "95d50d3f-e96b-45f2-9d05-27f5e6ced97f",
+      "id": "f18ac754-cfc9-482c-a82e-a2415279f21b",
       "name": "SkillBonus",
       "operation": 0,
       "player_condition": {
@@ -24,7 +24,7 @@
     }
   ],
   "borderTexture": "skilltree:textures/tooltip/keystone.png",
-  "buttonSize": 24,
+  "buttonSize": 32,
   "directConnections": [
     "skilltree:hunter_subclass_1_offensive_4"
   ],
@@ -33,6 +33,7 @@
   "isStartingPoint": false,
   "longConnections": [],
   "oneWayConnections": [],
-  "positionX": 315.92465,
-  "positionY": 349.80984
+  "positionX": 319.92465,
+  "positionY": 349.80984,
+  "tags": []
 }

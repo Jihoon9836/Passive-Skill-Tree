@@ -12,7 +12,7 @@
       }
     }
   ],
-  "borderTexture": "skilltree:textures/tooltip/keystone.png",
+  "borderTexture": "skilltree:textures/tooltip/lesser.png",
   "buttonSize": 24,
   "directConnections": [
     "skilltree:cook_defensive_1",
@@ -27,5 +27,6 @@
   "longConnections": [],
   "oneWayConnections": [],
   "positionX": 1.8614632E-14,
-  "positionY": -152.0
+  "positionY": -152.0,
+  "tags": []
 }

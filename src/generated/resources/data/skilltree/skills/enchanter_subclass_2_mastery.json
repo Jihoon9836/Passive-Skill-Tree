@@ -5,7 +5,7 @@
       "type": "skilltree:attribute",
       "amount": 1.5,
       "attribute": "skilltree:exp_per_minute",
-      "id": "551cc87e-6a8d-4728-a59a-2f841f3f4415",
+      "id": "c990fd42-5326-4094-9e01-48bc2d2b760d",
       "name": "SkillBonus",
       "operation": 0,
       "player_condition": {
@@ -17,7 +17,7 @@
     }
   ],
   "borderTexture": "skilltree:textures/tooltip/keystone.png",
-  "buttonSize": 24,
+  "buttonSize": 32,
   "directConnections": [
     "skilltree:enchanter_subclass_2_life_4"
   ],
@@ -26,6 +26,7 @@
   "isStartingPoint": false,
   "longConnections": [],
   "oneWayConnections": [],
-  "positionX": 315.95526,
-  "positionY": -349.7826
+  "positionX": 319.95526,
+  "positionY": -349.7826,
+  "tags": []
 }

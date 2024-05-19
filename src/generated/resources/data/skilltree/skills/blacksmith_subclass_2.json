@@ -10,7 +10,7 @@
       "multiplier": 1.0
     }
   ],
-  "borderTexture": "skilltree:textures/tooltip/keystone.png",
+  "borderTexture": "skilltree:textures/tooltip/lesser.png",
   "buttonSize": 24,
   "directConnections": [
     "skilltree:blacksmith_subclass_2_crafting_1",
@@ -22,5 +22,6 @@
   "longConnections": [],
   "oneWayConnections": [],
   "positionX": -345.34277,
-  "positionY": -32.010185
+  "positionY": -32.010185,
+  "tags": []
 }

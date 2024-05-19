@@ -68,7 +68,7 @@ public class AttributeEvents {
         .playSound(null, player, SoundEvents.ENDER_DRAGON_FLAP, SoundSource.PLAYERS, 0.5F, 1.5F);
     event.setCanceled(true);
     for (EventListenerBonus<?> bonus :
-        SkillBonusHandler.getSkillBonuses(player, EventListenerBonus.class, true)) {
+        SkillBonusHandler.getSkillBonuses(player, EventListenerBonus.class)) {
       if (!(bonus.getEventListener() instanceof EvasionEventListener listener)) continue;
       SkillBonus<? extends EventListenerBonus<?>> copy = bonus.copy();
       listener.onEvent(player, attacker, (EventListenerBonus<?>) copy);
@@ -121,20 +121,23 @@ public class AttributeEvents {
     if (!ItemHelper.hasPoisons(weapon)) return;
     List<MobEffectInstance> poisons = ItemHelper.getPoisons(weapon);
     LivingEntity target = event.getEntity();
-    poisons.stream().map(MobEffectInstance::new).forEach(target::addEffect);
+    for (MobEffectInstance poison : poisons) {
+      MobEffectInstance effectInstance = new MobEffectInstance(poison);
+      target.addEffect(effectInstance);
+    }
   }
 
   @SubscribeEvent(priority = EventPriority.HIGH)
   public static void addPoisonedWeaponTooltips(ItemTooltipEvent event) {
     ItemStack weapon = event.getItemStack();
     if (!ItemHelper.hasPoisons(weapon)) return;
-    event.getToolTip().add(Component.empty());
-    event
-        .getToolTip()
-        .add(Component.translatable("weapon.poisoned").withStyle(ChatFormatting.DARK_PURPLE));
-    ItemHelper.getPoisons(weapon).stream()
-        .map(TooltipHelper::getEffectInstanceTooltip)
-        .forEach(event.getToolTip()::add);
+    List<Component> tooltips = event.getToolTip();
+    tooltips.add(Component.empty());
+    tooltips.add(Component.translatable("weapon.poisoned").withStyle(ChatFormatting.DARK_PURPLE));
+    for (MobEffectInstance poison : ItemHelper.getPoisons(weapon)) {
+      Component tooltip = TooltipHelper.getEffectInstanceTooltip(poison);
+      tooltips.add(tooltip);
+    }
   }
 
   @SubscribeEvent

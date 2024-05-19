@@ -27,7 +27,7 @@
     }
   ],
   "borderTexture": "skilltree:textures/tooltip/keystone.png",
-  "buttonSize": 24,
+  "buttonSize": 32,
   "directConnections": [
     "skilltree:miner_subclass_1_offensive_4"
   ],
@@ -36,6 +36,7 @@
   "isStartingPoint": false,
   "longConnections": [],
   "oneWayConnections": [],
-  "positionX": -460.90466,
-  "positionY": 98.70454
+  "positionX": -462.90488,
+  "positionY": 102.16851,
+  "tags": []
 }

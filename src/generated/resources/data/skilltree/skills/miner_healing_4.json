@@ -5,7 +5,7 @@
       "type": "skilltree:attribute",
       "amount": 0.1,
       "attribute": "skilltree:regeneration",
-      "id": "8d39805e-5233-4b73-abef-1b97f8bbb0fd",
+      "id": "8dcbea9e-70f7-4675-b41b-f3e3ca84e6ed",
       "name": "SkillBonus",
       "operation": 0,
       "player_condition": {
@@ -27,5 +27,6 @@
   "longConnections": [],
   "oneWayConnections": [],
   "positionX": -69.2976,
-  "positionY": 120.78715
+  "positionY": 120.78715,
+  "tags": []
 }

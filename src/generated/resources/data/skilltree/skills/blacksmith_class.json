@@ -14,7 +14,7 @@
       }
     }
   ],
-  "borderTexture": "skilltree:textures/tooltip/keystone.png",
+  "borderTexture": "skilltree:textures/tooltip/lesser.png",
   "buttonSize": 24,
   "directConnections": [
     "skilltree:blacksmith_defensive_1",
@@ -29,5 +29,6 @@
   "longConnections": [],
   "oneWayConnections": [],
   "positionX": -131.631,
-  "positionY": -76.008415
+  "positionY": -76.008415,
+  "tags": []
 }

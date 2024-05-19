@@ -5,7 +5,7 @@
       "type": "skilltree:attribute",
       "amount": 0.1,
       "attribute": "minecraft:generic.attack_damage",
-      "id": "89fdc8b6-232e-43ef-ac65-8d1b2f6b366f",
+      "id": "721050b4-27be-4e1f-a7b5-e8582f3c10d5",
       "name": "SkillBonus",
       "operation": 0,
       "player_condition": {
@@ -19,13 +19,14 @@
     }
   ],
   "borderTexture": "skilltree:textures/tooltip/keystone.png",
-  "buttonSize": 24,
+  "buttonSize": 32,
   "directConnections": [],
   "iconTexture": "skilltree:textures/icons/blacksmith_offensive_keystone_1.png",
   "id": "skilltree:blacksmith_offensive_keystone_1",
   "isStartingPoint": false,
   "longConnections": [],
   "oneWayConnections": [],
-  "positionX": -301.6711,
-  "positionY": -236.54828
+  "positionX": -305.1351,
+  "positionY": -238.5485,
+  "tags": []
 }

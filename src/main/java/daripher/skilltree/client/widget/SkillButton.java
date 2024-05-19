@@ -27,7 +27,8 @@ import org.jetbrains.annotations.NotNull;
 public class SkillButton extends Button {
   private static final Style LESSER_TITLE_STYLE = Style.EMPTY.withColor(0xEAA169);
   private static final Style NOTABLE_TITLE_STYLE = Style.EMPTY.withColor(0x9B66D8);
-  private static final Style KEYSTONE_TITLE_STYLE = Style.EMPTY.withColor(0xFFD75F);
+  private static final Style CLASS_TITLE_STYLE = Style.EMPTY.withColor(0xFFD75F);
+  private static final Style KEYSTONE_TITLE_STYLE = Style.EMPTY.withColor(0xEB7530);
   private static final Style GATEWAY_TITLE_STYLE = Style.EMPTY.withColor(0x849696);
   private static final Style DESCRIPTION_STYLE = Style.EMPTY.withColor(0x7B7BE5);
   private static final Style ID_STYLE = Style.EMPTY.withColor(0x545454);
@@ -66,6 +67,9 @@ public class SkillButton extends Button {
     graphics.pose().pushPose();
     graphics.pose().translate(width / 2d, height / 2d, 0);
     graphics.pose().scale(0.5F, 0.5F, 1);
+    if (width == 32) {
+      graphics.pose().scale(0.75F, 0.75F, 1);
+    }
     graphics.pose().translate(-width / 2d, -height / 2d, 0);
     renderIcon(graphics);
     graphics.pose().popPose();
@@ -223,15 +227,18 @@ public class SkillButton extends Button {
   }
 
   private Style getTitleStyle() {
-    if (skill.getTitleColor().isEmpty()) {
+    String titleColor = skill.getTitleColor();
+    if (titleColor.isEmpty()) {
       return width == 30
           ? GATEWAY_TITLE_STYLE
           : width == 24
-              ? KEYSTONE_TITLE_STYLE
-              : width == 20 ? NOTABLE_TITLE_STYLE : LESSER_TITLE_STYLE;
+              ? CLASS_TITLE_STYLE
+              : width == 20
+                  ? NOTABLE_TITLE_STYLE
+                  : width == 32 ? KEYSTONE_TITLE_STYLE : LESSER_TITLE_STYLE;
     } else {
       try {
-        return Style.EMPTY.withColor(Integer.parseInt(skill.getTitleColor(), 16));
+        return Style.EMPTY.withColor(Integer.parseInt(titleColor, 16));
       } catch (NumberFormatException e) {
         return Style.EMPTY;
       }

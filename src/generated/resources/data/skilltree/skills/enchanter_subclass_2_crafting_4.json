@@ -5,7 +5,7 @@
       "type": "skilltree:attribute",
       "amount": 0.2,
       "attribute": "skilltree:exp_per_minute",
-      "id": "4b941170-4537-4459-afa9-bba91bd9c38b",
+      "id": "17019ac5-e20d-4351-b5e4-05afa7013747",
       "name": "SkillBonus",
       "operation": 0,
       "player_condition": {
@@ -28,5 +28,6 @@
   "longConnections": [],
   "oneWayConnections": [],
   "positionX": 283.95526,
-  "positionY": -349.7826
+  "positionY": -349.7826,
+  "tags": []
 }

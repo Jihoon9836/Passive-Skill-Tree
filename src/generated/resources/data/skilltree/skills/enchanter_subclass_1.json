@@ -46,7 +46,7 @@
       }
     }
   ],
-  "borderTexture": "skilltree:textures/tooltip/keystone.png",
+  "borderTexture": "skilltree:textures/tooltip/lesser.png",
   "buttonSize": 24,
   "directConnections": [
     "skilltree:enchanter_subclass_1_offensive_1",
@@ -58,5 +58,6 @@
   "longConnections": [],
   "oneWayConnections": [],
   "positionX": 345.35162,
-  "positionY": -31.994904
+  "positionY": -31.994904,
+  "tags": []
 }

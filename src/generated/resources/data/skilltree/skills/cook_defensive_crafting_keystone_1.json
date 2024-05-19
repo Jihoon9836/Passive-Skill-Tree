@@ -13,7 +13,7 @@
     }
   ],
   "borderTexture": "skilltree:textures/tooltip/keystone.png",
-  "buttonSize": 24,
+  "buttonSize": 32,
   "directConnections": [],
   "iconTexture": "skilltree:textures/icons/cook_defensive_crafting_keystone_1.png",
   "id": "skilltree:cook_defensive_crafting_keystone_1",
@@ -21,5 +21,6 @@
   "longConnections": [],
   "oneWayConnections": [],
   "positionX": -92.97753,
-  "positionY": -335.05035
+  "positionY": -339.05035,
+  "tags": []
 }

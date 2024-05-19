@@ -93,15 +93,15 @@ public class PSTSkillsProvider implements DataProvider {
     addSkill(playerClass, "subclass_2_life_notable_1", "subclass_2_life_notable_1", 20);
     addSkill(playerClass, "subclass_2_crafting_notable_1", "subclass_2_crafting_notable_1", 20);
     // keystone skills
-    addSkill(playerClass, "defensive_keystone_1", "defensive_keystone_1", 24);
-    addSkill(playerClass, "offensive_keystone_1", "offensive_keystone_1", 24);
-    addSkill(playerClass, "defensive_crafting_keystone_1", "defensive_crafting_keystone_1", 24);
-    addSkill(playerClass, "offensive_crafting_keystone_1", "offensive_crafting_keystone_1", 24);
-    addSkill(playerClass, "mastery", "mastery", 24);
+    addSkill(playerClass, "defensive_keystone_1", "defensive_keystone_1", 32);
+    addSkill(playerClass, "offensive_keystone_1", "offensive_keystone_1", 32);
+    addSkill(playerClass, "defensive_crafting_keystone_1", "defensive_crafting_keystone_1", 32);
+    addSkill(playerClass, "offensive_crafting_keystone_1", "offensive_crafting_keystone_1", 32);
+    addSkill(playerClass, "mastery", "mastery", 32);
     addSkill(playerClass, "subclass_1", "subclass_1", 24);
     addSkill(playerClass, "subclass_2", "subclass_2", 24);
-    addSkill(playerClass, "subclass_1_mastery", "subclass_1_mastery", 24);
-    addSkill(playerClass, "subclass_2_mastery", "subclass_2_mastery", 24);
+    addSkill(playerClass, "subclass_1_mastery", "subclass_1_mastery", 32);
+    addSkill(playerClass, "subclass_2_mastery", "subclass_2_mastery", 32);
   }
 
   protected void addGateways() {
@@ -701,7 +701,8 @@ public class PSTSkillsProvider implements DataProvider {
         new CraftedItemBonus(
             new ItemTagCondition(PSTTags.NECKLACES.location()),
             new ItemSkillBonus(createAttributeBonus(MAX_HEALTH, 5, ADDITION))));
-    addSkillBonus("miner_subclass_2_mastery", SlotAttribute.getOrCreate("ring"), 1, ADDITION);
+    addSkillBonus(
+        "miner_subclass_2_mastery", SlotAttribute.getOrCreate("ring"), 1, ADDITION);
     // blacksmith skills
     addSkillBonus(
         "blacksmith_class",
@@ -1440,13 +1441,13 @@ public class PSTSkillsProvider implements DataProvider {
     String background =
         name.endsWith("class") || name.endsWith("subclass_1") || name.endsWith("subclass_2")
             ? "class"
-            : size == 24 ? "keystone" : size == 20 ? "notable" : "lesser";
+            : size == 32 ? "keystone" : size == 20 ? "notable" : "lesser";
     ResourceLocation backgroundTexture =
         new ResourceLocation(
             SkillTreeMod.MOD_ID, "textures/icons/background/" + background + ".png");
     ResourceLocation iconTexture =
         new ResourceLocation(SkillTreeMod.MOD_ID, "textures/icons/" + icon + ".png");
-    String border = size == 24 ? "keystone" : size == 20 ? "notable" : "lesser";
+    String border = size == 32 ? "keystone" : size == 20 ? "notable" : "lesser";
     ResourceLocation borderTexture =
         new ResourceLocation(SkillTreeMod.MOD_ID, "textures/tooltip/" + border + ".png");
     skills.put(

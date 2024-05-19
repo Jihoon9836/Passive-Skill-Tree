@@ -10,7 +10,7 @@
             "amount": 0.4,
             "chance": 1.0,
             "event_listener": {
-              "type": "skilltree:attack",
+              "type": "skilltree:block",
               "damage_condition": {
                 "type": "skilltree:none"
               },
@@ -33,55 +33,7 @@
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "weapon"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
-            "type": "skilltree:incoming_healing",
-            "multiplier": 0.04,
-            "player_condition": {
-              "type": "skilltree:none"
-            },
-            "player_multiplier": {
-              "type": "skilltree:none"
-            }
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "chestplate"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
-            "type": "skilltree:attribute",
-            "amount": 0.03999999910593033,
-            "attribute": "skilltree:regeneration",
-            "id": "be84c1bd-7499-4654-95d7-0f222068a494",
-            "name": "Ruby",
-            "operation": 0,
-            "player_condition": {
-              "type": "skilltree:none"
-            },
-            "player_multiplier": {
-              "type": "skilltree:none"
-            }
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "boots"
+        "equipment_type": "shield"
       }
     },
     {
@@ -93,7 +45,7 @@
             "type": "skilltree:attribute",
             "amount": 0.03999999910593033,
             "attribute": "minecraft:generic.max_health",
-            "id": "3d6ed0e6-0104-4726-a781-91be37c2762a",
+            "id": "74580383-c1e7-4241-9e48-e257d327f140",
             "name": "Ruby",
             "operation": 1,
             "player_condition": {
@@ -108,6 +60,32 @@
       "item_condition": {
         "type": "skilltree:equipment_type",
         "equipment_type": "helmet"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:attribute",
+            "amount": 0.03999999910593033,
+            "attribute": "skilltree:regeneration",
+            "id": "6baabc7b-7842-43cd-9129-7926e5bf7150",
+            "name": "Ruby",
+            "operation": 0,
+            "player_condition": {
+              "type": "skilltree:none"
+            },
+            "player_multiplier": {
+              "type": "skilltree:none"
+            }
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "boots"
       }
     },
     {
@@ -138,11 +116,33 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
+            "type": "skilltree:incoming_healing",
+            "multiplier": 0.04,
+            "player_condition": {
+              "type": "skilltree:none"
+            },
+            "player_multiplier": {
+              "type": "skilltree:none"
+            }
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "chestplate"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
             "type": "skilltree:healing",
             "amount": 0.4,
             "chance": 1.0,
             "event_listener": {
-              "type": "skilltree:block",
+              "type": "skilltree:attack",
               "damage_condition": {
                 "type": "skilltree:none"
               },
@@ -165,7 +165,7 @@
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "shield"
+        "equipment_type": "weapon"
       }
     }
   ],

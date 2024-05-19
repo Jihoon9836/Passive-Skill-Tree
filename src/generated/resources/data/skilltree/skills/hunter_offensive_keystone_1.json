@@ -23,13 +23,14 @@
     }
   ],
   "borderTexture": "skilltree:textures/tooltip/keystone.png",
-  "buttonSize": 24,
+  "buttonSize": 32,
   "directConnections": [],
   "iconTexture": "skilltree:textures/icons/hunter_offensive_keystone_1.png",
   "id": "skilltree:hunter_offensive_keystone_1",
   "isStartingPoint": false,
   "longConnections": [],
   "oneWayConnections": [],
-  "positionX": 301.6711,
-  "positionY": 236.54828
+  "positionX": 305.1351,
+  "positionY": 238.5485,
+  "tags": []
 }

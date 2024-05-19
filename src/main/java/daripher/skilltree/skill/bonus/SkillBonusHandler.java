@@ -363,7 +363,7 @@ public class SkillBonusHandler {
   public static void applyEventListenerEffect(LivingHurtEvent event) {
     Entity sourceEntity = event.getSource().getEntity();
     if (sourceEntity instanceof Player player) {
-      for (EventListenerBonus<?> bonus : getSkillBonuses(player, EventListenerBonus.class, true)) {
+      for (EventListenerBonus<?> bonus : getSkillBonuses(player, EventListenerBonus.class)) {
         if (!(bonus.getEventListener() instanceof AttackEventListener listener)) continue;
         SkillBonus<? extends EventListenerBonus<?>> copy = bonus.copy();
         listener.onEvent(
@@ -371,7 +371,7 @@ public class SkillBonusHandler {
       }
     }
     if (event.getEntity() instanceof Player player) {
-      for (EventListenerBonus<?> bonus : getSkillBonuses(player, EventListenerBonus.class, true)) {
+      for (EventListenerBonus<?> bonus : getSkillBonuses(player, EventListenerBonus.class)) {
         if (!(bonus.getEventListener() instanceof DamageTakenEventListener listener)) continue;
         SkillBonus<? extends EventListenerBonus<?>> copy = bonus.copy();
         LivingEntity attacker =
@@ -384,7 +384,7 @@ public class SkillBonusHandler {
   @SubscribeEvent
   public static void applyEventListenerEffect(ShieldBlockEvent event) {
     if (!(event.getEntity() instanceof Player player)) return;
-    for (EventListenerBonus<?> bonus : getSkillBonuses(player, EventListenerBonus.class, true)) {
+    for (EventListenerBonus<?> bonus : getSkillBonuses(player, EventListenerBonus.class)) {
       if (!(bonus.getEventListener() instanceof BlockEventListener listener)) continue;
       SkillBonus<? extends EventListenerBonus<?>> copy = bonus.copy();
       DamageSource source = event.getDamageSource();
@@ -398,7 +398,7 @@ public class SkillBonusHandler {
   @SubscribeEvent(priority = EventPriority.LOWEST)
   public static void applyEventListenerEffect(LivingEntityUseItemEvent.Finish event) {
     if (!(event.getEntity() instanceof Player player)) return;
-    for (EventListenerBonus<?> bonus : getSkillBonuses(player, EventListenerBonus.class, true)) {
+    for (EventListenerBonus<?> bonus : getSkillBonuses(player, EventListenerBonus.class)) {
       if (!(bonus.getEventListener() instanceof ItemUsedEventListener listener)) continue;
       SkillBonus<? extends EventListenerBonus<?>> copy = bonus.copy();
       listener.onEvent(player, event.getItem(), (EventListenerBonus<?>) copy);
@@ -408,7 +408,7 @@ public class SkillBonusHandler {
   @SubscribeEvent
   public static void applyEventListenerEffect(LivingDeathEvent event) {
     if (!(event.getSource().getEntity() instanceof Player player)) return;
-    for (EventListenerBonus<?> bonus : getSkillBonuses(player, EventListenerBonus.class, true)) {
+    for (EventListenerBonus<?> bonus : getSkillBonuses(player, EventListenerBonus.class)) {
       if (!(bonus.getEventListener() instanceof KillEventListener listener)) continue;
       SkillBonus<? extends EventListenerBonus<?>> copy = bonus.copy();
       DamageSource source = event.getSource();
@@ -517,7 +517,7 @@ public class SkillBonusHandler {
     if (player == null) return;
     for (CantUseItemBonus bonus : getSkillBonuses(player, CantUseItemBonus.class)) {
       if (bonus.getItemCondition().met(event.getItemStack())) {
-        MutableComponent tooltip =
+        Component tooltip =
             Component.translatable("item.cant_use.info").withStyle(ChatFormatting.RED);
         event.getTooltipElements().add(Either.left(tooltip));
         return;
@@ -639,16 +639,12 @@ public class SkillBonusHandler {
   }
 
   public static <T> List<T> getSkillBonuses(@Nonnull Player player, Class<T> type) {
-    return getSkillBonuses(player, type, false);
-  }
-
-  public static <T> List<T> getSkillBonuses(@Nonnull Player player, Class<T> type, boolean merge) {
     if (!PlayerSkillsProvider.hasSkills(player)) return List.of();
     List<T> bonuses = new ArrayList<>();
     bonuses.addAll(getPlayerBonuses(player, type));
     bonuses.addAll(getEffectBonuses(player, type));
     bonuses.addAll(getEquipmentBonuses(player, type));
-    return merge ? mergeSkillBonuses(bonuses) : bonuses;
+    return mergeSkillBonuses(bonuses);
   }
 
   private static <T> List<T> mergeSkillBonuses(List<T> bonuses) {

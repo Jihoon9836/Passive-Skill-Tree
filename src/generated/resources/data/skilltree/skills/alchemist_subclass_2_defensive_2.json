@@ -5,7 +5,7 @@
       "type": "skilltree:attribute",
       "amount": 1.0,
       "attribute": "skilltree:evasion",
-      "id": "ebdb241a-5f7f-443e-b583-d3c7a2fa7c4f",
+      "id": "37e0aa90-f157-4202-b9b9-6d63ae6f3281",
       "name": "SkillBonus",
       "operation": 0,
       "player_condition": {
@@ -27,5 +27,6 @@
   "longConnections": [],
   "oneWayConnections": [],
   "positionX": 118.95877,
-  "positionY": 238.0512
+  "positionY": 238.0512,
+  "tags": []
 }

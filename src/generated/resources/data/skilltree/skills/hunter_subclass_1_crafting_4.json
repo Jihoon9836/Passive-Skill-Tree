@@ -9,7 +9,7 @@
           "type": "skilltree:attribute",
           "amount": 1.0,
           "attribute": "skilltree:stealth",
-          "id": "bf2fb67e-2548-42c5-97f4-a50985bb22d0",
+          "id": "aa429b37-e344-4f8e-8141-c0386707fe9f",
           "name": "SkillBonus",
           "operation": 0,
           "player_condition": {
@@ -38,5 +38,6 @@
   "longConnections": [],
   "oneWayConnections": [],
   "positionX": 283.92465,
-  "positionY": 349.80984
+  "positionY": 349.80984,
+  "tags": []
 }

@@ -5,7 +5,7 @@
       "type": "skilltree:attribute",
       "amount": 1.0,
       "attribute": "skilltree:blocking",
-      "id": "31b46911-9c26-4f7d-b276-11b1c1d9a721",
+      "id": "7b4483bf-4fc7-4198-978e-12fdf724b08d",
       "name": "SkillBonus",
       "operation": 0,
       "player_condition": {
@@ -27,5 +27,6 @@
   "longConnections": [],
   "oneWayConnections": [],
   "positionX": 159.64139,
-  "positionY": -124.491425
+  "positionY": -124.491425,
+  "tags": []
 }
