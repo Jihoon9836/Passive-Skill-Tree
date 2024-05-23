@@ -1,6 +1,7 @@
 package daripher.skilltree.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.math.Axis;
 import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.client.data.SkillTexturesData;
 import daripher.skilltree.client.data.SkillTreeClientData;
@@ -35,6 +36,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -62,6 +64,11 @@ public class SkillTreeEditorScreen extends Screen {
   private int dragX;
   private int dragY;
   private boolean selectingArea;
+  private boolean mirroring;
+  private float mirrorAngle;
+  private int mirrorSides = 2;
+  private float mirrorCenterX;
+  private float mirrorCenterY;
 
   public SkillTreeEditorScreen(ResourceLocation skillTreeId) {
     super(Component.empty());
@@ -91,12 +98,30 @@ public class SkillTreeEditorScreen extends Screen {
     renderBackground(graphics);
     renderConnections(graphics, mouseX, mouseY);
     renderSkills(graphics, mouseX, mouseY, partialTick);
+    renderMirrorMode(graphics);
     renderOverlay(graphics);
     renderWidgets(graphics, mouseX, mouseY, partialTick);
     renderSkillTooltip(graphics, mouseX, mouseY, partialTick);
     renderSkillSelection(graphics, mouseX, mouseY);
     prevMouseX = mouseX;
     prevMouseY = mouseY;
+  }
+
+  private void renderMirrorMode(@NotNull GuiGraphics graphics) {
+    if (!mirroring) return;
+    graphics.pose().pushPose();
+    graphics
+        .pose()
+        .translate(width / 2f + mirrorCenterX + scrollX, height / 2f + mirrorCenterY + scrollY, 0);
+    graphics.pose().mulPose(Axis.ZP.rotationDegrees(mirrorAngle));
+    for (int i = 0; i < mirrorSides; i++) {
+      graphics.pose().mulPose(Axis.ZP.rotationDegrees(360f / mirrorSides));
+      graphics.fill(-1, -1, 1, width * 2, 0x55CFCFCF);
+    }
+    ScreenHelper.drawRectangle(graphics, -4, -4, 8, 8, 0x55CFCFCF);
+    graphics.pose().popPose();
+    RenderSystem.enableBlend();
+    RenderSystem.defaultBlendFunc();
   }
 
   private void renderWidgets(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
@@ -493,6 +518,9 @@ public class SkillTreeEditorScreen extends Screen {
     rebuildWidgets();
   }
 
+  private double lastUsedDistance = 10;
+  private double lastUsedAngle = 0;
+
   private void addNodeToolsButtons() {
     addButton(0, 0, 90, 14, "Back").setPressFunc(b -> selectTools(Tools.MAIN));
     shiftWidgets(0, 29);
@@ -500,13 +528,51 @@ public class SkillTreeEditorScreen extends Screen {
     addLabel(0, 0, "Distance", ChatFormatting.GOLD);
     addLabel(65, 0, "Angle", ChatFormatting.GOLD);
     shiftWidgets(0, 19);
-    NumericTextField distanceEditor = addNumericTextField(0, 0, 60, 14, 10);
-    NumericTextField angleEditor = addNumericTextField(65, 0, 60, 14, 0);
+    NumericTextField distanceEditor = addNumericTextField(0, 0, 60, 14, lastUsedDistance);
+    distanceEditor.setNumericResponder(v -> lastUsedDistance = v);
+    NumericTextField angleEditor = addNumericTextField(65, 0, 60, 14, lastUsedAngle);
+    angleEditor.setNumericResponder(v -> lastUsedAngle = v);
     shiftWidgets(0, 19);
-    addButton(0, 0, 60, 14, "Add").setPressFunc(b -> createNewSkills(angleEditor, distanceEditor));
+    addButton(0, 0, 60, 14, "Add")
+        .setPressFunc(b -> createSkills(angleEditor, distanceEditor, this::createNewSkill));
     addButton(65, 0, 60, 14, "Copy")
-        .setPressFunc(b -> createSelectedSkillsCopies(angleEditor, distanceEditor));
+        .setPressFunc(b -> createSkills(angleEditor, distanceEditor, this::createCopiedSkill));
     shiftWidgets(0, 19);
+    addLabel(0, 0, "Mirror", ChatFormatting.GOLD);
+    addCheckBox(186, 0, mirroring)
+        .setResponder(
+            v -> {
+              mirroring = v;
+              rebuildWidgets();
+            });
+    shiftWidgets(0, 19);
+    if (mirroring) {
+      addLabel(0, 0, "Sides", ChatFormatting.GOLD);
+      addNumericTextField(160, 0, 40, 14, mirrorSides)
+          .setNumericFilter(v -> v > 1)
+          .setNumericResponder(v -> mirrorSides = v.intValue());
+      shiftWidgets(0, 19);
+      addLabel(0, 0, "Rotation", ChatFormatting.GOLD);
+      addNumericTextField(160, 0, 40, 14, mirrorAngle)
+          .setNumericResponder(v -> mirrorAngle = v.floatValue());
+      shiftWidgets(0, 19);
+      addLabel(0, 0, "Center", ChatFormatting.GOLD);
+      addNumericTextField(160, 0, 40, 14, mirrorCenterX)
+          .setNumericResponder(v -> mirrorCenterX = v.floatValue());
+      addNumericTextField(115, 0, 40, 14, mirrorCenterY)
+          .setNumericResponder(v -> mirrorCenterY = v.floatValue());
+      if (selectedSkills.size() == 1) {
+        addButton(70, 0, 40, 14, "Set")
+            .setPressFunc(
+                b -> {
+                  PassiveSkill skill = getFirstSelectedSkill();
+                  mirrorCenterX = skill.getPositionX();
+                  mirrorCenterY = skill.getPositionY();
+                  rebuildWidgets();
+                });
+        shiftWidgets(0, 19);
+      }
+    }
   }
 
   private void addTagsToolsButtons() {
@@ -698,33 +764,71 @@ public class SkillTreeEditorScreen extends Screen {
     }
   }
 
-  private void createSelectedSkillsCopies(
-      NumericTextField angleEditor, NumericTextField distanceEditor) {
-    float angle = (float) (angleEditor.getNumericValue() * Mth.PI / 180F);
+  private void createSkills(
+      NumericTextField angleEditor,
+      NumericTextField distanceEditor,
+      TriConsumer<Float, Float, PassiveSkill> skillFactory) {
+    float angle = (float) angleEditor.getNumericValue();
+    float angleRadians = (float) Math.toRadians(angle);
     selectedSkills.forEach(
         skillId -> {
           PassiveSkill skill = SkillTreeClientData.getEditorSkill(skillId);
           float distance = (float) distanceEditor.getNumericValue();
           distance += skill.getButtonSize() / 2f + 8;
-          float skillX = skill.getPositionX() + Mth.sin(angle) * distance;
-          float skillY = skill.getPositionY() + Mth.cos(angle) * distance;
-          createCopiedSkill(skillX, skillY, skill);
+          float skillX = skill.getPositionX() + Mth.sin(angleRadians) * distance;
+          float skillY = skill.getPositionY() + Mth.cos(angleRadians) * distance;
+          skillFactory.accept(skillX, skillY, skill);
         });
+    if (mirroring) {
+      float sectorSize = 360f / mirrorSides;
+      for (int i = 1; i < mirrorSides; i++) {
+        angle = mirrorSides == 2 ? -angle - mirrorAngle * 2 : angle + sectorSize;
+        float finalAngle = (float) Math.toRadians(angle);
+        int sector = i;
+        selectedSkills.forEach(
+            skillId -> {
+              PassiveSkill skill = SkillTreeClientData.getEditorSkill(skillId);
+              skill = getMirroredSkill(skill, sector);
+              if (skill == null) return;
+              float distance = (float) distanceEditor.getNumericValue();
+              distance += skill.getButtonSize() / 2f + 8;
+              float skillX = skill.getPositionX() + Mth.sin(finalAngle) * distance;
+              float skillY = skill.getPositionY() + Mth.cos(finalAngle) * distance;
+              skillFactory.accept(skillX, skillY, skill);
+            });
+      }
+    }
     rebuildWidgets();
   }
 
-  private void createNewSkills(NumericTextField angleEditor, NumericTextField distanceEditor) {
-    float angle = (float) (angleEditor.getNumericValue() * Mth.PI / 180F);
-    selectedSkills.forEach(
-        skillId -> {
-          PassiveSkill skill = SkillTreeClientData.getEditorSkill(skillId);
-          float distance = (float) distanceEditor.getNumericValue();
-          distance += skill.getButtonSize() / 2f + 8;
-          float skillX = skill.getPositionX() + Mth.sin(angle) * distance;
-          float skillY = skill.getPositionY() + Mth.cos(angle) * distance;
-          createNewSkill(skillX, skillY, skill);
-        });
-    rebuildWidgets();
+  private @Nullable PassiveSkill getMirroredSkill(PassiveSkill skill, int sector) {
+    float skillX = skill.getPositionX();
+    float skillY = skill.getPositionY();
+    if (mirrorCenterX == skillX && mirrorCenterY == skillY) {
+      return skill;
+    }
+    float originalAngle =
+        (float) Math.toDegrees(Math.atan2(skillY - mirrorCenterY, skillX - mirrorCenterX)) + 90;
+    float sectorSize = 360f / mirrorSides;
+    float angle =
+        (float)
+            Math.toRadians(
+                mirrorSides == 2
+                    ? -originalAngle + mirrorAngle * 2
+                    : originalAngle + sectorSize * sector);
+    float distance = (float) Math.hypot(skillX - mirrorCenterX, skillY - mirrorCenterY);
+    float mirroredSkillX = mirrorCenterX + Mth.sin(angle) * distance;
+    float mirroredSkillY = mirrorCenterY + Mth.cos((float) (angle + Math.PI)) * distance;
+    return getSkillAtPosition(mirroredSkillX, mirroredSkillY);
+  }
+
+  @Nullable
+  private PassiveSkill getSkillAtPosition(float x, float y) {
+    for (PassiveSkill skill : getTreeSkills().toList()) {
+      double distance = Math.hypot(x - skill.getPositionX(), y - skill.getPositionY());
+      if (distance < skill.getButtonSize()) return skill;
+    }
+    return null;
   }
 
   private void createCopiedSkill(float x, float y, PassiveSkill original) {
