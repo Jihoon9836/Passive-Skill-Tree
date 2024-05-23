@@ -782,7 +782,7 @@ public class SkillTreeEditorScreen extends Screen {
     if (mirroring) {
       float sectorSize = 360f / mirrorSides;
       for (int i = 1; i < mirrorSides; i++) {
-        angle = mirrorSides == 2 ? -angle - mirrorAngle * 2 : angle + sectorSize;
+        angle = mirrorSides == 2 ? -angle - mirrorAngle * 2 : angle - sectorSize;
         float finalAngle = (float) Math.toRadians(angle);
         int sector = i;
         selectedSkills.forEach(
