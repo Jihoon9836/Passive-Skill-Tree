@@ -46,9 +46,7 @@ public class CommandBonus implements EventListenerBonus<CommandBonus> {
     if (command.isEmpty()) return;
     MinecraftServer server = player.getServer();
     if (server == null) return;
-    CommandSourceStack commandSourceStack = server.createCommandSourceStack();
-    String playerName = player.getGameProfile().getName();
-    command = command.replaceAll("<p>", playerName);
+    CommandSourceStack commandSourceStack = player.createCommandSourceStack();
     server.getCommands().performPrefixedCommand(commandSourceStack, command);
   }
 
@@ -227,7 +225,7 @@ public class CommandBonus implements EventListenerBonus<CommandBonus> {
     @Override
     public SkillBonus<?> createDefaultInstance() {
       return new CommandBonus(
-          "give <p> minecraft:apple",
+          "give @p minecraft:apple",
           "Grants an apple when learned",
           new SkillLearnedEventListener());
     }
