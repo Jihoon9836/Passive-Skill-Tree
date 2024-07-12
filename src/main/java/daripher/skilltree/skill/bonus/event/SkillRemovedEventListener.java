@@ -2,7 +2,7 @@ package daripher.skilltree.skill.bonus.event;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTEventListeners;
 import daripher.skilltree.init.PSTLivingMultipliers;
@@ -60,9 +60,9 @@ public class SkillRemovedEventListener implements SkillEventListener {
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, Consumer<SkillEventListener> consumer) {
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, playerMultiplier, PSTLivingMultipliers.multiplierList())
         .setToNameFunc(m -> Component.literal(PSTLivingMultipliers.getName(m)))
@@ -72,7 +72,7 @@ public class SkillRemovedEventListener implements SkillEventListener {
               consumer.accept(this);
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     playerMultiplier.addEditorWidgets(
         editor,
         m -> {

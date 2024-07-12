@@ -1,8 +1,8 @@
 package daripher.skilltree.skill.bonus.player;
 
 import com.google.gson.*;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTLivingConditions;
 import daripher.skilltree.init.PSTSkillBonuses;
@@ -75,9 +75,9 @@ public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBon
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int index, Consumer<BlockBreakSpeedBonus> consumer) {
+      SkillTreeEditor editor, int index, Consumer<BlockBreakSpeedBonus> consumer) {
     editor.addLabel(0, 0, "Multiplier", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, multiplier)
         .setNumericResponder(
@@ -85,9 +85,9 @@ public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBon
               setMultiplier(v.floatValue());
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor.addLabel(0, 0, "Player Condition", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, playerCondition, PSTLivingConditions.conditionsList())
         .setToNameFunc(c -> Component.literal(PSTLivingConditions.getName(c)))
@@ -97,7 +97,7 @@ public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBon
               consumer.accept(this.copy());
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     playerCondition.addEditorWidgets(
         editor,
         c -> {

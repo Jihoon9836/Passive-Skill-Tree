@@ -1,6 +1,6 @@
 package daripher.skilltree.skill.bonus.multiplier;
 
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTRegistries;
 import daripher.skilltree.skill.bonus.SkillBonus;
 import java.util.Objects;
@@ -24,8 +24,7 @@ public interface LivingMultiplier {
 
   MutableComponent getTooltip(MutableComponent bonusTooltip, SkillBonus.Target target);
 
-  default void addEditorWidgets(
-      SkillTreeEditorScreen editor, Consumer<LivingMultiplier> consumer) {}
+  default void addEditorWidgets(SkillTreeEditor editor, Consumer<LivingMultiplier> consumer) {}
 
   interface Serializer extends daripher.skilltree.data.serializers.Serializer<LivingMultiplier> {
     LivingMultiplier createDefaultInstance();

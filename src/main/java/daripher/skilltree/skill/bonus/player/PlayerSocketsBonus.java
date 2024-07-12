@@ -1,8 +1,8 @@
 package daripher.skilltree.skill.bonus.player;
 
 import com.google.gson.*;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTItemConditions;
 import daripher.skilltree.init.PSTSkillBonuses;
@@ -74,9 +74,9 @@ public final class PlayerSocketsBonus implements SkillBonus<PlayerSocketsBonus> 
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int row, Consumer<PlayerSocketsBonus> consumer) {
+      SkillTreeEditor editor, int row, Consumer<PlayerSocketsBonus> consumer) {
     editor.addLabel(0, 0, "Multiplier", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, sockets)
         .setNumericResponder(
@@ -84,9 +84,9 @@ public final class PlayerSocketsBonus implements SkillBonus<PlayerSocketsBonus> 
               setSockets(v.intValue());
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor.addLabel(0, 0, "Item Condition", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, itemCondition, PSTItemConditions.conditionsList())
         .setToNameFunc(a -> Component.literal(PSTItemConditions.getName(a)))
@@ -96,7 +96,7 @@ public final class PlayerSocketsBonus implements SkillBonus<PlayerSocketsBonus> 
               consumer.accept(this.copy());
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     itemCondition.addEditorWidgets(
         editor,
         c -> {

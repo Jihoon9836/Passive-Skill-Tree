@@ -1,8 +1,8 @@
 package daripher.skilltree.skill.bonus.player;
 
 import com.google.gson.*;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTEventListeners;
 import daripher.skilltree.init.PSTSkillBonuses;
@@ -100,11 +100,11 @@ public class CommandBonus implements EventListenerBonus<CommandBonus> {
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor,
+      SkillTreeEditor editor,
       int index,
       Consumer<EventListenerBonus<CommandBonus>> consumer) {
     editor.addLabel(0, 0, "Command", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addTextArea(0, 0, 200, 70, command)
         .setResponder(
@@ -112,9 +112,9 @@ public class CommandBonus implements EventListenerBonus<CommandBonus> {
               setCommand(v);
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 75);
+    editor.increaseHeight(75);
     editor.addLabel(0, 0, "Description", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addTextArea(0, 0, 200, 70, description)
         .setResponder(
@@ -122,9 +122,9 @@ public class CommandBonus implements EventListenerBonus<CommandBonus> {
               setDescription(v);
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 75);
+    editor.increaseHeight(75);
     editor.addLabel(0, 0, "Event", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, eventListener, PSTEventListeners.eventsList())
         .setToNameFunc(e -> Component.literal(PSTEventListeners.getName(e)))
@@ -134,7 +134,7 @@ public class CommandBonus implements EventListenerBonus<CommandBonus> {
               consumer.accept(this.copy());
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     eventListener.addEditorWidgets(
         editor,
         e -> {

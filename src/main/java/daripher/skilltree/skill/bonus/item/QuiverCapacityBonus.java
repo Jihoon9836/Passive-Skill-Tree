@@ -2,8 +2,8 @@ package daripher.skilltree.skill.bonus.item;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTItemBonuses;
 import daripher.skilltree.network.NetworkHelper;
@@ -65,10 +65,10 @@ public final class QuiverCapacityBonus implements ItemBonus<QuiverCapacityBonus>
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int index, Consumer<ItemBonus<?>> consumer) {
+      SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
     editor.addLabel(0, 0, "Amount", ChatFormatting.GREEN);
     editor.addLabel(55, 0, "Operation", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, getAmount())
         .setNumericResponder(
@@ -84,7 +84,7 @@ public final class QuiverCapacityBonus implements ItemBonus<QuiverCapacityBonus>
               setOperation(o);
               consumer.accept(this);
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
   }
 
   public void setAmount(float amount) {

@@ -1,8 +1,8 @@
 package daripher.skilltree.skill.bonus.player;
 
 import com.google.gson.*;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTEnchantmentConditions;
 import daripher.skilltree.init.PSTSkillBonuses;
@@ -81,10 +81,10 @@ public final class EnchantmentAmplificationBonus
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int row, Consumer<EnchantmentAmplificationBonus> consumer) {
+      SkillTreeEditor editor, int row, Consumer<EnchantmentAmplificationBonus> consumer) {
     editor.addLabel(0, 0, "Chance", ChatFormatting.GOLD);
     editor.addLabel(55, 0, "Enchantment Condition", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, chance)
         .setNumericResponder(
@@ -100,7 +100,7 @@ public final class EnchantmentAmplificationBonus
               setCondition(c);
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
   }
 
   public void setCondition(@Nonnull EnchantmentCondition condition) {

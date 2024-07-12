@@ -1,6 +1,6 @@
 package daripher.skilltree.skill.bonus.event;
 
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTRegistries;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -25,7 +25,7 @@ public interface SkillEventListener {
 
   Serializer getSerializer();
 
-  void addEditorWidgets(SkillTreeEditorScreen editor, Consumer<SkillEventListener> consumer);
+  void addEditorWidgets(SkillTreeEditor editor, Consumer<SkillEventListener> consumer);
 
   interface Serializer extends daripher.skilltree.data.serializers.Serializer<SkillEventListener> {
     SkillEventListener createDefaultInstance();

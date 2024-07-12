@@ -2,7 +2,7 @@ package daripher.skilltree.skill.bonus.condition.item;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTItemConditions;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -55,9 +55,9 @@ public final class ItemIdCondition implements ItemCondition {
   }
 
   @Override
-  public void addEditorWidgets(SkillTreeEditorScreen editor, Consumer<ItemCondition> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, Consumer<ItemCondition> consumer) {
     editor.addLabel(0, 0, "Item Id", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addTextField(0, 0, 200, 14, id.toString())
         .setSoftFilter(
@@ -70,7 +70,7 @@ public final class ItemIdCondition implements ItemCondition {
               setId(new ResourceLocation(s));
               consumer.accept(this);
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
   }
 
   public void setId(ResourceLocation id) {

@@ -1,8 +1,8 @@
 package daripher.skilltree.skill.bonus.player;
 
 import com.google.gson.*;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTDamageConditions;
 import daripher.skilltree.init.PSTLivingConditions;
@@ -122,10 +122,10 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int row, Consumer<DamageBonus> consumer) {
+      SkillTreeEditor editor, int row, Consumer<DamageBonus> consumer) {
     editor.addLabel(0, 0, "Amount", ChatFormatting.GOLD);
     editor.addLabel(55, 0, "Operation", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, amount)
         .setNumericResponder(
@@ -141,9 +141,9 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
               setOperation(o);
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor.addLabel(0, 0, "Damage Condition", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, damageCondition, PSTDamageConditions.conditionsList())
         .setToNameFunc(c -> Component.literal(PSTDamageConditions.getName(c)))
@@ -152,9 +152,9 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
               setDamageCondition(c);
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor.addLabel(0, 0, "Player Condition", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, playerCondition, PSTLivingConditions.conditionsList())
         .setToNameFunc(c -> Component.literal(PSTLivingConditions.getName(c)))
@@ -164,7 +164,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
               consumer.accept(this.copy());
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     playerCondition.addEditorWidgets(
         editor,
         c -> {
@@ -172,7 +172,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
           consumer.accept(this.copy());
         });
     editor.addLabel(0, 0, "Target Condition", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, targetCondition, PSTLivingConditions.conditionsList())
         .setToNameFunc(c -> Component.literal(PSTLivingConditions.getName(c)))
@@ -182,7 +182,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
               consumer.accept(this.copy());
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     targetCondition.addEditorWidgets(
         editor,
         c -> {
@@ -190,7 +190,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
           consumer.accept(this.copy());
         });
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, playerMultiplier, PSTLivingMultipliers.multiplierList())
         .setToNameFunc(m -> Component.literal(PSTLivingMultipliers.getName(m)))
@@ -200,7 +200,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
               consumer.accept(this.copy());
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     playerMultiplier.addEditorWidgets(
         editor,
         m -> {
@@ -208,7 +208,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
           consumer.accept(this.copy());
         });
     editor.addLabel(0, 0, "Enemy Multiplier", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, enemyMultiplier, PSTLivingMultipliers.multiplierList())
         .setToNameFunc(m -> Component.literal(PSTLivingMultipliers.getName(m)))
@@ -218,7 +218,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
               consumer.accept(this.copy());
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     enemyMultiplier.addEditorWidgets(
         editor,
         m -> {

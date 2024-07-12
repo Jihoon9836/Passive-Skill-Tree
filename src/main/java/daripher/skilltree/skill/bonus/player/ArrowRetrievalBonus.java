@@ -1,8 +1,8 @@
 package daripher.skilltree.skill.bonus.player;
 
 import com.google.gson.*;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.skill.bonus.SkillBonus;
 import java.util.Objects;
@@ -62,9 +62,9 @@ public final class ArrowRetrievalBonus implements SkillBonus<ArrowRetrievalBonus
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int row, Consumer<ArrowRetrievalBonus> consumer) {
+      SkillTreeEditor editor, int row, Consumer<ArrowRetrievalBonus> consumer) {
     editor.addLabel(0, 0, "Chance", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, chance)
         .setNumericResponder(
@@ -72,7 +72,7 @@ public final class ArrowRetrievalBonus implements SkillBonus<ArrowRetrievalBonus
               setChance(v.floatValue());
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
   }
 
   public void setChance(float chance) {

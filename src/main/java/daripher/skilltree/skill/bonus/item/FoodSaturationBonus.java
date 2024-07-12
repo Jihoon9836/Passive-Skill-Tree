@@ -2,8 +2,8 @@ package daripher.skilltree.skill.bonus.item;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTItemBonuses;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -61,9 +61,9 @@ public final class FoodSaturationBonus implements ItemBonus<FoodSaturationBonus>
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int index, Consumer<ItemBonus<?>> consumer) {
+      SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
     editor.addLabel(0, 0, "Multiplier", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 90, 14, getMultiplier())
         .setNumericResponder(
@@ -71,7 +71,7 @@ public final class FoodSaturationBonus implements ItemBonus<FoodSaturationBonus>
               setMultiplier(v.floatValue());
               consumer.accept(this);
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
   }
 
   public void setMultiplier(float multiplier) {

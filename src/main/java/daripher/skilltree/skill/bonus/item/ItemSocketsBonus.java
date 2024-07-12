@@ -2,7 +2,7 @@ package daripher.skilltree.skill.bonus.item;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTItemBonuses;
 
 import java.util.Objects;
@@ -60,9 +60,9 @@ public final class ItemSocketsBonus implements ItemBonus<ItemSocketsBonus> {
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int index, Consumer<ItemBonus<?>> consumer) {
+      SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
     editor.addLabel(0, 0, "Amount", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, getAmount())
         .setNumericResponder(
@@ -70,7 +70,7 @@ public final class ItemSocketsBonus implements ItemBonus<ItemSocketsBonus> {
               setAmount(v.intValue());
               consumer.accept(this);
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
   }
 
   public void setAmount(int amount) {

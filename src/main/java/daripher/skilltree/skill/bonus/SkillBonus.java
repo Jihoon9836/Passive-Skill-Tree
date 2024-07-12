@@ -1,7 +1,7 @@
 package daripher.skilltree.skill.bonus;
 
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTRegistries;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -43,7 +43,7 @@ public interface SkillBonus<T extends SkillBonus<T>> extends Comparable<SkillBon
 
   boolean isPositive();
 
-  void addEditorWidgets(SkillTreeEditorScreen editor, int index, Consumer<T> consumer);
+  void addEditorWidgets(SkillTreeEditor editor, int index, Consumer<T> consumer);
 
   @Override
   default int compareTo(@NotNull SkillBonus<?> o) {

@@ -2,7 +2,7 @@ package daripher.skilltree.skill.bonus.item;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTItemBonuses;
 import daripher.skilltree.init.PSTSkillBonuses;
@@ -67,9 +67,9 @@ public final class ItemSkillBonus implements ItemBonus<ItemSkillBonus> {
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int index, Consumer<ItemBonus<?>> consumer) {
+      SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
     editor.addLabel(0, 0, "Bonus Type", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, bonus, PSTSkillBonuses.bonusList())
         .setToNameFunc(b -> Component.literal(PSTSkillBonuses.getName(b)))
@@ -79,7 +79,7 @@ public final class ItemSkillBonus implements ItemBonus<ItemSkillBonus> {
               consumer.accept(this);
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     bonus.addEditorWidgets(
         editor,
         index,

@@ -2,7 +2,7 @@ package daripher.skilltree.skill.bonus.condition.item;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTItemConditions;
 import daripher.skilltree.network.NetworkHelper;
@@ -57,9 +57,9 @@ public final class EnchantedCondition implements ItemCondition {
   }
 
   @Override
-  public void addEditorWidgets(SkillTreeEditorScreen editor, Consumer<ItemCondition> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, Consumer<ItemCondition> consumer) {
     editor.addLabel(0, 0, "Inner Item Condition", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, itemCondition, PSTItemConditions.conditionsList())
         .setToNameFunc(a -> Component.translatable(PSTItemConditions.getName(a)))
@@ -69,7 +69,7 @@ public final class EnchantedCondition implements ItemCondition {
               consumer.accept(this);
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     itemCondition.addEditorWidgets(
         editor,
         c -> {

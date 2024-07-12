@@ -1,8 +1,8 @@
 package daripher.skilltree.skill.bonus.player;
 
 import com.google.gson.*;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTLivingConditions;
 import daripher.skilltree.init.PSTLivingMultipliers;
@@ -93,9 +93,9 @@ public final class HealthReservationBonus implements SkillBonus<HealthReservatio
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int row, Consumer<HealthReservationBonus> consumer) {
+      SkillTreeEditor editor, int row, Consumer<HealthReservationBonus> consumer) {
     editor.addLabel(0, 0, "Amount", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, amount)
         .setNumericResponder(
@@ -103,9 +103,9 @@ public final class HealthReservationBonus implements SkillBonus<HealthReservatio
               setAmount(v.floatValue());
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor.addLabel(0, 0, "Player Condition", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, playerCondition, PSTLivingConditions.conditionsList())
         .setToNameFunc(c -> Component.literal(PSTLivingConditions.getName(c)))
@@ -115,7 +115,7 @@ public final class HealthReservationBonus implements SkillBonus<HealthReservatio
               consumer.accept(this.copy());
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     playerCondition.addEditorWidgets(
         editor,
         c -> {
@@ -123,7 +123,7 @@ public final class HealthReservationBonus implements SkillBonus<HealthReservatio
           consumer.accept(this.copy());
         });
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, playerMultiplier, PSTLivingMultipliers.multiplierList())
         .setToNameFunc(m -> Component.literal(PSTLivingMultipliers.getName(m)))
@@ -133,7 +133,7 @@ public final class HealthReservationBonus implements SkillBonus<HealthReservatio
               consumer.accept(this.copy());
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     playerMultiplier.addEditorWidgets(
         editor,
         m -> {

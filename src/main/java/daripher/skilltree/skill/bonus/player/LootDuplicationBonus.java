@@ -1,8 +1,8 @@
 package daripher.skilltree.skill.bonus.player;
 
 import com.google.gson.*;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.skill.bonus.SkillBonus;
 import java.util.Objects;
@@ -75,10 +75,10 @@ public final class LootDuplicationBonus implements SkillBonus<LootDuplicationBon
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int row, Consumer<LootDuplicationBonus> consumer) {
+      SkillTreeEditor editor, int row, Consumer<LootDuplicationBonus> consumer) {
     editor.addLabel(0, 0, "Chance", ChatFormatting.GOLD);
     editor.addLabel(110, 0, "Multiplier", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 90, 14, chance)
         .setNumericResponder(
@@ -93,7 +93,7 @@ public final class LootDuplicationBonus implements SkillBonus<LootDuplicationBon
               setMultiplier(v.floatValue());
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, lootType)
         .setToNameFunc(LootType::getFormattedName)
@@ -102,7 +102,7 @@ public final class LootDuplicationBonus implements SkillBonus<LootDuplicationBon
               setLootType(t);
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
   }
 
   public void setChance(float chance) {

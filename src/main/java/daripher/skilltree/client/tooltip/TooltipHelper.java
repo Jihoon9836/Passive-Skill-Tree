@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -152,7 +153,7 @@ public class TooltipHelper {
   }
 
   @NotNull
-  public static String getTrimmedMessage(Font font, String message, int maxWidth) {
+  public static String getTrimmedString(Font font, String message, int maxWidth) {
     if (font.width(message) > maxWidth) {
       while (font.width(message + "...") > maxWidth) {
         message = message.substring(0, message.length() - 1);
@@ -160,5 +161,10 @@ public class TooltipHelper {
       message += "...";
     }
     return message;
+  }
+
+  @NotNull
+  public static String getTrimmedString(String message, int maxWidth) {
+    return getTrimmedString(Minecraft.getInstance().font, message, maxWidth);
   }
 }

@@ -2,7 +2,7 @@ package daripher.skilltree.skill.bonus.multiplier;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.entity.player.PlayerHelper;
 import daripher.skilltree.init.PSTItemConditions;
@@ -51,9 +51,9 @@ public final class EnchantLevelsAmountMultiplier implements LivingMultiplier {
   }
 
   @Override
-  public void addEditorWidgets(SkillTreeEditorScreen editor, Consumer<LivingMultiplier> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, Consumer<LivingMultiplier> consumer) {
     editor.addLabel(0, 0, "Item Condition", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, itemCondition, PSTItemConditions.conditionsList())
         .setToNameFunc(c -> Component.literal(PSTItemConditions.getName(c)))
@@ -63,7 +63,7 @@ public final class EnchantLevelsAmountMultiplier implements LivingMultiplier {
               consumer.accept(this);
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     itemCondition.addEditorWidgets(
         editor,
         c -> {

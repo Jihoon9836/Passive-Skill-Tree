@@ -2,8 +2,8 @@ package daripher.skilltree.skill.bonus.event;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTDamageConditions;
 import daripher.skilltree.init.PSTEventListeners;
@@ -98,9 +98,9 @@ public class DamageTakenEventListener implements SkillEventListener {
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, Consumer<SkillEventListener> consumer) {
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
     editor.addLabel(0, 0, "Player Condition", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, playerCondition, PSTLivingConditions.conditionsList())
         .setToNameFunc(c -> Component.literal(PSTLivingConditions.getName(c)))
@@ -110,7 +110,7 @@ public class DamageTakenEventListener implements SkillEventListener {
               consumer.accept(this);
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     playerCondition.addEditorWidgets(
         editor,
         c -> {
@@ -118,7 +118,7 @@ public class DamageTakenEventListener implements SkillEventListener {
           consumer.accept(this);
         });
     editor.addLabel(0, 0, "Enemy Condition", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, enemyCondition, PSTLivingConditions.conditionsList())
         .setToNameFunc(c -> Component.literal(PSTLivingConditions.getName(c)))
@@ -128,7 +128,7 @@ public class DamageTakenEventListener implements SkillEventListener {
               consumer.accept(this);
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     enemyCondition.addEditorWidgets(
         editor,
         c -> {
@@ -136,7 +136,7 @@ public class DamageTakenEventListener implements SkillEventListener {
           consumer.accept(this);
         });
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, playerMultiplier, PSTLivingMultipliers.multiplierList())
         .setToNameFunc(m -> Component.literal(PSTLivingMultipliers.getName(m)))
@@ -146,7 +146,7 @@ public class DamageTakenEventListener implements SkillEventListener {
               consumer.accept(this);
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     playerMultiplier.addEditorWidgets(
         editor,
         m -> {
@@ -154,7 +154,7 @@ public class DamageTakenEventListener implements SkillEventListener {
           consumer.accept(this);
         });
     editor.addLabel(0, 0, "Enemy Multiplier", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, enemyMultiplier, PSTLivingMultipliers.multiplierList())
         .setToNameFunc(m -> Component.literal(PSTLivingMultipliers.getName(m)))
@@ -164,7 +164,7 @@ public class DamageTakenEventListener implements SkillEventListener {
               consumer.accept(this);
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     enemyMultiplier.addEditorWidgets(
         editor,
         m -> {
@@ -173,7 +173,7 @@ public class DamageTakenEventListener implements SkillEventListener {
         });
     editor.addLabel(0, 0, "Damage", ChatFormatting.GREEN);
     editor.addLabel(105, 0, "Target", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 95, 14, 10, damageCondition, PSTDamageConditions.conditionsList())
         .setToNameFunc(c -> Component.literal(PSTDamageConditions.getName(c)))
@@ -190,7 +190,7 @@ public class DamageTakenEventListener implements SkillEventListener {
               setTarget(t);
               consumer.accept(this);
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
   }
 
   @Override

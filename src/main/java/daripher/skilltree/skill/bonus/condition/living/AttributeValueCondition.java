@@ -2,7 +2,7 @@ package daripher.skilltree.skill.bonus.condition.living;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTLivingConditions;
 import daripher.skilltree.network.NetworkHelper;
@@ -63,9 +63,9 @@ public final class AttributeValueCondition implements LivingCondition {
   }
 
   @Override
-  public void addEditorWidgets(SkillTreeEditorScreen editor, Consumer<LivingCondition> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, Consumer<LivingCondition> consumer) {
     editor.addLabel(0, 0, "Attribute", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addAttributePicker(0, 0, 200, 14, 10, attribute)
         .setResponder(
@@ -73,10 +73,10 @@ public final class AttributeValueCondition implements LivingCondition {
               setAttribute(a);
               consumer.accept(this);
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor.addLabel(0, 0, "Min", ChatFormatting.GREEN);
     editor.addLabel(55, 0, "Max", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, min)
         .setNumericResponder(
@@ -91,7 +91,7 @@ public final class AttributeValueCondition implements LivingCondition {
               setMax(a.floatValue());
               consumer.accept(this);
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
   }
 
   @Override

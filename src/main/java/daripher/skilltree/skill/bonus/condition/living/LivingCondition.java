@@ -1,6 +1,6 @@
 package daripher.skilltree.skill.bonus.condition.living;
 
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTRegistries;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.MutableComponent;
@@ -20,7 +20,7 @@ public interface LivingCondition {
 
   Serializer getSerializer();
 
-  default void addEditorWidgets(SkillTreeEditorScreen editor, Consumer<LivingCondition> consumer) {}
+  default void addEditorWidgets(SkillTreeEditor editor, Consumer<LivingCondition> consumer) {}
 
   interface Serializer extends daripher.skilltree.data.serializers.Serializer<LivingCondition> {
     LivingCondition createDefaultInstance();

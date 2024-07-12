@@ -1,8 +1,8 @@
 package daripher.skilltree.skill.bonus.player;
 
 import com.google.gson.*;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.skill.bonus.SkillBonus;
 import java.util.Objects;
@@ -68,9 +68,9 @@ public final class EnchantmentRequirementBonus implements SkillBonus<Enchantment
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int row, Consumer<EnchantmentRequirementBonus> consumer) {
+      SkillTreeEditor editor, int row, Consumer<EnchantmentRequirementBonus> consumer) {
     editor.addLabel(0, 0, "Multiplier", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, multiplier)
         .setNumericResponder(
@@ -78,7 +78,7 @@ public final class EnchantmentRequirementBonus implements SkillBonus<Enchantment
               setMultiplier(v.floatValue());
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
   }
 
   public void setMultiplier(float multiplier) {

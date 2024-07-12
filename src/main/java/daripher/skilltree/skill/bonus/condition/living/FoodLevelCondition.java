@@ -2,7 +2,7 @@ package daripher.skilltree.skill.bonus.condition.living;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTLivingConditions;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -54,10 +54,10 @@ public final class FoodLevelCondition implements LivingCondition {
   }
 
   @Override
-  public void addEditorWidgets(SkillTreeEditorScreen editor, Consumer<LivingCondition> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, Consumer<LivingCondition> consumer) {
     editor.addLabel(0, 0, "Min", ChatFormatting.GREEN);
     editor.addLabel(55, 0, "Max", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, min)
         .setNumericResponder(
@@ -72,7 +72,7 @@ public final class FoodLevelCondition implements LivingCondition {
               setMax(a.intValue());
               consumer.accept(this);
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
   }
 
   @Override

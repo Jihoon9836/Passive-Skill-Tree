@@ -4,7 +4,6 @@ import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
-import net.minecraft.client.gui.Font;
 import org.jetbrains.annotations.NotNull;
 
 public class NumericTextField extends TextField {
@@ -12,8 +11,8 @@ public class NumericTextField extends TextField {
   private @Nullable Consumer<Double> numericResponder;
   private double defaultValue;
 
-  public NumericTextField(Font font, int x, int y, int width, int height, double defaultValue) {
-    super(font, x, y, width, height, formatDefaultValue(defaultValue));
+  public NumericTextField(int x, int y, int width, int height, double defaultValue) {
+    super(x, y, width, height, formatDefaultValue(defaultValue));
     setDefaultValue(defaultValue);
     setSoftFilter(DEFAULT_FILTER);
   }

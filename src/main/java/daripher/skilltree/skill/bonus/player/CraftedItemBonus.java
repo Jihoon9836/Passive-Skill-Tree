@@ -1,8 +1,8 @@
 package daripher.skilltree.skill.bonus.player;
 
 import com.google.gson.*;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTItemBonuses;
 import daripher.skilltree.init.PSTItemConditions;
@@ -87,9 +87,9 @@ public final class CraftedItemBonus implements SkillBonus<CraftedItemBonus> {
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int index, Consumer<CraftedItemBonus> consumer) {
+      SkillTreeEditor editor, int index, Consumer<CraftedItemBonus> consumer) {
     editor.addLabel(0, 0, "Item Condition", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, itemCondition, PSTItemConditions.conditionsList())
         .setToNameFunc(a -> Component.literal(PSTItemConditions.getName(a)))
@@ -99,7 +99,7 @@ public final class CraftedItemBonus implements SkillBonus<CraftedItemBonus> {
               consumer.accept(this.copy());
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     itemCondition.addEditorWidgets(
         editor,
         c -> {
@@ -107,7 +107,7 @@ public final class CraftedItemBonus implements SkillBonus<CraftedItemBonus> {
           consumer.accept(this.copy());
         });
     editor.addLabel(0, 0, "Item Bonus", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, bonus, PSTItemBonuses.bonusList())
         .setToNameFunc(b -> Component.literal(PSTItemBonuses.getName(b)))
@@ -117,7 +117,7 @@ public final class CraftedItemBonus implements SkillBonus<CraftedItemBonus> {
               consumer.accept(this.copy());
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     bonus.addEditorWidgets(
         editor,
         index,

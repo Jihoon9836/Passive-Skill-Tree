@@ -2,8 +2,8 @@ package daripher.skilltree.skill.bonus.multiplier;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTLivingMultipliers;
 import daripher.skilltree.skill.bonus.SkillBonus;
 import java.util.Objects;
@@ -35,9 +35,9 @@ public final class MissingHealthPointsMultiplier implements LivingMultiplier {
   }
 
   @Override
-  public void addEditorWidgets(SkillTreeEditorScreen editor, Consumer<LivingMultiplier> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, Consumer<LivingMultiplier> consumer) {
     editor.addLabel(0, 0, "Divisor", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, divisor)
         .setNumericFilter(d -> d > 0)
@@ -46,7 +46,7 @@ public final class MissingHealthPointsMultiplier implements LivingMultiplier {
               setDivisor(v.floatValue());
               consumer.accept(this);
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
   }
 
   @Override

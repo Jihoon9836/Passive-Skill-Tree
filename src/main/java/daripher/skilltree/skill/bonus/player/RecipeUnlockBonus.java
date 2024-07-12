@@ -1,8 +1,8 @@
 package daripher.skilltree.skill.bonus.player;
 
 import com.google.gson.*;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.skill.bonus.SkillBonus;
 import java.util.Objects;
@@ -75,9 +75,9 @@ public final class RecipeUnlockBonus implements SkillBonus<RecipeUnlockBonus> {
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int row, Consumer<RecipeUnlockBonus> consumer) {
+      SkillTreeEditor editor, int row, Consumer<RecipeUnlockBonus> consumer) {
     editor.addLabel(0, 0, "Recipe ID", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addTextField(0, 0, 200, 14, recipeId.toString())
         .setSoftFilter(ResourceLocation::isValidResourceLocation)
@@ -86,7 +86,7 @@ public final class RecipeUnlockBonus implements SkillBonus<RecipeUnlockBonus> {
               setRecipeId(new ResourceLocation(s));
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
   }
 
   public void setRecipeId(ResourceLocation recipeId) {

@@ -15,15 +15,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
-public class TextField extends EditBox {
+public class TextField extends EditBox implements TickingWidget {
   public static final int INVALID_TEXT_COLOR = 0xD80000;
   private static final int HINT_COLOR = 0x575757;
   private Predicate<String> softFilter = Objects::nonNull;
   private Function<String, @Nullable String> suggestionProvider = s -> null;
   private String hint = null;
 
-  public TextField(Font font, int x, int y, int width, int height, String defaultText) {
-    super(font, x, y, width, height, Component.empty());
+  public TextField(int x, int y, int width, int height, String defaultText) {
+    super(Minecraft.getInstance().font, x, y, width, height, Component.empty());
     setMaxLength(80);
     setValue(defaultText);
   }
@@ -55,10 +55,6 @@ public class TextField extends EditBox {
           if (!isValueValid()) return;
           responder.accept(s);
         });
-  }
-
-  public void setSuggestionProvider(Function<String, @Nullable String> suggestionProvider) {
-    this.suggestionProvider = suggestionProvider;
   }
 
   public TextField setSoftFilter(Predicate<String> filter) {
@@ -153,5 +149,11 @@ public class TextField extends EditBox {
     return getValue().isEmpty()
         ? HINT_COLOR
         : isValueValid() ? DEFAULT_TEXT_COLOR : INVALID_TEXT_COLOR;
+  }
+
+  @Override
+  public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    setFocused(clicked(mouseX, mouseY));
+    return super.mouseClicked(mouseX, mouseY, button);
   }
 }

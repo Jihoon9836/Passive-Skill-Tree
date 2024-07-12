@@ -36,7 +36,7 @@ import top.theillusivec4.curios.api.SlotAttribute;
 public class NetworkHelper {
   public static void writePassiveSkill(FriendlyByteBuf buf, PassiveSkill skill) {
     buf.writeUtf(skill.getId().toString());
-    buf.writeInt(skill.getButtonSize());
+    buf.writeInt(skill.getSkillSize());
     buf.writeUtf(skill.getBackgroundTexture().toString());
     buf.writeUtf(skill.getIconTexture().toString());
     buf.writeUtf(skill.getBorderTexture().toString());

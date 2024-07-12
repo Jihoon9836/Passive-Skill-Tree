@@ -1,4 +1,4 @@
-package daripher.skilltree.client.widget;
+package daripher.skilltree.client.widget.skill;
 
 public class SkillConnection {
   private final Type type;

@@ -2,8 +2,8 @@ package daripher.skilltree.skill.bonus.item;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTItemBonuses;
 import daripher.skilltree.network.NetworkHelper;
@@ -71,9 +71,9 @@ public final class FoodEffectBonus implements ItemBonus<FoodEffectBonus> {
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int index, Consumer<ItemBonus<?>> consumer) {
+      SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
     editor.addLabel(0, 0, "Effect", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(
             0, 0, 200, 14, 10, effect.getEffect(), ForgeRegistries.MOB_EFFECTS.getValues())
@@ -83,10 +83,10 @@ public final class FoodEffectBonus implements ItemBonus<FoodEffectBonus> {
               setEffect(e);
               consumer.accept(this);
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor.addLabel(0, 0, "Duration", ChatFormatting.GREEN);
     editor.addLabel(110, 0, "Amplifier", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 90, 14, getEffectInstance().getDuration())
         .setNumericResponder(
@@ -101,7 +101,7 @@ public final class FoodEffectBonus implements ItemBonus<FoodEffectBonus> {
               setAmplifier(v.intValue());
               consumer.accept(this);
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
   }
 
   public void setDuration(int duration) {

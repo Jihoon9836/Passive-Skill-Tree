@@ -2,7 +2,7 @@ package daripher.skilltree.skill.bonus.condition.living;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTLivingConditions;
 import daripher.skilltree.network.NetworkHelper;
@@ -60,10 +60,10 @@ public final class HasEffectCondition implements LivingCondition {
   }
 
   @Override
-  public void addEditorWidgets(SkillTreeEditorScreen editor, Consumer<LivingCondition> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, Consumer<LivingCondition> consumer) {
     editor.addLabel(0, 0, "Effect", ChatFormatting.GREEN);
     editor.addLabel(150, 0, "Level", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 145, 14, 10, effect, ForgeRegistries.MOB_EFFECTS.getValues())
         .setToNameFunc(a -> Component.translatable(a.getDescriptionId()))
@@ -80,7 +80,7 @@ public final class HasEffectCondition implements LivingCondition {
               setAmplifier(v.intValue());
               consumer.accept(this);
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
   }
 
   @Override

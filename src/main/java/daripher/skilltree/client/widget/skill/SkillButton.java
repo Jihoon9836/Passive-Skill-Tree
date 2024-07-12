@@ -1,4 +1,4 @@
-package daripher.skilltree.client.widget;
+package daripher.skilltree.client.widget.skill;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.math.Axis;
@@ -39,13 +39,14 @@ public class SkillButton extends Button {
   public boolean skillLearned;
   public boolean canLearn;
   public boolean searched;
+  public boolean selected;
 
   public SkillButton(Supplier<Float> animationFunc, float x, float y, PassiveSkill skill) {
     super(
         (int) x,
         (int) y,
-        skill.getButtonSize(),
-        skill.getButtonSize(),
+        skill.getSkillSize(),
+        skill.getSkillSize(),
         Component.empty(),
         b -> {},
         Supplier::get);
@@ -87,7 +88,7 @@ public class SkillButton extends Button {
     if (skillLearned || canLearn || searched) {
       renderFrame(graphics);
     }
-    if (canLearn || searched) {
+    if (canLearn || searched || selected) {
       graphics.setColor(1F, 1F, 1F, 1F);
     }
     graphics.pose().popPose();

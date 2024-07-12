@@ -47,7 +47,7 @@ public class PassiveSkill {
     return id;
   }
 
-  public int getButtonSize() {
+  public int getSkillSize() {
     return buttonSize;
   }
 

@@ -1,8 +1,8 @@
 package daripher.skilltree.skill.bonus.player;
 
 import com.google.gson.*;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTEventListeners;
 import daripher.skilltree.init.PSTSkillBonuses;
@@ -126,12 +126,12 @@ public final class MobEffectBonus implements EventListenerBonus<MobEffectBonus> 
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor,
+      SkillTreeEditor editor,
       int row,
       Consumer<EventListenerBonus<MobEffectBonus>> consumer) {
     editor.addLabel(0, 0, "Effect", ChatFormatting.GOLD);
     editor.addLabel(150, 0, "Chance", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(
             0, 0, 145, 14, 10, effect.getEffect(), ForgeRegistries.MOB_EFFECTS.getValues())
@@ -148,10 +148,10 @@ public final class MobEffectBonus implements EventListenerBonus<MobEffectBonus> 
               setChance(v.floatValue());
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor.addLabel(0, 0, "Duration", ChatFormatting.GOLD);
     editor.addLabel(55, 0, "Amplifier", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, effect.getDuration())
         .setNumericFilter(v -> v >= 0)
@@ -168,9 +168,9 @@ public final class MobEffectBonus implements EventListenerBonus<MobEffectBonus> 
               setAmplifier(v.intValue());
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor.addLabel(0, 0, "Event", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, eventListener, PSTEventListeners.eventsList())
         .setToNameFunc(e -> Component.literal(PSTEventListeners.getName(e)))
@@ -180,7 +180,7 @@ public final class MobEffectBonus implements EventListenerBonus<MobEffectBonus> 
               consumer.accept(this.copy());
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     eventListener.addEditorWidgets(
         editor,
         e -> {

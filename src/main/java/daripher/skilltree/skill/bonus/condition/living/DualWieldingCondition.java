@@ -2,7 +2,7 @@ package daripher.skilltree.skill.bonus.condition.living;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.entity.player.PlayerHelper;
 import daripher.skilltree.init.PSTLivingConditions;
@@ -44,7 +44,7 @@ public final class DualWieldingCondition implements LivingCondition {
   }
 
   @Override
-  public void addEditorWidgets(SkillTreeEditorScreen editor, Consumer<LivingCondition> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, Consumer<LivingCondition> consumer) {
     weaponCondition.addEditorWidgets(
         editor,
         c -> {

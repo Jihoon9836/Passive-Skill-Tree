@@ -2,7 +2,7 @@ package daripher.skilltree.skill.bonus.event;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTEventListeners;
 import daripher.skilltree.init.PSTItemConditions;
@@ -76,9 +76,9 @@ public class ItemUsedEventListener implements SkillEventListener {
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, Consumer<SkillEventListener> consumer) {
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
     editor.addLabel(0, 0, "Player Condition", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, playerCondition, PSTLivingConditions.conditionsList())
         .setToNameFunc(c -> Component.literal(PSTLivingConditions.getName(c)))
@@ -88,7 +88,7 @@ public class ItemUsedEventListener implements SkillEventListener {
               consumer.accept(this);
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     playerCondition.addEditorWidgets(
         editor,
         c -> {
@@ -96,7 +96,7 @@ public class ItemUsedEventListener implements SkillEventListener {
           consumer.accept(this);
         });
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, playerMultiplier, PSTLivingMultipliers.multiplierList())
         .setToNameFunc(m -> Component.literal(PSTLivingMultipliers.getName(m)))
@@ -106,7 +106,7 @@ public class ItemUsedEventListener implements SkillEventListener {
               consumer.accept(this);
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     playerMultiplier.addEditorWidgets(
         editor,
         m -> {
@@ -114,7 +114,7 @@ public class ItemUsedEventListener implements SkillEventListener {
           consumer.accept(this);
         });
     editor.addLabel(0, 0, "Item Condition", ChatFormatting.GREEN);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, itemCondition, PSTItemConditions.conditionsList())
         .setToNameFunc(m -> Component.literal(PSTItemConditions.getName(m)))
@@ -124,7 +124,7 @@ public class ItemUsedEventListener implements SkillEventListener {
               consumer.accept(this);
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     itemCondition.addEditorWidgets(
         editor,
         m -> {

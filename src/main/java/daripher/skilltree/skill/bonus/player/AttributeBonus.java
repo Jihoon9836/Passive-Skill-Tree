@@ -2,8 +2,8 @@ package daripher.skilltree.skill.bonus.player;
 
 import com.google.gson.*;
 import daripher.skilltree.SkillTreeMod;
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTLivingConditions;
 import daripher.skilltree.init.PSTLivingMultipliers;
@@ -218,9 +218,9 @@ public final class AttributeBonus implements SkillBonus<AttributeBonus>, SkillBo
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditorScreen editor, int index, Consumer<AttributeBonus> consumer) {
+      SkillTreeEditor editor, int index, Consumer<AttributeBonus> consumer) {
     editor.addLabel(0, 0, "Attribute", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addAttributePicker(0, 0, 200, 14, 10, attribute)
         .setResponder(
@@ -228,10 +228,10 @@ public final class AttributeBonus implements SkillBonus<AttributeBonus>, SkillBo
               setAttribute(a);
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor.addLabel(0, 0, "Amount", ChatFormatting.GOLD);
     editor.addLabel(55, 0, "Operation", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, modifier.getAmount())
         .setNumericResponder(
@@ -247,9 +247,9 @@ public final class AttributeBonus implements SkillBonus<AttributeBonus>, SkillBo
               setOperation(o);
               consumer.accept(this.copy());
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor.addLabel(0, 0, "Player Condition", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, playerCondition, PSTLivingConditions.conditionsList())
         .setToNameFunc(c -> Component.literal(PSTLivingConditions.getName(c)))
@@ -259,7 +259,7 @@ public final class AttributeBonus implements SkillBonus<AttributeBonus>, SkillBo
               consumer.accept(this.copy());
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     playerCondition.addEditorWidgets(
         editor,
         c -> {
@@ -267,7 +267,7 @@ public final class AttributeBonus implements SkillBonus<AttributeBonus>, SkillBo
           consumer.accept(this.copy());
         });
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GOLD);
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     editor
         .addDropDownList(0, 0, 200, 14, 10, playerMultiplier, PSTLivingMultipliers.multiplierList())
         .setToNameFunc(m -> Component.literal(PSTLivingMultipliers.getName(m)))
@@ -277,7 +277,7 @@ public final class AttributeBonus implements SkillBonus<AttributeBonus>, SkillBo
               consumer.accept(this.copy());
               editor.rebuildWidgets();
             });
-    editor.shiftWidgets(0, 19);
+    editor.increaseHeight(19);
     playerMultiplier.addEditorWidgets(
         editor,
         m -> {

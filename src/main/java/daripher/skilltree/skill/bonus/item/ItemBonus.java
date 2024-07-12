@@ -1,8 +1,7 @@
 package daripher.skilltree.skill.bonus.item;
 
-import daripher.skilltree.client.screen.SkillTreeEditorScreen;
+import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTRegistries;
-
 import java.util.Objects;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.MutableComponent;
@@ -13,10 +12,6 @@ public interface ItemBonus<T extends ItemBonus<T>> {
   default void itemCrafted(ItemStack stack) {}
 
   boolean canMerge(ItemBonus<?> other);
-
-  default boolean sameBonus(ItemBonus<?> other) {
-    return canMerge(other);
-  }
 
   T merge(ItemBonus<?> other);
 
@@ -36,7 +31,7 @@ public interface ItemBonus<T extends ItemBonus<T>> {
 
   boolean isPositive();
 
-  void addEditorWidgets(SkillTreeEditorScreen editor, int index, Consumer<ItemBonus<?>> consumer);
+  void addEditorWidgets(SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer);
 
   interface Serializer extends daripher.skilltree.data.serializers.Serializer<ItemBonus<?>> {
     ItemBonus<?> createDefaultInstance();

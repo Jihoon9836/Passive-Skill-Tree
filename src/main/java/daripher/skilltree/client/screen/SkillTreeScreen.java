@@ -6,6 +6,8 @@ import daripher.skilltree.capability.skill.IPlayerSkills;
 import daripher.skilltree.capability.skill.PlayerSkillsProvider;
 import daripher.skilltree.client.data.SkillTreeClientData;
 import daripher.skilltree.client.widget.*;
+import daripher.skilltree.client.widget.skill.SkillButton;
+import daripher.skilltree.client.widget.skill.SkillConnection;
 import daripher.skilltree.config.ClientConfig;
 import daripher.skilltree.data.reloader.SkillTreesReloader;
 import daripher.skilltree.data.reloader.SkillsReloader;
@@ -117,7 +119,7 @@ public class SkillTreeScreen extends Screen {
         new Button(width - buttonWidth - 8, buttonsY, buttonWidth, 14, showStatsButtonText);
     showStatsButton.setPressFunc(b -> showStats ^= true);
     addRenderableWidget(showStatsButton);
-    addRenderableWidget(new TextField(font, 8, buttonsY, buttonWidth, 14, search))
+    addRenderableWidget(new TextField(8, buttonsY, buttonWidth, 14, search))
         .setHint("Search...")
         .setResponder(
             s -> {
@@ -288,7 +290,7 @@ public class SkillTreeScreen extends Screen {
     mouseX -= scrollX;
     mouseY -= scrollY;
     for (SkillButton button : skillButtons.values()) {
-      double skillSize = button.skill.getButtonSize() * zoom;
+      double skillSize = button.skill.getSkillSize() * zoom;
       double skillX = button.x + button.getWidth() / 2d - skillSize / 2;
       double skillY = button.y + button.getHeight() / 2d - skillSize / 2;
       if (mouseX >= skillX
@@ -358,12 +360,12 @@ public class SkillTreeScreen extends Screen {
 
   private float getSkillButtonX(PassiveSkill skill) {
     float skillX = skill.getPositionX();
-    return skillX - skill.getButtonSize() / 2F + width / 2F + skillX * (zoom - 1);
+    return skillX - skill.getSkillSize() / 2F + width / 2F + skillX * (zoom - 1);
   }
 
   private float getSkillButtonY(PassiveSkill skill) {
     float skillY = skill.getPositionY();
-    return skillY - skill.getButtonSize() / 2F + height / 2F + skillY * (zoom - 1);
+    return skillY - skill.getSkillSize() / 2F + height / 2F + skillY * (zoom - 1);
   }
 
   protected boolean isSkillLearned(PassiveSkill skill) {
