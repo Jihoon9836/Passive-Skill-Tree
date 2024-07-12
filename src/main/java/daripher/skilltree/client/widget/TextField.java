@@ -57,6 +57,10 @@ public class TextField extends EditBox implements TickingWidget {
         });
   }
 
+  public void setSuggestionProvider(Function<String, @Nullable String> suggestionProvider) {
+    this.suggestionProvider = suggestionProvider;
+  }
+
   public TextField setSoftFilter(Predicate<String> filter) {
     this.softFilter = filter;
     return this;
