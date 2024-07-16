@@ -61,21 +61,26 @@ public final class EnchantedCondition implements ItemCondition {
     editor.addLabel(0, 0, "Inner Item Condition", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, itemCondition, PSTItemConditions.conditionsList())
-        .setToNameFunc(a -> Component.translatable(PSTItemConditions.getName(a)))
-        .setResponder(
-            c -> {
-              setItemCondition(c);
-              consumer.accept(this);
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, itemCondition)
+        .setResponder(condition -> selectItemCondition(editor, consumer, condition))
+        .setOnMenuInit(() -> addItemConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
+  }
+
+  private void addItemConditionWidgets(SkillTreeEditor editor, Consumer<ItemCondition> consumer) {
     itemCondition.addEditorWidgets(
         editor,
-        c -> {
-          setItemCondition(c);
+        condition -> {
+          setItemCondition(condition);
           consumer.accept(this);
         });
+  }
+
+  private void selectItemCondition(
+      SkillTreeEditor editor, Consumer<ItemCondition> consumer, ItemCondition condition) {
+    setItemCondition(condition);
+    consumer.accept(this);
+    editor.rebuildWidgets();
   }
 
   public void setItemCondition(ItemCondition itemCondition) {

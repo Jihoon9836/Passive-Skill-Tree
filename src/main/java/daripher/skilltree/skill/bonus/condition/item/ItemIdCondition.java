@@ -60,17 +60,19 @@ public final class ItemIdCondition implements ItemCondition {
     editor.increaseHeight(19);
     editor
         .addTextField(0, 0, 200, 14, id.toString())
-        .setSoftFilter(
-            s -> {
-              if (!ResourceLocation.isValidResourceLocation(s)) return false;
-              return ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s));
-            })
-        .setResponder(
-            s -> {
-              setId(new ResourceLocation(s));
-              consumer.accept(this);
-            });
+        .setSoftFilter(ItemIdCondition::isItemId)
+        .setResponder(text -> selectItemId(consumer, text));
     editor.increaseHeight(19);
+  }
+
+  private void selectItemId(Consumer<ItemCondition> consumer, String text) {
+    setId(new ResourceLocation(text));
+    consumer.accept(this);
+  }
+
+  private static boolean isItemId(String text) {
+    if (!ResourceLocation.isValidResourceLocation(text)) return false;
+    return ForgeRegistries.ITEMS.containsKey(new ResourceLocation(text));
   }
 
   public void setId(ResourceLocation id) {

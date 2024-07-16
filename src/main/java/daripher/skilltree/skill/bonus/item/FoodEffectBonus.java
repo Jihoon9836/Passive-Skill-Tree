@@ -15,7 +15,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.effect.*;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public final class FoodEffectBonus implements ItemBonus<FoodEffectBonus> {
   private MobEffectInstance effect;
@@ -70,38 +69,38 @@ public final class FoodEffectBonus implements ItemBonus<FoodEffectBonus> {
   }
 
   @Override
-  public void addEditorWidgets(
-      SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
     editor.addLabel(0, 0, "Effect", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(
-            0, 0, 200, 14, 10, effect.getEffect(), ForgeRegistries.MOB_EFFECTS.getValues())
-        .setToNameFunc(TooltipHelper::getEffectTooltip)
-        .setResponder(
-            e -> {
-              setEffect(e);
-              consumer.accept(this);
-            });
+        .addSelectionMenu(0, 0, 200, effect.getEffect())
+        .setResponder(effect -> selectEffect(consumer, effect));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Duration", ChatFormatting.GREEN);
     editor.addLabel(110, 0, "Amplifier", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 90, 14, getEffectInstance().getDuration())
-        .setNumericResponder(
-            v -> {
-              setDuration(v.intValue());
-              consumer.accept(this);
-            });
+        .setNumericResponder(value -> selectDuration(consumer, value));
     editor
         .addNumericTextField(110, 0, 90, 14, getEffectInstance().getAmplifier())
-        .setNumericResponder(
-            v -> {
-              setAmplifier(v.intValue());
-              consumer.accept(this);
-            });
+        .setNumericResponder(value -> selectAmplifier(consumer, value));
     editor.increaseHeight(19);
+  }
+
+  private void selectAmplifier(Consumer<ItemBonus<?>> consumer, Double value) {
+    setAmplifier(value.intValue());
+    consumer.accept(this);
+  }
+
+  private void selectDuration(Consumer<ItemBonus<?>> consumer, Double value) {
+    setDuration(value.intValue());
+    consumer.accept(this);
+  }
+
+  private void selectEffect(Consumer<ItemBonus<?>> consumer, MobEffect effect) {
+    setEffect(effect);
+    consumer.accept(this);
   }
 
   public void setDuration(int duration) {

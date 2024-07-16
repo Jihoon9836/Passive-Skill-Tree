@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTItemBonuses;
-
 import java.util.Objects;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -59,18 +58,18 @@ public final class ItemSocketsBonus implements ItemBonus<ItemSocketsBonus> {
   }
 
   @Override
-  public void addEditorWidgets(
-      SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
     editor.addLabel(0, 0, "Amount", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, getAmount())
-        .setNumericResponder(
-            v -> {
-              setAmount(v.intValue());
-              consumer.accept(this);
-            });
+        .setNumericResponder(value -> selectAmount(consumer, value));
     editor.increaseHeight(19);
+  }
+
+  private void selectAmount(Consumer<ItemBonus<?>> consumer, Double value) {
+    setAmount(value.intValue());
+    consumer.accept(this);
   }
 
   public void setAmount(int amount) {

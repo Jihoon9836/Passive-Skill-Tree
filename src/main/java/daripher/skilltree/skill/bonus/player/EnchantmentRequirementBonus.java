@@ -73,12 +73,13 @@ public final class EnchantmentRequirementBonus implements SkillBonus<Enchantment
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, multiplier)
-        .setNumericResponder(
-            v -> {
-              setMultiplier(v.floatValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectMultiplier(consumer, value));
     editor.increaseHeight(19);
+  }
+
+  private void selectMultiplier(Consumer<EnchantmentRequirementBonus> consumer, Double value) {
+    setMultiplier(value.floatValue());
+    consumer.accept(this.copy());
   }
 
   public void setMultiplier(float multiplier) {

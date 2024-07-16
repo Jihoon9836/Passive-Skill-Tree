@@ -5,7 +5,6 @@ import com.google.gson.JsonParseException;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTEventListeners;
-import daripher.skilltree.init.PSTLivingMultipliers;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.EventListenerBonus;
 import daripher.skilltree.skill.bonus.SkillBonus;
@@ -59,26 +58,31 @@ public class SkillRemovedEventListener implements SkillEventListener {
   }
 
   @Override
-  public void addEditorWidgets(
-      SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, playerMultiplier, PSTLivingMultipliers.multiplierList())
-        .setToNameFunc(m -> Component.literal(PSTLivingMultipliers.getName(m)))
-        .setResponder(
-            m -> {
-              setPlayerMultiplier(m);
-              consumer.accept(this);
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, playerMultiplier)
+        .setResponder(multiplier -> selectPlayerMultiplier(editor, consumer, multiplier))
+        .setOnMenuInit(() -> addPlayerMultiplierWidgets(editor, consumer));
     editor.increaseHeight(19);
+  }
+
+  private void addPlayerMultiplierWidgets(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
     playerMultiplier.addEditorWidgets(
         editor,
-        m -> {
-          setPlayerMultiplier(m);
+        multiplier -> {
+          setPlayerMultiplier(multiplier);
           consumer.accept(this);
         });
+  }
+
+  private void selectPlayerMultiplier(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer, LivingMultiplier multiplier) {
+    setPlayerMultiplier(multiplier);
+    consumer.accept(this);
+    editor.rebuildWidgets();
   }
 
   public SkillRemovedEventListener setPlayerMultiplier(LivingMultiplier playerMultiplier) {

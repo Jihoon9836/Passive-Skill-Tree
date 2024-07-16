@@ -4,7 +4,6 @@ import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
-import daripher.skilltree.init.PSTEventListeners;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.EventListenerBonus;
@@ -112,45 +111,55 @@ public final class InflictDamageBonus implements EventListenerBonus<InflictDamag
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditor editor,
-      int row,
-      Consumer<EventListenerBonus<InflictDamageBonus>> consumer) {
+      SkillTreeEditor editor, int row, Consumer<EventListenerBonus<InflictDamageBonus>> consumer) {
     editor.addLabel(0, 0, "Chance", ChatFormatting.GOLD);
-    editor.addLabel(110, 0, "Duration", ChatFormatting.GOLD);
+    editor.addLabel(110, 0, "Damage", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 90, 14, chance)
-        .setNumericResponder(
-            v -> {
-              setChance(v.floatValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectChance(consumer, value));
     editor
         .addNumericTextField(110, 0, 90, 14, damage)
-        .setNumericResponder(
-            v -> {
-              setDamage(v.intValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectDamage(consumer, value));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Event", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, eventListener, PSTEventListeners.eventsList())
-        .setToNameFunc(e -> Component.literal(PSTEventListeners.getName(e)))
-        .setResponder(
-            e -> {
-              setEventListener(e);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, eventListener)
+        .setResponder(eventListener -> selectEventListener(editor, consumer, eventListener))
+        .setOnMenuInit(() -> addEventListenerWidgets(editor, consumer));
     editor.increaseHeight(19);
+  }
+
+  private void addEventListenerWidgets(
+      SkillTreeEditor editor, Consumer<EventListenerBonus<InflictDamageBonus>> consumer) {
     eventListener.addEditorWidgets(
         editor,
-        e -> {
-          setEventListener(e);
+        eventListener -> {
+          setEventListener(eventListener);
           consumer.accept(this.copy());
         });
+  }
+
+  private void selectEventListener(
+      SkillTreeEditor editor,
+      Consumer<EventListenerBonus<InflictDamageBonus>> consumer,
+      SkillEventListener eventListener) {
+    setEventListener(eventListener);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void selectDamage(
+      Consumer<EventListenerBonus<InflictDamageBonus>> consumer, Double value) {
+    setDamage(value.intValue());
+    consumer.accept(this.copy());
+  }
+
+  private void selectChance(
+      Consumer<EventListenerBonus<InflictDamageBonus>> consumer, Double value) {
+    setChance(value.floatValue());
+    consumer.accept(this.copy());
   }
 
   public void setEventListener(SkillEventListener eventListener) {

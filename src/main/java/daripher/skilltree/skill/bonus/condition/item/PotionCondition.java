@@ -98,14 +98,15 @@ public final class PotionCondition implements ItemCondition {
     editor.addLabel(0, 0, "Type", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 4, type)
-        .setToNameFunc(PotionCondition.Type::getFormattedName)
-        .setResponder(
-            t -> {
-              setType(t);
-              consumer.accept(this);
-            });
+        .addSelection(0, 0, 200, 1, type)
+        .setNameGetter(PotionCondition.Type::getFormattedName)
+        .setResponder(type -> selectPotionType(consumer, type));
     editor.increaseHeight(19);
+  }
+
+  private void selectPotionType(Consumer<ItemCondition> consumer, Type type) {
+    setType(type);
+    consumer.accept(this);
   }
 
   public void setType(Type type) {

@@ -1,6 +1,5 @@
 package daripher.skilltree.client.widget.group;
 
-import daripher.skilltree.client.widget.DropDownList;
 import daripher.skilltree.client.widget.TickingWidget;
 import java.awt.geom.Rectangle2D;
 import java.util.HashSet;
@@ -25,16 +24,7 @@ public class WidgetGroup<T extends AbstractWidget> extends AbstractWidget implem
     widgetsCopy().forEach(widget -> widget.render(graphics, mouseX, mouseY, partialTick));
     graphics.pose().pushPose();
     graphics.pose().translate(0, 0, 1f);
-    renderDropDownLists(graphics);
     graphics.pose().popPose();
-  }
-
-  private void renderDropDownLists(@NotNull GuiGraphics graphics) {
-    for (T widget : widgetsCopy()) {
-      if (widget instanceof DropDownList<?> dropDownList) {
-        dropDownList.renderList(graphics);
-      }
-    }
   }
 
   @Override

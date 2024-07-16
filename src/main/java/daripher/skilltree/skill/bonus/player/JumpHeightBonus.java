@@ -4,7 +4,6 @@ import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
-import daripher.skilltree.init.PSTLivingConditions;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.SkillBonus;
@@ -16,7 +15,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -90,30 +88,37 @@ public final class JumpHeightBonus implements SkillBonus<JumpHeightBonus> {
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, multiplier)
-        .setNumericResponder(
-            v -> {
-              setMultiplier(v.floatValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectMultiplier(consumer, value));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Player Condition", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, playerCondition, PSTLivingConditions.conditionsList())
-        .setToNameFunc(c -> Component.literal(PSTLivingConditions.getName(c)))
-        .setResponder(
-            c -> {
-              setPlayerCondition(c);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, playerCondition)
+        .setResponder(condition -> selectPlayerCondition(editor, consumer, condition))
+        .setOnMenuInit(() -> addPlayerConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
+  }
+
+  private void addPlayerConditionWidgets(
+      SkillTreeEditor editor, Consumer<JumpHeightBonus> consumer) {
     playerCondition.addEditorWidgets(
         editor,
-        c -> {
-          setPlayerCondition(c);
+        condition -> {
+          setPlayerCondition(condition);
           consumer.accept(this.copy());
         });
+  }
+
+  private void selectPlayerCondition(
+      SkillTreeEditor editor, Consumer<JumpHeightBonus> consumer, LivingCondition condition) {
+    setPlayerCondition(condition);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void selectMultiplier(Consumer<JumpHeightBonus> consumer, Double value) {
+    setMultiplier(value.floatValue());
+    consumer.accept(this.copy());
   }
 
   public void setPlayerCondition(@Nonnull LivingCondition playerCondition) {

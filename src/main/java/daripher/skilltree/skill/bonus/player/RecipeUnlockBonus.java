@@ -81,12 +81,13 @@ public final class RecipeUnlockBonus implements SkillBonus<RecipeUnlockBonus> {
     editor
         .addTextField(0, 0, 200, 14, recipeId.toString())
         .setSoftFilter(ResourceLocation::isValidResourceLocation)
-        .setResponder(
-            s -> {
-              setRecipeId(new ResourceLocation(s));
-              consumer.accept(this.copy());
-            });
+        .setResponder(value -> selectRecipeId(consumer, value));
     editor.increaseHeight(19);
+  }
+
+  private void selectRecipeId(Consumer<RecipeUnlockBonus> consumer, String value) {
+    setRecipeId(new ResourceLocation(value));
+    consumer.accept(this.copy());
   }
 
   public void setRecipeId(ResourceLocation recipeId) {

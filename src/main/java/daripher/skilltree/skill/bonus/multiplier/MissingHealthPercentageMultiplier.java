@@ -40,13 +40,14 @@ public final class MissingHealthPercentageMultiplier implements LivingMultiplier
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, divisor)
-        .setNumericFilter(d -> d > 0)
-        .setNumericResponder(
-            v -> {
-              setDivisor(v.floatValue());
-              consumer.accept(this);
-            });
+        .setNumericFilter(value -> value > 0)
+        .setNumericResponder(value -> selectDivisor(consumer, value));
     editor.increaseHeight(19);
+  }
+
+  private void selectDivisor(Consumer<LivingMultiplier> consumer, Double value) {
+    setDivisor(value.floatValue());
+    consumer.accept(this);
   }
 
   @Override

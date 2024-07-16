@@ -6,7 +6,6 @@ import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTLivingConditions;
 import java.util.Objects;
 import java.util.function.Consumer;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -64,19 +63,21 @@ public final class HealthPercentageCondition implements LivingCondition {
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, min)
-        .setNumericResponder(
-            a -> {
-              setMin(a.floatValue());
-              consumer.accept(this);
-            });
+        .setNumericResponder(value -> selectMinimum(consumer, value));
     editor
         .addNumericTextField(55, 0, 50, 14, max)
-        .setNumericResponder(
-            a -> {
-              setMax(a.floatValue());
-              consumer.accept(this);
-            });
+        .setNumericResponder(value -> selectMaximum(consumer, value));
     editor.increaseHeight(19);
+  }
+
+  private void selectMaximum(Consumer<LivingCondition> consumer, Double value) {
+    setMax(value.floatValue());
+    consumer.accept(this);
+  }
+
+  private void selectMinimum(Consumer<LivingCondition> consumer, Double value) {
+    setMin(value.floatValue());
+    consumer.accept(this);
   }
 
   @Override

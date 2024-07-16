@@ -59,9 +59,11 @@ public class SkillMirrorer extends AbstractWidget {
       @NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
     if (!active) return;
     graphics.pose().pushPose();
-    float mirrorCenterX = width / 2f + this.mirrorCenterX + editor.getScrollX();
-    float mirrorCenterY = height / 2f + this.mirrorCenterY + editor.getScrollY();
-    graphics.pose().translate(mirrorCenterX, mirrorCenterY, 0);
+    int width = editor.getScreenWidth();
+    int height = editor.getScreenHeight();
+    float mirrorX = width / 2f + mirrorCenterX * editor.getZoom() + editor.getScrollX();
+    float mirrorY = height / 2f + mirrorCenterY * editor.getZoom() + editor.getScrollY();
+    graphics.pose().translate(mirrorX, mirrorY, 0);
     graphics.pose().mulPose(Axis.ZP.rotationDegrees(mirrorAngle));
     for (int i = 0; i < mirrorSides; i++) {
       graphics.pose().mulPose(Axis.ZP.rotationDegrees(360f / mirrorSides));
@@ -129,6 +131,7 @@ public class SkillMirrorer extends AbstractWidget {
     float skillY = skill.getPositionY() + Mth.cos(angle) * (distance + skillSize);
     skillFactory.accept(skillX, skillY, skill);
   }
+
   @Nullable
   private PassiveSkill getSkillAtPosition(float x, float y) {
     for (PassiveSkill skill : editor.getSkills()) {

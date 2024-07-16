@@ -5,10 +5,7 @@ import com.google.gson.JsonParseException;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
-import daripher.skilltree.init.PSTDamageConditions;
 import daripher.skilltree.init.PSTEventListeners;
-import daripher.skilltree.init.PSTLivingConditions;
-import daripher.skilltree.init.PSTLivingMultipliers;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.EventListenerBonus;
 import daripher.skilltree.skill.bonus.SkillBonus;
@@ -90,109 +87,132 @@ public class AttackEventListener implements SkillEventListener {
   @Override
   public int hashCode() {
     return Objects.hash(
-        playerCondition,
-        enemyCondition,
+        playerCondition, enemyCondition,
         damageCondition,
-        playerMultiplier,
-        enemyMultiplier,
+        playerMultiplier, enemyMultiplier,
         target);
   }
 
   @Override
-  public void addEditorWidgets(
-      SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
     editor.addLabel(0, 0, "Player Condition", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, playerCondition, PSTLivingConditions.conditionsList())
-        .setToNameFunc(c -> Component.literal(PSTLivingConditions.getName(c)))
-        .setResponder(
-            c -> {
-              setPlayerCondition(c);
-              consumer.accept(this);
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, playerCondition)
+        .setResponder(condition -> selectPlayerCondition(editor, consumer, condition))
+        .setOnMenuInit(() -> addPlayerConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
-    playerCondition.addEditorWidgets(
-        editor,
-        c -> {
-          setPlayerCondition(c);
-          consumer.accept(this);
-        });
     editor.addLabel(0, 0, "Enemy Condition", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, enemyCondition, PSTLivingConditions.conditionsList())
-        .setToNameFunc(c -> Component.literal(PSTLivingConditions.getName(c)))
-        .setResponder(
-            c -> {
-              setEnemyCondition(c);
-              consumer.accept(this);
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, enemyCondition)
+        .setResponder(condition -> selectTargetCondition(editor, consumer, condition))
+        .setOnMenuInit(() -> addTargetConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
-    enemyCondition.addEditorWidgets(
-        editor,
-        c -> {
-          setEnemyCondition(c);
-          consumer.accept(this);
-        });
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, playerMultiplier, PSTLivingMultipliers.multiplierList())
-        .setToNameFunc(m -> Component.literal(PSTLivingMultipliers.getName(m)))
-        .setResponder(
-            m -> {
-              setPlayerMultiplier(m);
-              consumer.accept(this);
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, playerMultiplier)
+        .setResponder(multiplier -> selectPlayerMultiplier(editor, consumer, multiplier))
+        .setOnMenuInit(() -> addPlayerMultiplierWidgets(editor, consumer));
     editor.increaseHeight(19);
-    playerMultiplier.addEditorWidgets(
-        editor,
-        m -> {
-          setPlayerMultiplier(m);
-          consumer.accept(this);
-        });
     editor.addLabel(0, 0, "Enemy Multiplier", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, enemyMultiplier, PSTLivingMultipliers.multiplierList())
-        .setToNameFunc(m -> Component.literal(PSTLivingMultipliers.getName(m)))
-        .setResponder(
-            m -> {
-              setEnemyMultiplier(m);
-              consumer.accept(this);
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, enemyMultiplier)
+        .setResponder(multiplier -> selectTargetMultiplier(editor, consumer, multiplier))
+        .setOnMenuInit(() -> addTargetMultiplierWidgets(editor, consumer));
     editor.increaseHeight(19);
-    enemyMultiplier.addEditorWidgets(
-        editor,
-        m -> {
-          setPlayerMultiplier(m);
-          consumer.accept(this);
-        });
     editor.addLabel(0, 0, "Damage", ChatFormatting.GREEN);
     editor.addLabel(105, 0, "Target", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 95, 14, 10, damageCondition, PSTDamageConditions.conditionsList())
-        .setToNameFunc(c -> Component.literal(PSTDamageConditions.getName(c)))
-        .setResponder(
-            c -> {
-              setDamageCondition(c);
-              consumer.accept(this);
-            });
+        .addSelectionMenu(0, 0, 95, damageCondition)
+        .setResponder(condition -> selectDamageCondition(consumer, condition));
     editor
-        .addDropDownList(105, 0, 95, 14, 10, target)
-        .setToNameFunc(t -> Component.literal(TooltipHelper.idToName(t.name().toLowerCase())))
-        .setResponder(
-            t -> {
-              setTarget(t);
-              consumer.accept(this);
-            });
+        .addSelection(105, 0, 95, 1, target)
+        .setNameGetter(TooltipHelper::getTargetName)
+        .setResponder(target -> selectTarget(consumer, target));
     editor.increaseHeight(19);
+  }
+
+  private void selectTarget(Consumer<SkillEventListener> consumer, SkillBonus.Target target) {
+    setTarget(target);
+    consumer.accept(this);
+  }
+
+  private void selectDamageCondition(
+      Consumer<SkillEventListener> consumer, DamageCondition condition) {
+    setDamageCondition(condition);
+    consumer.accept(this);
+  }
+
+  private void addTargetMultiplierWidgets(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
+    enemyMultiplier.addEditorWidgets(
+        editor,
+        multiplier -> {
+          setPlayerMultiplier(multiplier);
+          consumer.accept(this);
+        });
+  }
+
+  private void selectTargetMultiplier(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer, LivingMultiplier multiplier) {
+    setEnemyMultiplier(multiplier);
+    consumer.accept(this);
+    editor.rebuildWidgets();
+  }
+
+  private void addPlayerMultiplierWidgets(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
+    playerMultiplier.addEditorWidgets(
+        editor,
+        multiplier -> {
+          setPlayerMultiplier(multiplier);
+          consumer.accept(this);
+        });
+  }
+
+  private void selectPlayerMultiplier(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer, LivingMultiplier multiplier) {
+    setPlayerMultiplier(multiplier);
+    consumer.accept(this);
+    editor.rebuildWidgets();
+  }
+
+  private void addTargetConditionWidgets(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
+    enemyCondition.addEditorWidgets(
+        editor,
+        condition -> {
+          setEnemyCondition(condition);
+          consumer.accept(this);
+        });
+  }
+
+  private void selectTargetCondition(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer, LivingCondition condition) {
+    setEnemyCondition(condition);
+    consumer.accept(this);
+    editor.rebuildWidgets();
+  }
+
+  private void addPlayerConditionWidgets(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
+    playerCondition.addEditorWidgets(
+        editor,
+        condition -> {
+          setPlayerCondition(condition);
+          consumer.accept(this);
+        });
+  }
+
+  private void selectPlayerCondition(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer, LivingCondition condition) {
+    setPlayerCondition(condition);
+    consumer.accept(this);
+    editor.rebuildWidgets();
   }
 
   @Override

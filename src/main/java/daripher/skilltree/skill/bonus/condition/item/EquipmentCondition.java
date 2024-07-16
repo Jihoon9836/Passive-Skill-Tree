@@ -5,10 +5,9 @@ import com.google.gson.JsonParseException;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTItemConditions;
+import daripher.skilltree.init.PSTTags;
 import java.util.Objects;
 import java.util.function.Consumer;
-
-import daripher.skilltree.init.PSTTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -174,14 +173,15 @@ public class EquipmentCondition implements ItemCondition {
     editor.addLabel(0, 0, "Type", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 8, type)
-        .setToNameFunc(Type::getName)
-        .setResponder(
-            t -> {
-              setType(t);
-              consumer.accept(this);
-            });
+        .addSelectionMenu(0, 0, 200, type)
+        .setResponder(type -> selectEquipmentType(consumer, type))
+        .setElementNameGetter(Type::getName);
     editor.increaseHeight(19);
+  }
+
+  private void selectEquipmentType(Consumer<ItemCondition> consumer, Type type) {
+    setType(type);
+    consumer.accept(this);
   }
 
   public void setType(Type type) {

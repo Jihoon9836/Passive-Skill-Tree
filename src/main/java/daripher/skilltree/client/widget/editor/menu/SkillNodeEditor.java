@@ -68,9 +68,9 @@ public class SkillNodeEditor extends EditorMenu {
         new PassiveSkill(
             createNewSkillId(),
             original.getSkillSize(),
-            original.getBackgroundTexture(),
+            original.getFrameTexture(),
             original.getIconTexture(),
-            original.getBorderTexture(),
+            original.getTooltipFrameTexture(),
             original.isStartingPoint());
     skill.setPosition(x, y);
     skill.setConnectedTree(original.getConnectedTreeId());

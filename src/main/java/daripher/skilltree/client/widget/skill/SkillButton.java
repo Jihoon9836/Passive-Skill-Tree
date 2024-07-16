@@ -121,12 +121,12 @@ public class SkillButton extends Button {
   }
 
   private void renderFrame(GuiGraphics graphics) {
-    ResourceLocation texture = skill.getBackgroundTexture();
+    ResourceLocation texture = skill.getFrameTexture();
     graphics.blit(texture, 0, 0, width, height, width * 2, 0, width, height, width * 3, height);
   }
 
   private void renderDarkening(GuiGraphics graphics) {
-    ResourceLocation texture = skill.getBackgroundTexture();
+    ResourceLocation texture = skill.getFrameTexture();
     graphics.blit(texture, 0, 0, width, height, width, 0, width, height, width * 3, height);
   }
 
@@ -136,7 +136,7 @@ public class SkillButton extends Button {
   }
 
   private void renderBackground(GuiGraphics graphics) {
-    ResourceLocation texture = skill.getBackgroundTexture();
+    ResourceLocation texture = skill.getFrameTexture();
     graphics.blit(texture, 0, 0, width, height, 0, 0, width, height, width * 3, height);
   }
 

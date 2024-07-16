@@ -4,7 +4,6 @@ import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
-import daripher.skilltree.init.PSTEventListeners;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.EventListenerBonus;
@@ -25,7 +24,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public final class MobEffectBonus implements EventListenerBonus<MobEffectBonus> {
   private MobEffectInstance effect;
@@ -126,67 +124,77 @@ public final class MobEffectBonus implements EventListenerBonus<MobEffectBonus> 
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditor editor,
-      int row,
-      Consumer<EventListenerBonus<MobEffectBonus>> consumer) {
+      SkillTreeEditor editor, int row, Consumer<EventListenerBonus<MobEffectBonus>> consumer) {
     editor.addLabel(0, 0, "Effect", ChatFormatting.GOLD);
     editor.addLabel(150, 0, "Chance", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(
-            0, 0, 145, 14, 10, effect.getEffect(), ForgeRegistries.MOB_EFFECTS.getValues())
-        .setToNameFunc(a -> Component.translatable(a.getDescriptionId()))
-        .setResponder(
-            e -> {
-              setEffect(e);
-              consumer.accept(this);
-            });
+        .addSelectionMenu(0, 0, 145, effect.getEffect())
+        .setResponder(effect -> selectEffect(consumer, effect));
     editor
         .addNumericTextField(150, 0, 50, 14, chance)
-        .setNumericResponder(
-            v -> {
-              setChance(v.floatValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectChance(consumer, value));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Duration", ChatFormatting.GOLD);
     editor.addLabel(55, 0, "Amplifier", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, effect.getDuration())
-        .setNumericFilter(v -> v >= 0)
-        .setNumericResponder(
-            v -> {
-              setDuration(v.intValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericFilter(value -> value >= -1)
+        .setNumericResponder(value -> selectDuration(consumer, value));
     editor
         .addNumericTextField(55, 0, 50, 14, effect.getAmplifier())
-        .setNumericFilter(v -> v >= 0)
-        .setNumericResponder(
-            v -> {
-              setAmplifier(v.intValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericFilter(value -> value >= 0)
+        .setNumericResponder(value -> selectAmplifier(consumer, value));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Event", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, eventListener, PSTEventListeners.eventsList())
-        .setToNameFunc(e -> Component.literal(PSTEventListeners.getName(e)))
-        .setResponder(
-            e -> {
-              setEventListener(e);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, eventListener)
+        .setResponder(eventListener -> selectEventListener(editor, consumer, eventListener))
+        .setOnMenuInit(() -> addEventListenerWidgets(editor, consumer));
     editor.increaseHeight(19);
+  }
+
+  private void addEventListenerWidgets(
+      SkillTreeEditor editor, Consumer<EventListenerBonus<MobEffectBonus>> consumer) {
     eventListener.addEditorWidgets(
         editor,
-        e -> {
-          setEventListener(e);
+        eventListener -> {
+          setEventListener(eventListener);
           consumer.accept(this.copy());
         });
+  }
+
+  private void selectEventListener(
+      SkillTreeEditor editor,
+      Consumer<EventListenerBonus<MobEffectBonus>> consumer,
+      SkillEventListener eventListener) {
+    setEventListener(eventListener);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void selectAmplifier(
+      Consumer<EventListenerBonus<MobEffectBonus>> consumer, Double value) {
+    setAmplifier(value.intValue());
+    consumer.accept(this.copy());
+  }
+
+  private void selectDuration(Consumer<EventListenerBonus<MobEffectBonus>> consumer, Double value) {
+    setDuration(value.intValue());
+    consumer.accept(this.copy());
+  }
+
+  private void selectChance(Consumer<EventListenerBonus<MobEffectBonus>> consumer, Double value) {
+    setChance(value.floatValue());
+    consumer.accept(this.copy());
+  }
+
+  private void selectEffect(
+      Consumer<EventListenerBonus<MobEffectBonus>> consumer, MobEffect effect) {
+    setEffect(effect);
+    consumer.accept(this);
   }
 
   public void setChance(float chance) {

@@ -4,7 +4,6 @@ import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
-import daripher.skilltree.init.PSTItemConditions;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.SkillBonus;
@@ -79,30 +78,37 @@ public final class PlayerSocketsBonus implements SkillBonus<PlayerSocketsBonus> 
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, sockets)
-        .setNumericResponder(
-            v -> {
-              setSockets(v.intValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectSocketNumber(consumer, value));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Item Condition", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, itemCondition, PSTItemConditions.conditionsList())
-        .setToNameFunc(a -> Component.literal(PSTItemConditions.getName(a)))
-        .setResponder(
-            c -> {
-              setItemCondition(c);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, itemCondition)
+        .setResponder(condition -> selectItemCondition(editor, consumer, condition))
+        .setOnMenuInit(() -> addItemConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
+  }
+
+  private void addItemConditionWidgets(
+      SkillTreeEditor editor, Consumer<PlayerSocketsBonus> consumer) {
     itemCondition.addEditorWidgets(
         editor,
-        c -> {
-          setItemCondition(c);
+        condition -> {
+          setItemCondition(condition);
           consumer.accept(this.copy());
         });
+  }
+
+  private void selectItemCondition(
+      SkillTreeEditor editor, Consumer<PlayerSocketsBonus> consumer, ItemCondition condition) {
+    setItemCondition(condition);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void selectSocketNumber(Consumer<PlayerSocketsBonus> consumer, Double value) {
+    setSockets(value.intValue());
+    consumer.accept(this.copy());
   }
 
   public void setItemCondition(@Nonnull ItemCondition itemCondition) {

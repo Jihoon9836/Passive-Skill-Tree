@@ -4,9 +4,6 @@ import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
-import daripher.skilltree.init.PSTDamageConditions;
-import daripher.skilltree.init.PSTLivingConditions;
-import daripher.skilltree.init.PSTLivingMultipliers;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.SkillBonus;
@@ -23,7 +20,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,7 +30,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
   private float amount;
   private AttributeModifier.Operation operation;
   private @Nonnull LivingMultiplier playerMultiplier = NoneLivingMultiplier.INSTANCE;
-  private @Nonnull LivingMultiplier enemyMultiplier = NoneLivingMultiplier.INSTANCE;
+  private @Nonnull LivingMultiplier targetMultiplier = NoneLivingMultiplier.INSTANCE;
   private @Nonnull LivingCondition playerCondition = NoneLivingCondition.INSTANCE;
   private @Nonnull LivingCondition targetCondition = NoneLivingCondition.INSTANCE;
   private @Nonnull DamageCondition damageCondition = NoneDamageCondition.INSTANCE;
@@ -65,7 +61,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
   public DamageBonus copy() {
     DamageBonus bonus = new DamageBonus(amount, operation);
     bonus.playerMultiplier = this.playerMultiplier;
-    bonus.enemyMultiplier = this.enemyMultiplier;
+    bonus.targetMultiplier = this.targetMultiplier;
     bonus.playerCondition = this.playerCondition;
     bonus.damageCondition = this.damageCondition;
     bonus.targetCondition = this.targetCondition;
@@ -82,7 +78,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
   public boolean canMerge(SkillBonus<?> other) {
     if (!(other instanceof DamageBonus otherBonus)) return false;
     if (!Objects.equals(otherBonus.playerMultiplier, this.playerMultiplier)) return false;
-    if (!Objects.equals(otherBonus.enemyMultiplier, this.enemyMultiplier)) return false;
+    if (!Objects.equals(otherBonus.targetMultiplier, this.targetMultiplier)) return false;
     if (!Objects.equals(otherBonus.playerCondition, this.playerCondition)) return false;
     if (!Objects.equals(otherBonus.damageCondition, this.damageCondition)) return false;
     if (!Objects.equals(otherBonus.targetCondition, this.targetCondition)) return false;
@@ -97,7 +93,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
     float mergedAmount = otherBonus.amount + this.amount;
     DamageBonus mergedBonus = new DamageBonus(mergedAmount, this.operation);
     mergedBonus.playerMultiplier = this.playerMultiplier;
-    mergedBonus.enemyMultiplier = this.enemyMultiplier;
+    mergedBonus.targetMultiplier = this.targetMultiplier;
     mergedBonus.playerCondition = this.playerCondition;
     mergedBonus.damageCondition = this.damageCondition;
     mergedBonus.targetCondition = this.targetCondition;
@@ -109,7 +105,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
     MutableComponent tooltip =
         TooltipHelper.getSkillBonusTooltip(damageCondition.getTooltip(), amount, operation);
     tooltip = playerMultiplier.getTooltip(tooltip, Target.PLAYER);
-    tooltip = enemyMultiplier.getTooltip(tooltip, Target.ENEMY);
+    tooltip = targetMultiplier.getTooltip(tooltip, Target.ENEMY);
     tooltip = playerCondition.getTooltip(tooltip, "you");
     tooltip = targetCondition.getTooltip(tooltip, "target");
     return tooltip.withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
@@ -121,110 +117,136 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
   }
 
   @Override
-  public void addEditorWidgets(
-      SkillTreeEditor editor, int row, Consumer<DamageBonus> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, int row, Consumer<DamageBonus> consumer) {
     editor.addLabel(0, 0, "Amount", ChatFormatting.GOLD);
     editor.addLabel(55, 0, "Operation", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, amount)
-        .setNumericResponder(
-            v -> {
-              setAmount(v.floatValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectAmount(consumer, value));
     editor
-        .addDropDownList(55, 0, 145, 14, 3, operation)
-        .setToNameFunc(TooltipHelper::getOperationName)
-        .setResponder(
-            o -> {
-              setOperation(o);
-              consumer.accept(this.copy());
-            });
+        .addOperationSelection(55, 0, 145, operation)
+        .setResponder(operation -> selectOperation(consumer, operation));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Damage Condition", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, damageCondition, PSTDamageConditions.conditionsList())
-        .setToNameFunc(c -> Component.literal(PSTDamageConditions.getName(c)))
-        .setResponder(
-            c -> {
-              setDamageCondition(c);
-              consumer.accept(this.copy());
-            });
+        .addSelectionMenu(0, 0, 200, damageCondition)
+        .setResponder(condition -> selectDamageCondition(consumer, condition));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Player Condition", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, playerCondition, PSTLivingConditions.conditionsList())
-        .setToNameFunc(c -> Component.literal(PSTLivingConditions.getName(c)))
-        .setResponder(
-            c -> {
-              setPlayerCondition(c);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, playerCondition)
+        .setResponder(condition -> selectPlayerCondition(editor, consumer, condition))
+        .setOnMenuInit(() -> addPlayerConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
-    playerCondition.addEditorWidgets(
-        editor,
-        c -> {
-          setPlayerCondition(c);
-          consumer.accept(this.copy());
-        });
     editor.addLabel(0, 0, "Target Condition", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, targetCondition, PSTLivingConditions.conditionsList())
-        .setToNameFunc(c -> Component.literal(PSTLivingConditions.getName(c)))
-        .setResponder(
-            c -> {
-              setTargetCondition(c);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, targetCondition)
+        .setResponder(condition -> selectTargetCondition(editor, consumer, condition))
+        .setOnMenuInit(() -> addTargetConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
+    editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GOLD);
+    editor.increaseHeight(19);
+    editor
+        .addSelectionMenu(0, 0, 200, playerMultiplier)
+        .setResponder(multiplier -> selectPlayerMultiplier(editor, consumer, multiplier))
+        .setOnMenuInit(() -> addPlayerMultiplierWidgets(editor, consumer));
+    editor.increaseHeight(19);
+    editor.addLabel(0, 0, "Target Multiplier", ChatFormatting.GOLD);
+    editor.increaseHeight(19);
+    editor
+        .addSelectionMenu(0, 0, 200, targetMultiplier)
+        .setResponder(multiplier -> selectTargetMultiplier(editor, consumer, multiplier))
+        .setOnMenuInit(() -> addTargetMultiplierWidgets(editor, consumer));
+    editor.increaseHeight(19);
+  }
+
+  private void selectOperation(
+      Consumer<DamageBonus> consumer, AttributeModifier.Operation operation) {
+    setOperation(operation);
+    consumer.accept(this.copy());
+  }
+
+  private void selectAmount(Consumer<DamageBonus> consumer, Double value) {
+    setAmount(value.floatValue());
+    consumer.accept(this.copy());
+  }
+
+  private void addTargetMultiplierWidgets(
+      SkillTreeEditor editor, Consumer<DamageBonus> consumer) {
+    targetMultiplier.addEditorWidgets(
+        editor,
+        multiplier -> {
+          setEnemyMultiplier(multiplier);
+          consumer.accept(this.copy());
+        });
+  }
+
+  private void selectTargetMultiplier(
+      SkillTreeEditor editor, Consumer<DamageBonus> consumer, LivingMultiplier multiplier) {
+    setEnemyMultiplier(multiplier);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void addPlayerMultiplierWidgets(
+      SkillTreeEditor editor, Consumer<DamageBonus> consumer) {
+    playerMultiplier.addEditorWidgets(
+        editor,
+        multiplier -> {
+          setPlayerMultiplier(multiplier);
+          consumer.accept(this.copy());
+        });
+  }
+
+  private void selectPlayerMultiplier(
+      SkillTreeEditor editor, Consumer<DamageBonus> consumer, LivingMultiplier multiplier) {
+    setPlayerMultiplier(multiplier);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void addTargetConditionWidgets(
+      SkillTreeEditor editor, Consumer<DamageBonus> consumer) {
     targetCondition.addEditorWidgets(
         editor,
         c -> {
           setTargetCondition(c);
           consumer.accept(this.copy());
         });
-    editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GOLD);
-    editor.increaseHeight(19);
-    editor
-        .addDropDownList(0, 0, 200, 14, 10, playerMultiplier, PSTLivingMultipliers.multiplierList())
-        .setToNameFunc(m -> Component.literal(PSTLivingMultipliers.getName(m)))
-        .setResponder(
-            m -> {
-              setPlayerMultiplier(m);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
-    editor.increaseHeight(19);
-    playerMultiplier.addEditorWidgets(
+  }
+
+  private void selectTargetCondition(
+      SkillTreeEditor editor, Consumer<DamageBonus> consumer, LivingCondition condition) {
+    setTargetCondition(condition);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void addPlayerConditionWidgets(
+      SkillTreeEditor editor, Consumer<DamageBonus> consumer) {
+    playerCondition.addEditorWidgets(
         editor,
-        m -> {
-          setPlayerMultiplier(m);
+        c -> {
+          setPlayerCondition(c);
           consumer.accept(this.copy());
         });
-    editor.addLabel(0, 0, "Enemy Multiplier", ChatFormatting.GOLD);
-    editor.increaseHeight(19);
-    editor
-        .addDropDownList(0, 0, 200, 14, 10, enemyMultiplier, PSTLivingMultipliers.multiplierList())
-        .setToNameFunc(m -> Component.literal(PSTLivingMultipliers.getName(m)))
-        .setResponder(
-            m -> {
-              setEnemyMultiplier(m);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
-    editor.increaseHeight(19);
-    enemyMultiplier.addEditorWidgets(
-        editor,
-        m -> {
-          setEnemyMultiplier(m);
-          consumer.accept(this.copy());
-        });
+  }
+
+  private void selectPlayerCondition(
+      SkillTreeEditor editor, Consumer<DamageBonus> consumer, LivingCondition condition) {
+    setPlayerCondition(condition);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void selectDamageCondition(
+      Consumer<DamageBonus> consumer, DamageCondition condition) {
+    setDamageCondition(condition);
+    consumer.accept(this.copy());
   }
 
   public SkillBonus<?> setPlayerCondition(LivingCondition condition) {
@@ -248,7 +270,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
   }
 
   public SkillBonus<?> setEnemyMultiplier(LivingMultiplier multiplier) {
-    this.enemyMultiplier = multiplier;
+    this.targetMultiplier = multiplier;
     return this;
   }
 
@@ -268,7 +290,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
       DamageBonus bonus = new DamageBonus(amount, operation);
       bonus.playerMultiplier =
           SerializationHelper.deserializeLivingMultiplier(json, "player_multiplier");
-      bonus.enemyMultiplier =
+      bonus.targetMultiplier =
           SerializationHelper.deserializeLivingMultiplier(json, "enemy_multiplier");
       bonus.playerCondition =
           SerializationHelper.deserializeLivingCondition(json, "player_condition");
@@ -288,7 +310,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
       SerializationHelper.serializeLivingMultiplier(
           json, aBonus.playerMultiplier, "player_multiplier");
       SerializationHelper.serializeLivingMultiplier(
-          json, aBonus.enemyMultiplier, "enemy_multiplier");
+          json, aBonus.targetMultiplier, "enemy_multiplier");
       SerializationHelper.serializeLivingCondition(
           json, aBonus.playerCondition, "player_condition");
       SerializationHelper.serializeDamageCondition(json, aBonus.damageCondition);
@@ -303,7 +325,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
       DamageBonus bonus = new DamageBonus(amount, operation);
       bonus.playerMultiplier =
           SerializationHelper.deserializeLivingMultiplier(tag, "player_multiplier");
-      bonus.enemyMultiplier =
+      bonus.targetMultiplier =
           SerializationHelper.deserializeLivingMultiplier(tag, "enemy_multiplier");
       bonus.playerCondition =
           SerializationHelper.deserializeLivingCondition(tag, "player_condition");
@@ -324,7 +346,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
       SerializationHelper.serializeLivingMultiplier(
           tag, aBonus.playerMultiplier, "player_multiplier");
       SerializationHelper.serializeLivingMultiplier(
-          tag, aBonus.enemyMultiplier, "enemy_multiplier");
+          tag, aBonus.targetMultiplier, "enemy_multiplier");
       SerializationHelper.serializeLivingCondition(tag, aBonus.playerCondition, "player_condition");
       SerializationHelper.serializeDamageCondition(tag, aBonus.damageCondition);
       SerializationHelper.serializeLivingCondition(tag, aBonus.targetCondition, "target_condition");
@@ -337,7 +359,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
       AttributeModifier.Operation operation = AttributeModifier.Operation.fromValue(buf.readInt());
       DamageBonus bonus = new DamageBonus(amount, operation);
       bonus.playerMultiplier = NetworkHelper.readLivingMultiplier(buf);
-      bonus.enemyMultiplier = NetworkHelper.readLivingMultiplier(buf);
+      bonus.targetMultiplier = NetworkHelper.readLivingMultiplier(buf);
       bonus.playerCondition = NetworkHelper.readLivingCondition(buf);
       bonus.damageCondition = NetworkHelper.readDamageCondition(buf);
       bonus.targetCondition = NetworkHelper.readLivingCondition(buf);
@@ -352,7 +374,7 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
       buf.writeFloat(aBonus.amount);
       buf.writeInt(aBonus.operation.toValue());
       NetworkHelper.writeLivingMultiplier(buf, aBonus.playerMultiplier);
-      NetworkHelper.writeLivingMultiplier(buf, aBonus.enemyMultiplier);
+      NetworkHelper.writeLivingMultiplier(buf, aBonus.targetMultiplier);
       NetworkHelper.writeLivingCondition(buf, aBonus.playerCondition);
       NetworkHelper.writeDamageCondition(buf, aBonus.damageCondition);
       NetworkHelper.writeLivingCondition(buf, aBonus.targetCondition);

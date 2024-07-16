@@ -56,12 +56,13 @@ public class ItemTagCondition implements ItemCondition {
     editor
         .addTextField(0, 0, 200, 14, tagId.toString())
         .setSoftFilter(ResourceLocation::isValidResourceLocation)
-        .setResponder(
-            s -> {
-              setTagId(new ResourceLocation(s));
-              consumer.accept(this);
-            });
+        .setResponder(text -> selectTagId(consumer, text));
     editor.increaseHeight(19);
+  }
+
+  private void selectTagId(Consumer<ItemCondition> consumer, String text) {
+    setTagId(new ResourceLocation(text));
+    consumer.accept(this);
   }
 
   public void setTagId(ResourceLocation tagId) {

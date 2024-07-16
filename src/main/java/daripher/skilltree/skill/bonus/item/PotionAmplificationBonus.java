@@ -77,18 +77,18 @@ public final class PotionAmplificationBonus implements ItemBonus<PotionAmplifica
   }
 
   @Override
-  public void addEditorWidgets(
-      SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
     editor.addLabel(0, 0, "Chance", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, getChance())
-        .setNumericResponder(
-            v -> {
-              setChance(v.floatValue());
-              consumer.accept(this);
-            });
+        .setNumericResponder(value -> selectChance(consumer, value));
     editor.increaseHeight(19);
+  }
+
+  private void selectChance(Consumer<ItemBonus<?>> consumer, Double value) {
+    setChance(value.floatValue());
+    consumer.accept(this);
   }
 
   public void setChance(float chance) {

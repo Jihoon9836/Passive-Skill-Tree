@@ -94,7 +94,7 @@ public class ScreenHelper {
     graphics.fill(1, 4, tooltipWidth - 1, tooltipHeight + 4, 0xDD000000);
     int textX = 5;
     int textY = 2;
-    ResourceLocation texture = button.skill.getBorderTexture();
+    ResourceLocation texture = button.skill.getTooltipFrameTexture();
     graphics.blit(texture, -4, -4, 0, 0, 21, 20, 110, 20);
     graphics.blit(texture, tooltipWidth + 4 - 21, -4, -21, 0, 21, 20, 110, 20);
     int centerWidth = tooltipWidth + 8 - 42;

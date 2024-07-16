@@ -4,12 +4,11 @@ import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
-import daripher.skilltree.init.PSTItemConditions;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.SkillBonus;
+import daripher.skilltree.skill.bonus.condition.item.EquipmentCondition;
 import daripher.skilltree.skill.bonus.condition.item.ItemCondition;
-import daripher.skilltree.skill.bonus.condition.item.ItemTagCondition;
 import java.util.Objects;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
@@ -18,7 +17,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraftforge.common.Tags;
 
 public final class CantUseItemBonus implements SkillBonus<CantUseItemBonus> {
   private @Nonnull ItemCondition itemCondition;
@@ -71,15 +69,21 @@ public final class CantUseItemBonus implements SkillBonus<CantUseItemBonus> {
     editor.addLabel(0, 0, "Item Condition", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, itemCondition, PSTItemConditions.conditionsList())
-        .setToNameFunc(a -> Component.literal(PSTItemConditions.getName(a)))
-        .setResponder(
-            c -> {
-              setItemCondition(c);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, itemCondition)
+        .setResponder(condition -> selectItemCondition(editor, consumer, condition))
+        .setOnMenuInit(() -> addItemConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
+  }
+
+  private void selectItemCondition(
+      SkillTreeEditor editor, Consumer<CantUseItemBonus> consumer, ItemCondition condition) {
+    setItemCondition(condition);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void addItemConditionWidgets(
+      SkillTreeEditor editor, Consumer<CantUseItemBonus> consumer) {
     itemCondition.addEditorWidgets(
         editor,
         c -> {
@@ -156,7 +160,7 @@ public final class CantUseItemBonus implements SkillBonus<CantUseItemBonus> {
 
     @Override
     public SkillBonus<?> createDefaultInstance() {
-      return new CantUseItemBonus(new ItemTagCondition(Tags.Items.TOOLS_BOWS.location()));
+      return new CantUseItemBonus(new EquipmentCondition(EquipmentCondition.Type.BOW));
     }
   }
 }

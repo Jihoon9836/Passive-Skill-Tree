@@ -4,7 +4,6 @@ import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
-import daripher.skilltree.init.PSTEnchantmentConditions;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.SkillBonus;
@@ -87,20 +86,22 @@ public final class EnchantmentAmplificationBonus
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, chance)
-        .setNumericResponder(
-            v -> {
-              setChance(v.floatValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectChance(consumer, value));
     editor
-        .addDropDownList(55, 0, 145, 14, 10, condition, PSTEnchantmentConditions.conditionsList())
-        .setToNameFunc(c -> Component.literal(PSTEnchantmentConditions.getName(c)))
-        .setResponder(
-            c -> {
-              setCondition(c);
-              consumer.accept(this.copy());
-            });
+        .addSelectionMenu(55, 0, 145, condition)
+        .setResponder(condition -> selectEnchantmentCondition(consumer, condition));
     editor.increaseHeight(19);
+  }
+
+  private void selectEnchantmentCondition(
+      Consumer<EnchantmentAmplificationBonus> consumer, EnchantmentCondition condition) {
+    setCondition(condition);
+    consumer.accept(this.copy());
+  }
+
+  private void selectChance(Consumer<EnchantmentAmplificationBonus> consumer, Double value) {
+    setChance(value.floatValue());
+    consumer.accept(this.copy());
   }
 
   public void setCondition(@Nonnull EnchantmentCondition condition) {

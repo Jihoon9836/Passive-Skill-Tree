@@ -60,18 +60,18 @@ public final class FoodSaturationBonus implements ItemBonus<FoodSaturationBonus>
   }
 
   @Override
-  public void addEditorWidgets(
-      SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
     editor.addLabel(0, 0, "Multiplier", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 90, 14, getMultiplier())
-        .setNumericResponder(
-            v -> {
-              setMultiplier(v.floatValue());
-              consumer.accept(this);
-            });
+        .setNumericResponder(value -> selectMultiplier(consumer, value));
     editor.increaseHeight(19);
+  }
+
+  private void selectMultiplier(Consumer<ItemBonus<?>> consumer, Double value) {
+    setMultiplier(value.floatValue());
+    consumer.accept(this);
   }
 
   public void setMultiplier(float multiplier) {

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+
+import daripher.skilltree.skill.bonus.SkillBonus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
@@ -41,13 +43,6 @@ public class TooltipHelper {
           Component.translatable("potion.withAmplifier", effectDescription, amplifier);
     }
     return effectDescription;
-  }
-
-  public static Component getEffectTooltip(MobEffect effect) {
-    if (effect instanceof SkillBonusEffect skillEffect) {
-      return skillEffect.getBonus().getTooltip().setStyle(Style.EMPTY);
-    }
-    return effect.getDisplayName();
   }
 
   public static Component getOperationName(AttributeModifier.Operation operation) {
@@ -112,6 +107,10 @@ public class TooltipHelper {
     texture = texture.replace(".png", "");
     texture = TooltipHelper.idToName(texture);
     return Component.literal(texture);
+  }
+
+  public static MutableComponent getTargetName(SkillBonus.Target target) {
+    return Component.literal(TooltipHelper.idToName(target.name().toLowerCase()));
   }
 
   public static String getRecipeDescriptionId(ResourceLocation recipeId) {

@@ -62,18 +62,18 @@ public final class FoodHealingBonus implements ItemBonus<FoodHealingBonus> {
   }
 
   @Override
-  public void addEditorWidgets(
-      SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
     editor.addLabel(0, 0, "Amount", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 90, 14, getAmount())
-        .setNumericResponder(
-            v -> {
-              setAmount(v.floatValue());
-              consumer.accept(this);
-            });
+        .setNumericResponder(value -> selectAmount(consumer, value));
     editor.increaseHeight(19);
+  }
+
+  private void selectAmount(Consumer<ItemBonus<?>> consumer, Double value) {
+    setAmount(value.floatValue());
+    consumer.accept(this);
   }
 
   public void setAmount(float amount) {

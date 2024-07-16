@@ -54,6 +54,11 @@ public class Button extends net.minecraft.client.gui.components.Button {
   }
 
   @Override
+  public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    return false;
+  }
+
+  @Override
   public boolean isMouseOver(double mouseX, double mouseY) {
     return visible
         && mouseX >= getX()

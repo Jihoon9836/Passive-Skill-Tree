@@ -2,6 +2,7 @@ package daripher.skilltree.skill.bonus.player;
 
 import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
+import daripher.skilltree.client.widget.SelectionList;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.skill.bonus.SkillBonus;
@@ -81,28 +82,34 @@ public final class LootDuplicationBonus implements SkillBonus<LootDuplicationBon
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 90, 14, chance)
-        .setNumericResponder(
-            v -> {
-              setChance(v.floatValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectChance(consumer, value));
     editor
         .addNumericTextField(110, 0, 90, 14, multiplier)
-        .setNumericResponder(
-            v -> {
-              setMultiplier(v.floatValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectMultiplier(consumer, value));
     editor.increaseHeight(19);
-    editor
-        .addDropDownList(0, 0, 200, 14, 10, lootType)
-        .setToNameFunc(LootType::getFormattedName)
-        .setResponder(
-            t -> {
-              setLootType(t);
-              consumer.accept(this.copy());
-            });
+    editor.addLabel(0, 0, "Loot Type", ChatFormatting.GOLD);
     editor.increaseHeight(19);
+    SelectionList<LootType> lootTypeSelection =
+        editor
+            .addSelection(0, 0, 200, 3, lootType)
+            .setNameGetter(LootType::getFormattedName)
+            .setResponder(lootType -> selectLootType(consumer, lootType));
+    editor.increaseHeight(lootTypeSelection.getMaxDisplayed() * 14 + 5);
+  }
+
+  private void selectLootType(Consumer<LootDuplicationBonus> consumer, LootType lootType) {
+    setLootType(lootType);
+    consumer.accept(this.copy());
+  }
+
+  private void selectMultiplier(Consumer<LootDuplicationBonus> consumer, Double value) {
+    setMultiplier(value.floatValue());
+    consumer.accept(this.copy());
+  }
+
+  private void selectChance(Consumer<LootDuplicationBonus> consumer, Double value) {
+    setChance(value.floatValue());
+    consumer.accept(this.copy());
   }
 
   public void setChance(float chance) {

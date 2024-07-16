@@ -64,27 +64,28 @@ public final class QuiverCapacityBonus implements ItemBonus<QuiverCapacityBonus>
   }
 
   @Override
-  public void addEditorWidgets(
-      SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
     editor.addLabel(0, 0, "Amount", ChatFormatting.GREEN);
     editor.addLabel(55, 0, "Operation", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addNumericTextField(0, 0, 50, 14, getAmount())
-        .setNumericResponder(
-            v -> {
-              setAmount(v.floatValue());
-              consumer.accept(this);
-            });
+        .addNumericTextField(0, 0, 50, 14, amount)
+        .setNumericResponder(value -> selectAmount(consumer, value));
     editor
-        .addDropDownList(55, 0, 145, 14, 3, getOperation())
-        .setToNameFunc(TooltipHelper::getOperationName)
-        .setResponder(
-            o -> {
-              setOperation(o);
-              consumer.accept(this);
-            });
+        .addOperationSelection(55, 0, 145, operation)
+        .setResponder(operation -> selectOperation(consumer, operation));
     editor.increaseHeight(19);
+  }
+
+  private void selectOperation(
+      Consumer<ItemBonus<?>> consumer, AttributeModifier.Operation operation) {
+    setOperation(operation);
+    consumer.accept(this);
+  }
+
+  private void selectAmount(Consumer<ItemBonus<?>> consumer, Double value) {
+    setAmount(value.floatValue());
+    consumer.accept(this);
   }
 
   public void setAmount(float amount) {

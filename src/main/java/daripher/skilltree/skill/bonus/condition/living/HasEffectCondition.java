@@ -17,7 +17,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public final class HasEffectCondition implements LivingCondition {
   private MobEffect effect;
@@ -65,22 +64,23 @@ public final class HasEffectCondition implements LivingCondition {
     editor.addLabel(150, 0, "Level", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 145, 14, 10, effect, ForgeRegistries.MOB_EFFECTS.getValues())
-        .setToNameFunc(a -> Component.translatable(a.getDescriptionId()))
-        .setResponder(
-            e -> {
-              setEffect(e);
-              consumer.accept(this);
-            });
+        .addSelectionMenu(0, 0, 145, effect)
+        .setResponder(effect -> selectEffect(consumer, effect));
     editor
         .addNumericTextField(150, 0, 50, 14, amplifier)
-        .setNumericFilter(d -> d >= 0 && d == d.intValue())
-        .setNumericResponder(
-            v -> {
-              setAmplifier(v.intValue());
-              consumer.accept(this);
-            });
+        .setNumericFilter(value -> value >= 0 && value == value.intValue())
+        .setNumericResponder(value -> selectAmplifier(consumer, value));
     editor.increaseHeight(19);
+  }
+
+  private void selectAmplifier(Consumer<LivingCondition> consumer, Double value) {
+    setAmplifier(value.intValue());
+    consumer.accept(this);
+  }
+
+  private void selectEffect(Consumer<LivingCondition> consumer, MobEffect effect) {
+    setEffect(effect);
+    consumer.accept(this);
   }
 
   @Override

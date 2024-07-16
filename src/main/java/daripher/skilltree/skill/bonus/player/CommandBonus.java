@@ -4,7 +4,6 @@ import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
-import daripher.skilltree.init.PSTEventListeners;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.EventListenerBonus;
@@ -100,41 +99,47 @@ public class CommandBonus implements EventListenerBonus<CommandBonus> {
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditor editor,
-      int index,
-      Consumer<EventListenerBonus<CommandBonus>> consumer) {
+      SkillTreeEditor editor, int index, Consumer<EventListenerBonus<CommandBonus>> consumer) {
     editor.addLabel(0, 0, "Command", ChatFormatting.GOLD);
     editor.increaseHeight(19);
-    editor
-        .addTextArea(0, 0, 200, 70, command)
-        .setResponder(
-            v -> {
-              setCommand(v);
-              consumer.accept(this.copy());
-            });
+    editor.addTextArea(0, 0, 200, 70, command).setResponder(v -> selectCommand(consumer, v));
     editor.increaseHeight(75);
     editor.addLabel(0, 0, "Description", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
         .addTextArea(0, 0, 200, 70, description)
-        .setResponder(
-            v -> {
-              setDescription(v);
-              consumer.accept(this.copy());
-            });
+        .setResponder(text -> selectDescription(consumer, text));
     editor.increaseHeight(75);
     editor.addLabel(0, 0, "Event", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, eventListener, PSTEventListeners.eventsList())
-        .setToNameFunc(e -> Component.literal(PSTEventListeners.getName(e)))
-        .setResponder(
-            e -> {
-              setEventListener(e);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, eventListener)
+        .setResponder(eventListener -> selectEventListener(editor, consumer, eventListener))
+        .setOnMenuInit(() -> addEventListenerWidgets(editor, consumer));
     editor.increaseHeight(19);
+  }
+
+  private void selectDescription(Consumer<EventListenerBonus<CommandBonus>> consumer, String text) {
+    setDescription(text);
+    consumer.accept(this.copy());
+  }
+
+  private void selectCommand(Consumer<EventListenerBonus<CommandBonus>> consumer, String text) {
+    setCommand(text);
+    consumer.accept(this.copy());
+  }
+
+  private void selectEventListener(
+      SkillTreeEditor editor,
+      Consumer<EventListenerBonus<CommandBonus>> consumer,
+      SkillEventListener eventListener) {
+    setEventListener(eventListener);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void addEventListenerWidgets(
+      SkillTreeEditor editor, Consumer<EventListenerBonus<CommandBonus>> consumer) {
     eventListener.addEditorWidgets(
         editor,
         e -> {

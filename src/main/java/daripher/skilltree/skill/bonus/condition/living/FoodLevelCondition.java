@@ -60,19 +60,21 @@ public final class FoodLevelCondition implements LivingCondition {
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, min)
-        .setNumericResponder(
-            a -> {
-              setMin(a.intValue());
-              consumer.accept(this);
-            });
+        .setNumericResponder(value -> selectMinimum(consumer, value));
     editor
         .addNumericTextField(55, 0, 50, 14, max)
-        .setNumericResponder(
-            a -> {
-              setMax(a.intValue());
-              consumer.accept(this);
-            });
+        .setNumericResponder(value -> selectMaximum(consumer, value));
     editor.increaseHeight(19);
+  }
+
+  private void selectMaximum(Consumer<LivingCondition> consumer, Double value) {
+    setMax(value.intValue());
+    consumer.accept(this);
+  }
+
+  private void selectMinimum(Consumer<LivingCondition> consumer, Double value) {
+    setMin(value.intValue());
+    consumer.accept(this);
   }
 
   @Override

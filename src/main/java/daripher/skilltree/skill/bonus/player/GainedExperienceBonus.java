@@ -77,20 +77,23 @@ public final class GainedExperienceBonus implements SkillBonus<GainedExperienceB
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 90, 14, multiplier)
-        .setNumericResponder(
-            v -> {
-              setMultiplier(v.floatValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectMultiplier(consumer, value));
     editor
-        .addDropDownList(110, 0, 90, 14, 10, experienceSource)
-        .setToNameFunc(ExperienceSource::getFormattedName)
-        .setResponder(
-            s -> {
-              setExpericenSource(s);
-              consumer.accept(this.copy());
-            });
+        .addSelection(110, 0, 90, 1, experienceSource)
+        .setNameGetter(ExperienceSource::getFormattedName)
+        .setResponder(experienceSource -> selectExperienceSource(consumer, experienceSource));
     editor.increaseHeight(19);
+  }
+
+  private void selectExperienceSource(
+      Consumer<GainedExperienceBonus> consumer, ExperienceSource experienceSource) {
+    setExpericenSource(experienceSource);
+    consumer.accept(this.copy());
+  }
+
+  private void selectMultiplier(Consumer<GainedExperienceBonus> consumer, Double value) {
+    setMultiplier(value.floatValue());
+    consumer.accept(this.copy());
   }
 
   public void setMultiplier(float multiplier) {

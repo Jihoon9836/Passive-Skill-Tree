@@ -4,7 +4,6 @@ import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
-import daripher.skilltree.init.PSTEventListeners;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.EventListenerBonus;
@@ -121,37 +120,47 @@ public final class HealingBonus implements EventListenerBonus<HealingBonus> {
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 90, 14, chance)
-        .setNumericResponder(
-            v -> {
-              setChance(v.floatValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectChance(consumer, value));
     editor
         .addNumericTextField(110, 0, 90, 14, amount)
-        .setNumericResponder(
-            v -> {
-              setAmount(v.intValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectAmount(consumer, value));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Event", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, eventListener, PSTEventListeners.eventsList())
-        .setToNameFunc(e -> Component.literal(PSTEventListeners.getName(e)))
-        .setResponder(
-            e -> {
-              setEventListener(e);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, eventListener)
+        .setResponder(eventListener -> selectEventListener(editor, consumer, eventListener))
+        .setOnMenuInit(() -> addEventListenerWidgets(editor, consumer));
     editor.increaseHeight(19);
+  }
+
+  private void addEventListenerWidgets(
+      SkillTreeEditor editor, Consumer<EventListenerBonus<HealingBonus>> consumer) {
     eventListener.addEditorWidgets(
         editor,
-        e -> {
-          setEventListener(e);
+        eventListener -> {
+          setEventListener(eventListener);
           consumer.accept(this.copy());
         });
+  }
+
+  private void selectEventListener(
+      SkillTreeEditor editor,
+      Consumer<EventListenerBonus<HealingBonus>> consumer,
+      SkillEventListener eventListener) {
+    setEventListener(eventListener);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void selectAmount(Consumer<EventListenerBonus<HealingBonus>> consumer, Double value) {
+    setAmount(value.intValue());
+    consumer.accept(this.copy());
+  }
+
+  private void selectChance(Consumer<EventListenerBonus<HealingBonus>> consumer, Double value) {
+    setChance(value.floatValue());
+    consumer.accept(this.copy());
   }
 
   public void setEventListener(SkillEventListener eventListener) {

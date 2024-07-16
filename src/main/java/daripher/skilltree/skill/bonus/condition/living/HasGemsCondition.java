@@ -5,7 +5,6 @@ import com.google.gson.JsonParseException;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.entity.player.PlayerHelper;
-import daripher.skilltree.init.PSTItemConditions;
 import daripher.skilltree.init.PSTLivingConditions;
 import daripher.skilltree.item.gem.GemItem;
 import daripher.skilltree.network.NetworkHelper;
@@ -81,39 +80,46 @@ public final class HasGemsCondition implements LivingCondition {
     editor.addLabel(0, 0, "Item Condition", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, itemCondition, PSTItemConditions.conditionsList())
-        .setToNameFunc(a -> Component.translatable(PSTItemConditions.getName(a)))
-        .setResponder(
-            c -> {
-              setItemCondition(c);
-              consumer.accept(this);
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, itemCondition)
+        .setResponder(condition -> selectItemCondition(editor, consumer, condition))
+        .setOnMenuInit(() -> addItemConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
-    itemCondition.addEditorWidgets(
-        editor,
-        c -> {
-          setItemCondition(c);
-          consumer.accept(this);
-        });
     editor.addLabel(0, 0, "Min", ChatFormatting.GREEN);
     editor.addLabel(55, 0, "Max", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, min)
-        .setNumericResponder(
-            a -> {
-              setMin(a.intValue());
-              consumer.accept(this);
-            });
+        .setNumericResponder(value -> selectMinimum(consumer, value));
     editor
         .addNumericTextField(55, 0, 50, 14, max)
-        .setNumericResponder(
-            a -> {
-              setMax(a.intValue());
-              consumer.accept(this);
-            });
+        .setNumericResponder(value -> selectMaximum(consumer, value));
     editor.increaseHeight(19);
+  }
+
+  private void selectMaximum(Consumer<LivingCondition> consumer, Double value) {
+    setMax(value.intValue());
+    consumer.accept(this);
+  }
+
+  private void selectMinimum(Consumer<LivingCondition> consumer, Double value) {
+    setMin(value.intValue());
+    consumer.accept(this);
+  }
+
+  private void addItemConditionWidgets(SkillTreeEditor editor, Consumer<LivingCondition> consumer) {
+    itemCondition.addEditorWidgets(
+        editor,
+        condition -> {
+          setItemCondition(condition);
+          consumer.accept(this);
+        });
+  }
+
+  private void selectItemCondition(
+      SkillTreeEditor editor, Consumer<LivingCondition> consumer, ItemCondition condition) {
+    setItemCondition(condition);
+    consumer.accept(this);
+    editor.rebuildWidgets();
   }
 
   @Override

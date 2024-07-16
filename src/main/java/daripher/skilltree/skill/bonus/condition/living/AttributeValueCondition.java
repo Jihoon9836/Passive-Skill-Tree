@@ -67,31 +67,34 @@ public final class AttributeValueCondition implements LivingCondition {
     editor.addLabel(0, 0, "Attribute", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addAttributePicker(0, 0, 200, 14, 10, attribute)
-        .setResponder(
-            a -> {
-              setAttribute(a);
-              consumer.accept(this);
-            });
+        .addSelectionMenu(0, 0, 200, attribute)
+        .setResponder(attribute -> selectAttribute(consumer, attribute));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Min", ChatFormatting.GREEN);
     editor.addLabel(55, 0, "Max", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, min)
-        .setNumericResponder(
-            a -> {
-              setMin(a.floatValue());
-              consumer.accept(this);
-            });
+        .setNumericResponder(value -> selectMinimum(consumer, value));
     editor
         .addNumericTextField(55, 0, 50, 14, max)
-        .setNumericResponder(
-            a -> {
-              setMax(a.floatValue());
-              consumer.accept(this);
-            });
+        .setNumericResponder(value -> selectMaximum(consumer, value));
     editor.increaseHeight(19);
+  }
+
+  private void selectMaximum(Consumer<LivingCondition> consumer, Double value) {
+    setMax(value.floatValue());
+    consumer.accept(this);
+  }
+
+  private void selectMinimum(Consumer<LivingCondition> consumer, Double value) {
+    setMin(value.floatValue());
+    consumer.accept(this);
+  }
+
+  private void selectAttribute(Consumer<LivingCondition> consumer, Attribute attribute) {
+    setAttribute(attribute);
+    consumer.accept(this);
   }
 
   @Override

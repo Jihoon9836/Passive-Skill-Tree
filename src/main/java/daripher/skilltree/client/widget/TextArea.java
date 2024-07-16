@@ -17,6 +17,17 @@ public class TextArea extends MultiLineEditBox implements TickingWidget {
     return isFocused() && super.keyPressed(keyCode, scanCode, modifiers);
   }
 
+  @Override
+  public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+    return isFocused() && super.mouseScrolled(mouseX, mouseY, delta);
+  }
+
+  @Override
+  public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    setFocused(clicked(mouseX, mouseY));
+    return super.mouseClicked(mouseX, mouseY, button);
+  }
+
   public TextArea setResponder(@NotNull Consumer<String> responder) {
     super.setValueListener(responder);
     return this;

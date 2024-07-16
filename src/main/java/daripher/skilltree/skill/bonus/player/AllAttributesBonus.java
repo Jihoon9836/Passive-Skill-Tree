@@ -4,8 +4,6 @@ import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
-import daripher.skilltree.init.PSTLivingConditions;
-import daripher.skilltree.init.PSTLivingMultipliers;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.SkillBonus;
@@ -22,7 +20,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
@@ -79,7 +76,8 @@ public final class AllAttributesBonus
         return;
       }
     }
-    if (playerMultiplier != NoneLivingMultiplier.INSTANCE && playerMultiplier.getValue(player) == 0) {
+    if (playerMultiplier != NoneLivingMultiplier.INSTANCE
+        && playerMultiplier.getValue(player) == 0) {
       onSkillRemoved(player);
       return;
     }
@@ -196,54 +194,68 @@ public final class AllAttributesBonus
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, modifier.getAmount())
-        .setNumericResponder(
-            v -> {
-              setAmount(v);
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectAmount(consumer, value));
     editor
-        .addDropDownList(55, 0, 145, 14, 3, modifier.getOperation())
-        .setToNameFunc(TooltipHelper::getOperationName)
-        .setResponder(
-            o -> {
-              setOperation(o);
-              consumer.accept(this.copy());
-            });
+        .addOperationSelection(55, 0, 145, modifier.getOperation())
+        .setResponder(operation -> selectOperation(consumer, operation));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Player Condition", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, playerCondition, PSTLivingConditions.conditionsList())
-        .setToNameFunc(c -> Component.literal(PSTLivingConditions.getName(c)))
-        .setResponder(
-            c -> {
-              setCondition(c);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, playerCondition)
+        .setResponder(condition -> selectPlayerCondition(editor, consumer, condition))
+        .setOnMenuInit(() -> addPlayerConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
-    playerCondition.addEditorWidgets(
-        editor,
-        c -> {
-          setCondition(c);
-          consumer.accept(this.copy());
-        });
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, playerMultiplier, PSTLivingMultipliers.multiplierList())
-        .setToNameFunc(m -> Component.literal(PSTLivingMultipliers.getName(m)))
-        .setResponder(
-            m -> {
-              setMultiplier(m);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, playerMultiplier)
+        .setResponder(multiplier -> selectPlayerMultiplier(editor, consumer, multiplier))
+        .setOnMenuInit(() -> addPlayerMultiplierWidgets(editor, consumer));
     editor.increaseHeight(19);
+  }
+
+  private void selectPlayerMultiplier(
+      SkillTreeEditor editor, Consumer<AllAttributesBonus> consumer, LivingMultiplier multiplier) {
+    setMultiplier(multiplier);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void selectPlayerCondition(
+      SkillTreeEditor editor, Consumer<AllAttributesBonus> consumer, LivingCondition condition) {
+    setCondition(condition);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void selectOperation(
+      Consumer<AllAttributesBonus> consumer, AttributeModifier.Operation operation) {
+    setOperation(operation);
+    consumer.accept(this.copy());
+  }
+
+  private void selectAmount(Consumer<AllAttributesBonus> consumer, Double value) {
+    setAmount(value);
+    consumer.accept(this.copy());
+  }
+
+  private void addPlayerMultiplierWidgets(
+      SkillTreeEditor editor, Consumer<AllAttributesBonus> consumer) {
     playerMultiplier.addEditorWidgets(
         editor,
-        m -> {
-          setMultiplier(m);
+        multiplier -> {
+          setMultiplier(multiplier);
+          consumer.accept(this.copy());
+        });
+  }
+
+  private void addPlayerConditionWidgets(
+      SkillTreeEditor editor, Consumer<AllAttributesBonus> consumer) {
+    playerCondition.addEditorWidgets(
+        editor,
+        condition -> {
+          setCondition(condition);
           consumer.accept(this.copy());
         });
   }
@@ -285,7 +297,8 @@ public final class AllAttributesBonus
     public AllAttributesBonus deserialize(JsonObject json) throws JsonParseException {
       AttributeModifier modifier = SerializationHelper.deserializeAttributeModifier(json);
       AllAttributesBonus bonus = new AllAttributesBonus(modifier);
-      bonus.playerMultiplier = SerializationHelper.deserializeLivingMultiplier(json, "player_multiplier");
+      bonus.playerMultiplier =
+          SerializationHelper.deserializeLivingMultiplier(json, "player_multiplier");
       bonus.playerCondition =
           SerializationHelper.deserializeLivingCondition(json, "player_condition");
       return bonus;
@@ -297,7 +310,8 @@ public final class AllAttributesBonus
         throw new IllegalArgumentException();
       }
       SerializationHelper.serializeAttributeModifier(json, aBonus.modifier);
-      SerializationHelper.serializeLivingMultiplier(json, aBonus.playerMultiplier, "player_multiplier");
+      SerializationHelper.serializeLivingMultiplier(
+          json, aBonus.playerMultiplier, "player_multiplier");
       SerializationHelper.serializeLivingCondition(
           json, aBonus.playerCondition, "player_condition");
     }
@@ -306,7 +320,8 @@ public final class AllAttributesBonus
     public AllAttributesBonus deserialize(CompoundTag tag) {
       AttributeModifier modifier = SerializationHelper.deserializeAttributeModifier(tag);
       AllAttributesBonus bonus = new AllAttributesBonus(modifier);
-      bonus.playerMultiplier = SerializationHelper.deserializeLivingMultiplier(tag, "player_multiplier");
+      bonus.playerMultiplier =
+          SerializationHelper.deserializeLivingMultiplier(tag, "player_multiplier");
       bonus.playerCondition =
           SerializationHelper.deserializeLivingCondition(tag, "player_condition");
       return bonus;
@@ -319,7 +334,8 @@ public final class AllAttributesBonus
       }
       CompoundTag tag = new CompoundTag();
       SerializationHelper.serializeAttributeModifier(tag, aBonus.modifier);
-      SerializationHelper.serializeLivingMultiplier(tag, aBonus.playerMultiplier, "player_multiplier");
+      SerializationHelper.serializeLivingMultiplier(
+          tag, aBonus.playerMultiplier, "player_multiplier");
       SerializationHelper.serializeLivingCondition(tag, aBonus.playerCondition, "player_condition");
       return tag;
     }

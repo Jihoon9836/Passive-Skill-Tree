@@ -51,24 +51,26 @@ public final class AttributeValueMultiplier implements LivingMultiplier {
     editor.addLabel(0, 0, "Attribute", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addAttributePicker(0, 0, 200, 14, 10, attribute)
-        .setResponder(
-            a -> {
-              setAttribute(a);
-              consumer.accept(this);
-            });
+        .addSelectionMenu(0, 0, 200, attribute)
+        .setResponder(attribute -> selectAttribute(consumer, attribute));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Divisor", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, divisor)
-        .setNumericFilter(d -> d > 0)
-        .setNumericResponder(
-            v -> {
-              setDivisor(v.floatValue());
-              consumer.accept(this);
-            });
+        .setNumericFilter(value -> value > 0)
+        .setNumericResponder(value -> selectDivisor(consumer, value));
     editor.increaseHeight(19);
+  }
+
+  private void selectDivisor(Consumer<LivingMultiplier> consumer, Double value) {
+    setDivisor(value.floatValue());
+    consumer.accept(this);
+  }
+
+  private void selectAttribute(Consumer<LivingMultiplier> consumer, Attribute attribute) {
+    setAttribute(attribute);
+    consumer.accept(this);
   }
 
   @Override

@@ -55,7 +55,7 @@ public class PassiveSkill {
     this.buttonSize = buttonSize;
   }
 
-  public ResourceLocation getBackgroundTexture() {
+  public ResourceLocation getFrameTexture() {
     return backgroundTexture;
   }
 
@@ -71,7 +71,7 @@ public class PassiveSkill {
     this.iconTexture = texture;
   }
 
-  public ResourceLocation getBorderTexture() {
+  public ResourceLocation getTooltipFrameTexture() {
     return borderTexture;
   }
 
@@ -179,8 +179,8 @@ public class PassiveSkill {
   public boolean isInvalid() {
     return getId() == null
         || getBonuses() == null
-        || getBackgroundTexture() == null
+        || getFrameTexture() == null
         || getIconTexture() == null
-        || getBorderTexture() == null;
+        || getTooltipFrameTexture() == null;
   }
 }

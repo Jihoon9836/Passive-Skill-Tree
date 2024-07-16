@@ -4,7 +4,6 @@ import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
-import daripher.skilltree.init.PSTItemConditions;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.SkillBonus;
@@ -76,36 +75,41 @@ public final class GemPowerBonus implements SkillBonus<GemPowerBonus> {
   }
 
   @Override
-  public void addEditorWidgets(
-      SkillTreeEditor editor, int row, Consumer<GemPowerBonus> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, int row, Consumer<GemPowerBonus> consumer) {
     editor.addLabel(0, 0, "Multiplier", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, multiplier)
-        .setNumericResponder(
-            v -> {
-              setMultiplier(v.floatValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectMultiplier(consumer, value));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Item Condition", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, itemCondition, PSTItemConditions.conditionsList())
-        .setToNameFunc(a -> Component.literal(PSTItemConditions.getName(a)))
-        .setResponder(
-            c -> {
-              setItemCondition(c);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, itemCondition)
+        .setResponder(condition -> selectItemCondition(editor, consumer, condition))
+        .setOnMenuInit(() -> addItemConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
+  }
+
+  private void addItemConditionWidgets(SkillTreeEditor editor, Consumer<GemPowerBonus> consumer) {
     itemCondition.addEditorWidgets(
         editor,
         c -> {
           setItemCondition(c);
           consumer.accept(this.copy());
         });
+  }
+
+  private void selectItemCondition(
+      SkillTreeEditor editor, Consumer<GemPowerBonus> consumer, ItemCondition condition) {
+    setItemCondition(condition);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void selectMultiplier(Consumer<GemPowerBonus> consumer, Double value) {
+    setMultiplier(value.floatValue());
+    consumer.accept(this.copy());
   }
 
   public void setItemCondition(@Nonnull ItemCondition itemCondition) {

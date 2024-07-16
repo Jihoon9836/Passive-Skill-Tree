@@ -71,12 +71,13 @@ public final class FreeEnchantmentBonus implements SkillBonus<FreeEnchantmentBon
     editor.increaseHeight(19);
     editor
         .addNumericTextField(0, 0, 50, 14, chance)
-        .setNumericResponder(
-            v -> {
-              setChance(v.floatValue());
-              consumer.accept(this.copy());
-            });
+        .setNumericResponder(value -> selectChance(consumer, value));
     editor.increaseHeight(19);
+  }
+
+  private void selectChance(Consumer<FreeEnchantmentBonus> consumer, Double value) {
+    setChance(value.floatValue());
+    consumer.accept(this.copy());
   }
 
   public void setChance(float chance) {

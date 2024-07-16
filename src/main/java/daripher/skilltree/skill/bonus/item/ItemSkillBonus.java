@@ -5,7 +5,6 @@ import com.google.gson.JsonParseException;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTItemBonuses;
-import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.SkillBonus;
 import daripher.skilltree.skill.bonus.player.DamageBonus;
@@ -14,7 +13,6 @@ import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
@@ -66,27 +64,32 @@ public final class ItemSkillBonus implements ItemBonus<ItemSkillBonus> {
   }
 
   @Override
-  public void addEditorWidgets(
-      SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
     editor.addLabel(0, 0, "Bonus Type", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, bonus, PSTSkillBonuses.bonusList())
-        .setToNameFunc(b -> Component.literal(PSTSkillBonuses.getName(b)))
-        .setResponder(
-            b -> {
-              setBonus(b);
-              consumer.accept(this);
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, bonus)
+        .setResponder(skillBonus -> selectSkillBonus(editor, consumer, skillBonus))
+        .setOnMenuInit(() -> addSkillBonusWidgets(editor, index, consumer));
     editor.increaseHeight(19);
+  }
+
+  private void addSkillBonusWidgets(
+      SkillTreeEditor editor, int index, Consumer<ItemBonus<?>> consumer) {
     bonus.addEditorWidgets(
         editor,
         index,
-        b -> {
-          setBonus(b);
+        skillBonus -> {
+          setBonus(skillBonus);
           consumer.accept(this);
         });
+  }
+
+  private void selectSkillBonus(
+      SkillTreeEditor editor, Consumer<ItemBonus<?>> consumer, SkillBonus<?> skillBonus) {
+    setBonus(skillBonus);
+    consumer.accept(this);
+    editor.rebuildWidgets();
   }
 
   public void setBonus(SkillBonus<?> bonus) {

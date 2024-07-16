@@ -5,7 +5,6 @@ import com.google.gson.JsonParseException;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.entity.player.PlayerHelper;
-import daripher.skilltree.init.PSTItemConditions;
 import daripher.skilltree.init.PSTLivingConditions;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.condition.item.ItemCondition;
@@ -50,21 +49,26 @@ public final class HasItemEquippedCondition implements LivingCondition {
     editor.addLabel(0, 0, "Item Condition", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, itemCondition, PSTItemConditions.conditionsList())
-        .setToNameFunc(a -> Component.translatable(PSTItemConditions.getName(a)))
-        .setResponder(
-            c -> {
-              setItemCondition(c);
-              consumer.accept(this);
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, itemCondition)
+        .setResponder(condition -> selectItemCondition(editor, consumer, condition))
+        .setOnMenuInit(() -> addItemConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
+  }
+
+  private void addItemConditionWidgets(SkillTreeEditor editor, Consumer<LivingCondition> consumer) {
     itemCondition.addEditorWidgets(
         editor,
-        c -> {
-          setItemCondition(c);
+        condition -> {
+          setItemCondition(condition);
           consumer.accept(this);
         });
+  }
+
+  private void selectItemCondition(
+      SkillTreeEditor editor, Consumer<LivingCondition> consumer, ItemCondition condition) {
+    setItemCondition(condition);
+    consumer.accept(this);
+    editor.rebuildWidgets();
   }
 
   @Override

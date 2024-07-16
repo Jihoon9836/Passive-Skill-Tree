@@ -4,8 +4,6 @@ import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
-import daripher.skilltree.init.PSTItemBonuses;
-import daripher.skilltree.init.PSTItemConditions;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.item.ItemHelper;
 import daripher.skilltree.network.NetworkHelper;
@@ -91,33 +89,47 @@ public final class CraftedItemBonus implements SkillBonus<CraftedItemBonus> {
     editor.addLabel(0, 0, "Item Condition", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, itemCondition, PSTItemConditions.conditionsList())
-        .setToNameFunc(a -> Component.literal(PSTItemConditions.getName(a)))
-        .setResponder(
-            c -> {
-              setItemCondition(c);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, itemCondition)
+        .setResponder(condition -> selectItemCondition(editor, consumer, condition))
+        .setOnMenuInit(() -> addItemConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
+    editor.addLabel(0, 0, "Item Bonus", ChatFormatting.GOLD);
+    editor.increaseHeight(19);
+    editor
+        .addSelectionMenu(0, 0, 200, bonus)
+        .setResponder(bonus -> selectItemBonus(editor, consumer, bonus))
+        .setOnMenuInit(() -> addItemBonusWidgets(editor, index, consumer));
+    editor.increaseHeight(19);
+  }
+
+  private void selectItemBonus(
+      SkillTreeEditor editor,
+      Consumer<CraftedItemBonus> consumer,
+      @SuppressWarnings("rawtypes") ItemBonus bonus) {
+    setBonus(bonus);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void selectItemCondition(
+      SkillTreeEditor editor, Consumer<CraftedItemBonus> consumer, ItemCondition condition) {
+    setItemCondition(condition);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void addItemConditionWidgets(
+      SkillTreeEditor editor, Consumer<CraftedItemBonus> consumer) {
     itemCondition.addEditorWidgets(
         editor,
         c -> {
           setItemCondition(c);
           consumer.accept(this.copy());
         });
-    editor.addLabel(0, 0, "Item Bonus", ChatFormatting.GOLD);
-    editor.increaseHeight(19);
-    editor
-        .addDropDownList(0, 0, 200, 14, 10, bonus, PSTItemBonuses.bonusList())
-        .setToNameFunc(b -> Component.literal(PSTItemBonuses.getName(b)))
-        .setResponder(
-            b -> {
-              setBonus(b);
-              consumer.accept(this.copy());
-              editor.rebuildWidgets();
-            });
-    editor.increaseHeight(19);
+  }
+
+  private void addItemBonusWidgets(
+      SkillTreeEditor editor, int index, Consumer<CraftedItemBonus> consumer) {
     bonus.addEditorWidgets(
         editor,
         index,

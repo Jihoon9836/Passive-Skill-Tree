@@ -5,9 +5,6 @@ import com.google.gson.JsonParseException;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTEventListeners;
-import daripher.skilltree.init.PSTItemConditions;
-import daripher.skilltree.init.PSTLivingConditions;
-import daripher.skilltree.init.PSTLivingMultipliers;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.EventListenerBonus;
 import daripher.skilltree.skill.bonus.SkillBonus;
@@ -75,62 +72,79 @@ public class ItemUsedEventListener implements SkillEventListener {
   }
 
   @Override
-  public void addEditorWidgets(
-      SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
     editor.addLabel(0, 0, "Player Condition", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, playerCondition, PSTLivingConditions.conditionsList())
-        .setToNameFunc(c -> Component.literal(PSTLivingConditions.getName(c)))
-        .setResponder(
-            c -> {
-              setPlayerCondition(c);
-              consumer.accept(this);
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, playerCondition)
+        .setResponder(condition -> selectPlayerCondition(editor, consumer, condition))
+        .setOnMenuInit(() -> addPlayerConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
-    playerCondition.addEditorWidgets(
-        editor,
-        c -> {
-          setPlayerCondition(c);
-          consumer.accept(this);
-        });
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, playerMultiplier, PSTLivingMultipliers.multiplierList())
-        .setToNameFunc(m -> Component.literal(PSTLivingMultipliers.getName(m)))
-        .setResponder(
-            m -> {
-              setPlayerMultiplier(m);
-              consumer.accept(this);
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, playerMultiplier)
+        .setResponder(multiplier -> selectPlayerMultiplier(editor, consumer, multiplier))
+        .setOnMenuInit(() -> addPlayerMultiplierWidgets(editor, consumer));
     editor.increaseHeight(19);
-    playerMultiplier.addEditorWidgets(
-        editor,
-        m -> {
-          setPlayerMultiplier(m);
-          consumer.accept(this);
-        });
     editor.addLabel(0, 0, "Item Condition", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
-        .addDropDownList(0, 0, 200, 14, 10, itemCondition, PSTItemConditions.conditionsList())
-        .setToNameFunc(m -> Component.literal(PSTItemConditions.getName(m)))
-        .setResponder(
-            m -> {
-              setItemCondition(m);
-              consumer.accept(this);
-              editor.rebuildWidgets();
-            });
+        .addSelectionMenu(0, 0, 200, itemCondition)
+        .setResponder(condition -> selectItemCondition(editor, consumer, condition))
+        .setOnMenuInit(() -> addItemConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
+  }
+
+  private void addItemConditionWidgets(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
     itemCondition.addEditorWidgets(
         editor,
-        m -> {
-          setItemCondition(m);
+        condition -> {
+          setItemCondition(condition);
           consumer.accept(this);
         });
+  }
+
+  private void selectItemCondition(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer, ItemCondition condition) {
+    setItemCondition(condition);
+    consumer.accept(this);
+    editor.rebuildWidgets();
+  }
+
+  private void addPlayerMultiplierWidgets(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
+    playerMultiplier.addEditorWidgets(
+        editor,
+        multiplier -> {
+          setPlayerMultiplier(multiplier);
+          consumer.accept(this);
+        });
+  }
+
+  private void selectPlayerMultiplier(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer, LivingMultiplier multiplier) {
+    setPlayerMultiplier(multiplier);
+    consumer.accept(this);
+    editor.rebuildWidgets();
+  }
+
+  private void addPlayerConditionWidgets(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer) {
+    playerCondition.addEditorWidgets(
+        editor,
+        condition -> {
+          setPlayerCondition(condition);
+          consumer.accept(this);
+        });
+  }
+
+  private void selectPlayerCondition(
+      SkillTreeEditor editor, Consumer<SkillEventListener> consumer, LivingCondition condition) {
+    setPlayerCondition(condition);
+    consumer.accept(this);
+    editor.rebuildWidgets();
   }
 
   @Override
