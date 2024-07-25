@@ -8,7 +8,7 @@ import daripher.skilltree.client.widget.editor.menu.MainEditorMenu;
 import daripher.skilltree.client.widget.editor.menu.selection.SelectionMenuButton;
 import daripher.skilltree.client.widget.group.WidgetGroup;
 import daripher.skilltree.client.widget.skill.SkillButton;
-import daripher.skilltree.client.widget.skill.SkillTreeButtons;
+import daripher.skilltree.client.widget.skill.SkillButtons;
 import daripher.skilltree.init.*;
 import daripher.skilltree.skill.PassiveSkill;
 import daripher.skilltree.skill.PassiveSkillTree;
@@ -39,13 +39,13 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 public class SkillTreeEditor extends WidgetGroup<AbstractWidget> {
-  private final SkillTreeButtons skillButtons;
+  private final SkillButtons skillButtons;
   private final SkillSelector skillSelector;
   private final SkillMirrorer skillMirrorer;
   private final SkillDragger skillDragger;
   private @NotNull EditorMenu selectedMenu = new MainEditorMenu(this);
 
-  public SkillTreeEditor(SkillTreeButtons skillButtons) {
+  public SkillTreeEditor(SkillButtons skillButtons) {
     super(0, 0, 0, 0);
     this.skillButtons = skillButtons;
     this.skillSelector = new SkillSelector(this, skillButtons);

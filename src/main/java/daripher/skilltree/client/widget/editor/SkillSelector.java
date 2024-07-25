@@ -2,7 +2,7 @@ package daripher.skilltree.client.widget.editor;
 
 import daripher.skilltree.client.screen.ScreenHelper;
 import daripher.skilltree.client.widget.skill.SkillButton;
-import daripher.skilltree.client.widget.skill.SkillTreeButtons;
+import daripher.skilltree.client.widget.skill.SkillButtons;
 import daripher.skilltree.skill.PassiveSkill;
 import java.awt.geom.Rectangle2D;
 import java.util.HashSet;
@@ -20,12 +20,12 @@ import org.lwjgl.glfw.GLFW;
 public class SkillSelector extends AbstractWidget {
   private static final int SELECTION_COLOR = 0xEE95EB34;
   private final Set<PassiveSkill> selectedSkills = new HashSet<>();
-  private final SkillTreeButtons skillButtons;
+  private final SkillButtons skillButtons;
   private final SkillTreeEditor editor;
   private int selectionStartX;
   private int selectionStartY;
 
-  public SkillSelector(SkillTreeEditor editor, SkillTreeButtons skillButtons) {
+  public SkillSelector(SkillTreeEditor editor, SkillButtons skillButtons) {
     super(0, 0, 0, 0, Component.empty());
     this.skillButtons = skillButtons;
     this.editor = editor;

@@ -14,13 +14,13 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public class SkillTreeButtons extends ScrollableZoomableWidgetGroup<SkillButton> {
+public class SkillButtons extends ScrollableZoomableWidgetGroup<SkillButton> {
   private final PassiveSkillTree skillTree;
   private final List<SkillConnection> skillConnections = new ArrayList<>();
   private final Map<ResourceLocation, SkillButton> idToWidget = new HashMap<>();
   private final Supplier<Float> animationFunc;
 
-  public SkillTreeButtons(PassiveSkillTree skillTree, Supplier<Float> animationFunc) {
+  public SkillButtons(PassiveSkillTree skillTree, Supplier<Float> animationFunc) {
     super(0, 0, 0, 0);
     this.skillTree = skillTree;
     this.animationFunc = animationFunc;

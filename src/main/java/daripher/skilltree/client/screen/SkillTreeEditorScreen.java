@@ -5,7 +5,7 @@ import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.client.data.SkillTreeClientData;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.client.widget.editor.menu.SkillNodeEditor;
-import daripher.skilltree.client.widget.skill.SkillTreeButtons;
+import daripher.skilltree.client.widget.skill.SkillButtons;
 import daripher.skilltree.skill.PassiveSkill;
 import daripher.skilltree.skill.PassiveSkillTree;
 import net.minecraft.client.Minecraft;
@@ -19,7 +19,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class SkillTreeEditorScreen extends Screen {
   private final PassiveSkillTree skillTree;
-  private final SkillTreeButtons skillButtons;
+  private final SkillButtons skillButtons;
   private final SkillTreeEditor editorWidgets;
   private boolean shouldCloseOnEsc = true;
   private int prevMouseX;
@@ -29,7 +29,7 @@ public class SkillTreeEditorScreen extends Screen {
     super(Component.empty());
     this.minecraft = Minecraft.getInstance();
     this.skillTree = SkillTreeClientData.getOrCreateEditorTree(skillTreeId);
-    this.skillButtons = new SkillTreeButtons(skillTree, () -> 0f);
+    this.skillButtons = new SkillButtons(skillTree, () -> 0f);
     this.editorWidgets = new SkillTreeEditor(skillButtons);
   }
 
