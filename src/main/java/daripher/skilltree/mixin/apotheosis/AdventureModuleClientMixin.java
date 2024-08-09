@@ -1,9 +1,8 @@
 package daripher.skilltree.mixin.apotheosis;
 
 import daripher.skilltree.compat.apotheosis.ApotheosisCompatibility;
-import java.util.List;
-
 import dev.shadowsoffire.apotheosis.adventure.client.AdventureModuleClient;
+import dev.shadowsoffire.apotheosis.adventure.socket.SocketedGems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,8 +17,10 @@ public class AdventureModuleClientMixin {
           @At(
               value = "INVOKE",
               target =
-                  "Ldev/shadowsoffire/apotheosis/adventure/affix/socket/SocketHelper;getGems(Lnet/minecraft/world/item/ItemStack;)Ljava/util/List;"))
-  private static List<ItemStack> showPlayerSockets(ItemStack stack) {
+                  "Ldev/shadowsoffire/apotheosis/adventure/socket/SocketHelper;getGems"
+                      + "(Lnet/minecraft/world/item/ItemStack;)"
+                      + "Ldev/shadowsoffire/apotheosis/adventure/socket/SocketedGems;"))
+  private static SocketedGems showPlayerSockets(ItemStack stack) {
     Minecraft minecraft = Minecraft.getInstance();
     int sockets = ApotheosisCompatibility.INSTANCE.getSockets(stack, minecraft.player);
     return ApotheosisCompatibility.INSTANCE.getGems(stack, sockets);
@@ -31,7 +32,7 @@ public class AdventureModuleClientMixin {
           @At(
               value = "INVOKE",
               target =
-                  "Ldev/shadowsoffire/apotheosis/adventure/affix/socket/SocketHelper;getSockets(Lnet/minecraft/world/item/ItemStack;)I"))
+                  "Ldev/shadowsoffire/apotheosis/adventure/socket/SocketHelper;getSockets(Lnet/minecraft/world/item/ItemStack;)I"))
   private static int addPlayerSockets(ItemStack stack) {
     return ApotheosisCompatibility.INSTANCE.getSockets(stack, Minecraft.getInstance().player);
   }
@@ -42,7 +43,7 @@ public class AdventureModuleClientMixin {
           @At(
               value = "INVOKE",
               target =
-                  "Ldev/shadowsoffire/apotheosis/adventure/affix/socket/SocketHelper;getSockets(Lnet/minecraft/world/item/ItemStack;)I"))
+                  "Ldev/shadowsoffire/apotheosis/adventure/socket/SocketHelper;getSockets(Lnet/minecraft/world/item/ItemStack;)I"))
   private static int addPlayerSockets2(ItemStack stack) {
     return ApotheosisCompatibility.INSTANCE.getSockets(stack, Minecraft.getInstance().player);
   }

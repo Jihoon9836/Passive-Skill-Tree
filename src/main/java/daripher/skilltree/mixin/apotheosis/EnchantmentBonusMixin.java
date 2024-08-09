@@ -2,7 +2,7 @@ package daripher.skilltree.mixin.apotheosis;
 
 import java.util.Map;
 
-import dev.shadowsoffire.apotheosis.adventure.affix.socket.gem.bonus.EnchantmentBonus;
+import dev.shadowsoffire.apotheosis.adventure.socket.gem.bonus.EnchantmentBonus;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;

@@ -13,7 +13,7 @@
       "type": "skilltree:crafted_item_bonus",
       "item_bonus": {
         "type": "skilltree:durability",
-        "chance": 0.05,
+        "amount": 0.05,
         "operation": 1
       },
       "item_condition": {
@@ -29,7 +29,7 @@
           "type": "skilltree:attribute",
           "amount": 0.05,
           "attribute": "minecraft:generic.attack_speed",
-          "id": "4dbc290d-3b8f-42e9-889d-26170a3ac960",
+          "id": "127a9fbc-c013-4b93-99cd-e48b14017592",
           "name": "SkillBonus",
           "operation": 1,
           "player_condition": {
@@ -53,7 +53,7 @@
           "type": "skilltree:attribute",
           "amount": 0.05000000074505806,
           "attribute": "minecraft:generic.armor_toughness",
-          "id": "2032564c-b00e-437e-86a1-35c784d020f6",
+          "id": "1f78b732-90df-4179-b96a-bcd40184f254",
           "name": "SkillBonus",
           "operation": 1,
           "player_condition": {
@@ -77,7 +77,7 @@
           "type": "skilltree:attribute",
           "amount": 5.0,
           "attribute": "minecraft:generic.armor",
-          "id": "8350aaf0-4c53-4618-9a97-f20c172ef12b",
+          "id": "67191b28-c89d-4f9d-adf4-85a70fd5b9af",
           "name": "SkillBonus",
           "operation": 0,
           "player_condition": {

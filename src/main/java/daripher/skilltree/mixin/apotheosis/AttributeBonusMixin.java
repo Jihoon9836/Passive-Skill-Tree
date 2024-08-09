@@ -1,7 +1,7 @@
 package daripher.skilltree.mixin.apotheosis;
 
-import dev.shadowsoffire.apotheosis.adventure.affix.socket.gem.bonus.AttributeBonus;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
+import dev.shadowsoffire.apotheosis.adventure.socket.gem.bonus.AttributeBonus;
 import dev.shadowsoffire.placebo.util.StepFunction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;

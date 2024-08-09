@@ -2,8 +2,8 @@ package daripher.skilltree.item.gem;
 
 import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.compat.apotheosis.ApotheosisCompatibility;
-import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.data.reloader.GemTypesReloader;
+import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.entity.player.PlayerHelper;
 import daripher.skilltree.init.PSTItems;
 import daripher.skilltree.item.ItemHelper;
@@ -147,7 +147,7 @@ public class GemItem extends Item {
 
   public static List<ItemStack> getGems(ItemStack stack) {
     if (SkillTreeMod.apotheosisEnabled()) {
-      return ApotheosisCompatibility.INSTANCE.getGems(stack);
+      return ApotheosisCompatibility.INSTANCE.getGemStacks(stack);
     }
     if (!stack.hasTag()) return List.of();
     return stack.getOrCreateTag().getList("gems", Tag.TAG_STRING).stream()

@@ -5,7 +5,7 @@
       "type": "skilltree:crafted_item_bonus",
       "item_bonus": {
         "type": "skilltree:durability",
-        "chance": 0.25,
+        "amount": 0.25,
         "operation": 1
       },
       "item_condition": {

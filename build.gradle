@@ -138,9 +138,9 @@ dependencies {
     // apple skin
 	implementation fg.deobf("curse.maven:appleskin-248787:4605078")
     // apotheosis
-    implementation fg.deobf("curse.maven:apotheosis-313970:5209354")
-    implementation fg.deobf("curse.maven:placebo-283644:5098182")
-    implementation fg.deobf("curse.maven:apothic-attributes-898963:5209162")
+    implementation fg.deobf("curse.maven:apotheosis-313970:5486368")
+    implementation fg.deobf("curse.maven:placebo-283644:5414631")
+    implementation fg.deobf("curse.maven:apothic-attributes-898963:5529789")
     // tetra
     implementation fg.deobf("curse.maven:tetra-289712:4857842")
     implementation fg.deobf("curse.maven:mutil-351914:4824501")
@@ -150,7 +150,7 @@ dependencies {
     // item production lib
     implementation fg.deobf("curse.maven:item-production-lib-950401:5097458")
     // apothic curios
-    implementation fg.deobf("curse.maven:apothic-curios-950712:4966964")
+    implementation fg.deobf("curse.maven:apothic-curios-950712:5497444")
 }
 
 mixin {

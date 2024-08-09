@@ -5,7 +5,7 @@
       "type": "skilltree:attribute",
       "amount": 10.0,
       "attribute": "skilltree:blocking",
-      "id": "12cfa687-8c0e-490a-bc77-64a6e2358864",
+      "id": "5c75436b-3459-4c89-84ca-4c1ad725a82a",
       "name": "SkillBonus",
       "operation": 0,
       "player_condition": {
