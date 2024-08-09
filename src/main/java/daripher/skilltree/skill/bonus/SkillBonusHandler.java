@@ -644,23 +644,7 @@ public class SkillBonusHandler {
     bonuses.addAll(getPlayerBonuses(player, type));
     bonuses.addAll(getEffectBonuses(player, type));
     bonuses.addAll(getEquipmentBonuses(player, type));
-    return mergeSkillBonuses(bonuses);
-  }
-
-  private static <T> List<T> mergeSkillBonuses(List<T> bonuses) {
-    List<T> mergedBonuses = new ArrayList<>();
-    for (T bonus : bonuses) {
-      List<T> mergedCopy = new ArrayList<>(mergedBonuses);
-      for (int i = 0; i < mergedCopy.size(); i++) {
-        SkillBonus<?> merged = (SkillBonus<?>) mergedCopy.get(i);
-        if (merged.canMerge((SkillBonus<?>) bonus)) {
-          mergedBonuses.set(i, (T) merged.merge((SkillBonus<?>) bonus));
-          break;
-        }
-      }
-      mergedBonuses.add(bonus);
-    }
-    return mergedBonuses;
+    return bonuses;
   }
 
   private static <T> List<T> getPlayerBonuses(Player player, Class<T> type) {
