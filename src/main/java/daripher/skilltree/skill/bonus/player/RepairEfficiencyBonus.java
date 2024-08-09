@@ -88,7 +88,7 @@ public final class RepairEfficiencyBonus implements SkillBonus<RepairEfficiencyB
     editor
         .addSelectionMenu(0, 0, 200, itemCondition)
         .setResponder(condition -> selectItemCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addItemConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addItemConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 
@@ -149,7 +149,7 @@ public final class RepairEfficiencyBonus implements SkillBonus<RepairEfficiencyB
     @Override
     public RepairEfficiencyBonus deserialize(JsonObject json) throws JsonParseException {
       ItemCondition condition = SerializationHelper.deserializeItemCondition(json);
-      float multiplier = json.get("multiplier").getAsFloat();
+      float multiplier = SerializationHelper.getElement(json, "multiplier").getAsFloat();
       return new RepairEfficiencyBonus(condition, multiplier);
     }
 

@@ -130,7 +130,7 @@ public final class HealingBonus implements EventListenerBonus<HealingBonus> {
     editor
         .addSelectionMenu(0, 0, 200, eventListener)
         .setResponder(eventListener -> selectEventListener(editor, consumer, eventListener))
-        .setOnMenuInit(() -> addEventListenerWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addEventListenerWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 
@@ -178,8 +178,8 @@ public final class HealingBonus implements EventListenerBonus<HealingBonus> {
   public static class Serializer implements SkillBonus.Serializer {
     @Override
     public HealingBonus deserialize(JsonObject json) throws JsonParseException {
-      float chance = json.get("chance").getAsFloat();
-      float amount = json.get("amount").getAsFloat();
+      float chance = SerializationHelper.getElement(json, "chance").getAsFloat();
+      float amount = SerializationHelper.getElement(json, "amount").getAsFloat();
       HealingBonus bonus = new HealingBonus(chance, amount);
       bonus.eventListener = SerializationHelper.deserializeEventListener(json);
       return bonus;

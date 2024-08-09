@@ -121,7 +121,7 @@ public final class ItemDurabilityBonus implements ItemBonus<ItemDurabilityBonus>
   public static class Serializer implements ItemBonus.Serializer {
     @Override
     public ItemBonus<?> deserialize(JsonObject json) throws JsonParseException {
-      float amount = json.get("chance").getAsFloat();
+      float amount = SerializationHelper.getElement(json, "amount").getAsFloat();
       AttributeModifier.Operation operation = SerializationHelper.deserializeOperation(json);
       return new ItemDurabilityBonus(amount, operation);
     }
@@ -131,13 +131,13 @@ public final class ItemDurabilityBonus implements ItemBonus<ItemDurabilityBonus>
       if (!(bonus instanceof ItemDurabilityBonus aBonus)) {
         throw new IllegalArgumentException();
       }
-      json.addProperty("chance", aBonus.amount);
+      json.addProperty("amount", aBonus.amount);
       SerializationHelper.serializeOperation(json, aBonus.operation);
     }
 
     @Override
     public ItemBonus<?> deserialize(CompoundTag tag) {
-      float amount = tag.getFloat("chance");
+      float amount = tag.getFloat("amount");
       AttributeModifier.Operation operation = SerializationHelper.deserializeOperation(tag);
       return new ItemDurabilityBonus(amount, operation);
     }
@@ -148,7 +148,7 @@ public final class ItemDurabilityBonus implements ItemBonus<ItemDurabilityBonus>
         throw new IllegalArgumentException();
       }
       CompoundTag tag = new CompoundTag();
-      tag.putFloat("chance", aBonus.amount);
+      tag.putFloat("amount", aBonus.amount);
       SerializationHelper.serializeOperation(tag, aBonus.operation);
       return tag;
     }

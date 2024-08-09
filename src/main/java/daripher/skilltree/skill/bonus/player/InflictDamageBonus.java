@@ -127,7 +127,7 @@ public final class InflictDamageBonus implements EventListenerBonus<InflictDamag
     editor
         .addSelectionMenu(0, 0, 200, eventListener)
         .setResponder(eventListener -> selectEventListener(editor, consumer, eventListener))
-        .setOnMenuInit(() -> addEventListenerWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addEventListenerWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 

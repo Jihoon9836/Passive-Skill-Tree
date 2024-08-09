@@ -85,7 +85,7 @@ public final class PlayerSocketsBonus implements SkillBonus<PlayerSocketsBonus> 
     editor
         .addSelectionMenu(0, 0, 200, itemCondition)
         .setResponder(condition -> selectItemCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addItemConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addItemConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 
@@ -145,7 +145,7 @@ public final class PlayerSocketsBonus implements SkillBonus<PlayerSocketsBonus> 
     @Override
     public PlayerSocketsBonus deserialize(JsonObject json) throws JsonParseException {
       ItemCondition condition = SerializationHelper.deserializeItemCondition(json);
-      int sockets = json.get("sockets").getAsInt();
+      int sockets = SerializationHelper.getElement(json, "sockets").getAsInt();
       return new PlayerSocketsBonus(condition, sockets);
     }
 

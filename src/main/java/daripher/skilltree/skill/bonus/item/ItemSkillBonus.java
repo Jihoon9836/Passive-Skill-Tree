@@ -70,7 +70,7 @@ public final class ItemSkillBonus implements ItemBonus<ItemSkillBonus> {
     editor
         .addSelectionMenu(0, 0, 200, bonus)
         .setResponder(skillBonus -> selectSkillBonus(editor, consumer, skillBonus))
-        .setOnMenuInit(() -> addSkillBonusWidgets(editor, index, consumer));
+        .setMenuInitFunc(() -> addSkillBonusWidgets(editor, index, consumer));
     editor.increaseHeight(19);
   }
 

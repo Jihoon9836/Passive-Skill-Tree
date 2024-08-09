@@ -3,6 +3,7 @@ package daripher.skilltree.skill.bonus.item;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
+import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTItemBonuses;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -100,7 +101,7 @@ public final class FoodHealingBonus implements ItemBonus<FoodHealingBonus> {
   public static class Serializer implements ItemBonus.Serializer {
     @Override
     public ItemBonus<?> deserialize(JsonObject json) throws JsonParseException {
-      float multiplier = json.get("amount").getAsFloat();
+      float multiplier = SerializationHelper.getElement(json, "amount").getAsFloat();
       return new FoodHealingBonus(multiplier);
     }
 

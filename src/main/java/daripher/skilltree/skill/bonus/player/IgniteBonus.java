@@ -120,7 +120,7 @@ public final class IgniteBonus implements EventListenerBonus<IgniteBonus> {
     editor
         .addSelectionMenu(0, 0, 200, eventListener)
         .setResponder(eventListener -> selectEventListener(editor, consumer, eventListener))
-        .setOnMenuInit(() -> addEventListenerWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addEventListenerWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 
@@ -168,8 +168,8 @@ public final class IgniteBonus implements EventListenerBonus<IgniteBonus> {
   public static class Serializer implements SkillBonus.Serializer {
     @Override
     public IgniteBonus deserialize(JsonObject json) throws JsonParseException {
-      float chance = json.get("chance").getAsFloat();
-      int duration = json.get("duration").getAsInt();
+      float chance = SerializationHelper.getElement(json, "chance").getAsFloat();
+      int duration = SerializationHelper.getElement(json, "duration").getAsInt();
       IgniteBonus bonus = new IgniteBonus(chance, duration);
       bonus.eventListener = SerializationHelper.deserializeEventListener(json);
       return bonus;

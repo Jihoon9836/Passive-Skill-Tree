@@ -91,14 +91,14 @@ public final class CraftedItemBonus implements SkillBonus<CraftedItemBonus> {
     editor
         .addSelectionMenu(0, 0, 200, itemCondition)
         .setResponder(condition -> selectItemCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addItemConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addItemConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Item Bonus", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
         .addSelectionMenu(0, 0, 200, bonus)
         .setResponder(bonus -> selectItemBonus(editor, consumer, bonus))
-        .setOnMenuInit(() -> addItemBonusWidgets(editor, index, consumer));
+        .setMenuInitFunc(() -> addItemBonusWidgets(editor, index, consumer));
     editor.increaseHeight(19);
   }
 

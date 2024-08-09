@@ -44,7 +44,7 @@ public class SelectionMenuButton<T> extends Button {
     return this;
   }
 
-  public void setOnMenuInit(Runnable onMenuInit) {
+  public void setMenuInitFunc(Runnable onMenuInit) {
     this.onMenuInit = onMenuInit;
   }
 

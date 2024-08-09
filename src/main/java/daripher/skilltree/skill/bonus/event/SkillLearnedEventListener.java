@@ -64,7 +64,7 @@ public class SkillLearnedEventListener implements SkillEventListener {
     editor
         .addSelectionMenu(0, 0, 200, playerMultiplier)
         .setResponder(multiplier -> selectPlayerMultiplier(editor, consumer, multiplier))
-        .setOnMenuInit(() -> addPlayerMultiplierWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addPlayerMultiplierWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 

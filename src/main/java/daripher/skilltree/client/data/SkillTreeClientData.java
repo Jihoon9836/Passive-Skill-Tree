@@ -59,22 +59,34 @@ public class SkillTreeClientData {
       if (!EDITOR_TREES.containsKey(treeId)) {
         loadEditorSkillTree(treeId);
       }
-      PassiveSkillTree editorSkillTree =
-          EDITOR_TREES.getOrDefault(treeId, new PassiveSkillTree(treeId));
-      editorSkillTree.getSkillIds().forEach(SkillTreeClientData::loadOrCreateEditorSkill);
-      return editorSkillTree;
-    } catch (Exception e) {
+      PassiveSkillTree skillTree = EDITOR_TREES.getOrDefault(treeId, new PassiveSkillTree(treeId));
+      for (ResourceLocation skillId : skillTree.getSkillIds()) {
+        try {
+          loadOrCreateEditorSkill(skillId);
+        } catch (Exception exception) {
+          exception.printStackTrace();
+          printMessage("Couldn't read passive skill " + skillId, ChatFormatting.DARK_RED);
+          printMessage("");
+          String errorMessage =
+              exception.getMessage() == null ? "No error message" : exception.getMessage();
+          printMessage(errorMessage, ChatFormatting.RED);
+          return null;
+        }
+      }
+      return skillTree;
+    } catch (Exception exception) {
       EDITOR_TREES.clear();
       EDITOR_PASSIVE_SKILLS.clear();
-      sendSystemMessage("Error while reading editor files", ChatFormatting.DARK_RED);
-      sendSystemMessage("");
-      String errorMessage = e.getMessage() == null ? "No error message" : e.getMessage();
-      sendSystemMessage(errorMessage, ChatFormatting.RED);
-      sendSystemMessage("");
-      sendSystemMessage("Try removing files from folder", ChatFormatting.DARK_RED);
-      sendSystemMessage("");
-      sendSystemMessage(getSavesFolder().getPath(), ChatFormatting.RED);
-      e.printStackTrace();
+      printMessage("Couldn't read skill tree " + treeId, ChatFormatting.DARK_RED);
+      printMessage("");
+      String errorMessage =
+          exception.getMessage() == null ? "No error message" : exception.getMessage();
+      printMessage(errorMessage, ChatFormatting.RED);
+      printMessage("");
+      printMessage("Try removing files from folder", ChatFormatting.DARK_RED);
+      printMessage("");
+      printMessage(getSavesFolder().getPath(), ChatFormatting.RED);
+      exception.printStackTrace();
       return null;
     }
   }
@@ -95,9 +107,9 @@ public class SkillTreeClientData {
           """;
       writer.write(contents);
       writer.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+    } catch (IOException exception) {
+      exception.printStackTrace();
+      throw new RuntimeException(exception);
     }
   }
 
@@ -119,24 +131,22 @@ public class SkillTreeClientData {
     File file = getSkillTreeSaveFile(skillTree.getId());
     try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
       SkillTreesReloader.GSON.toJson(skillTree, writer);
-    } catch (JsonIOException | IOException e) {
-      e.printStackTrace();
+    } catch (JsonIOException | IOException exception) {
+      exception.printStackTrace();
       throw new RuntimeException("Can't save editor skill tree " + skillTree.getId());
     }
   }
 
-  public static void loadEditorSkillTree(ResourceLocation treeId) {
+  public static void loadEditorSkillTree(ResourceLocation treeId) throws IOException {
+    File file = getSkillTreeSaveFile(treeId);
     PassiveSkillTree skillTree;
     try {
-      skillTree = readFromFile(PassiveSkillTree.class, getSkillTreeSaveFile(treeId));
-    } catch (IOException e) {
-      e.printStackTrace();
-      sendSystemMessage("Can't load editor tree " + treeId, ChatFormatting.DARK_RED);
-      throw new RuntimeException("Can't load editor tree " + treeId);
-    }
-    if (skillTree == null) {
+      skillTree = readFromFile(PassiveSkillTree.class, file);
+    } catch (Exception exception) {
       skillTree = new PassiveSkillTree(treeId);
       saveEditorSkillTree(skillTree);
+      EDITOR_TREES.put(treeId, skillTree);
+      throw exception;
     }
     EDITOR_TREES.put(treeId, skillTree);
   }
@@ -145,8 +155,8 @@ public class SkillTreeClientData {
     File file = getSkillSaveFile(skill.getId());
     try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
       SkillsReloader.GSON.toJson(skill, writer);
-    } catch (JsonIOException | IOException e) {
-      e.printStackTrace();
+    } catch (JsonIOException | IOException exception) {
+      exception.printStackTrace();
       throw new RuntimeException("Can't save editor skill " + skill.getId());
     }
   }
@@ -155,9 +165,9 @@ public class SkillTreeClientData {
     PassiveSkill skill;
     try {
       skill = readFromFile(PassiveSkill.class, getSkillSaveFile(skillId));
-    } catch (IOException e) {
-      e.printStackTrace();
-      sendSystemMessage("Can't load editor skill " + skillId, ChatFormatting.DARK_RED);
+    } catch (IOException exception) {
+      exception.printStackTrace();
+      printMessage("Can't load editor skill " + skillId, ChatFormatting.DARK_RED);
       throw new RuntimeException("Can't load editor skill " + skillId);
     }
     EDITOR_PASSIVE_SKILLS.put(skillId, skill);
@@ -198,7 +208,7 @@ public class SkillTreeClientData {
     }
   }
 
-  private static void sendSystemMessage(String text, ChatFormatting... styles) {
+  private static void printMessage(String text, ChatFormatting... styles) {
     LocalPlayer player = Minecraft.getInstance().player;
     if (player != null) {
       MutableComponent component = Component.literal(text);

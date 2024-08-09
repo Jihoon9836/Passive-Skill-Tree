@@ -115,7 +115,7 @@ public class CommandBonus implements EventListenerBonus<CommandBonus> {
     editor
         .addSelectionMenu(0, 0, 200, eventListener)
         .setResponder(eventListener -> selectEventListener(editor, consumer, eventListener))
-        .setOnMenuInit(() -> addEventListenerWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addEventListenerWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 
@@ -165,12 +165,7 @@ public class CommandBonus implements EventListenerBonus<CommandBonus> {
     public CommandBonus deserialize(JsonObject json) throws JsonParseException {
       String command = json.get("command").getAsString();
       String description = json.has("description") ? json.get("description").getAsString() : "";
-      SkillEventListener eventListener;
-      if (!json.has("event_listener")) {
-        eventListener = new SkillLearnedEventListener();
-      } else {
-        eventListener = SerializationHelper.deserializeEventListener(json);
-      }
+      SkillEventListener eventListener = SerializationHelper.deserializeEventListener(json);
       return new CommandBonus(command, description, eventListener);
     }
 

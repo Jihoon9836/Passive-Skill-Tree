@@ -204,14 +204,14 @@ public final class AllAttributesBonus
     editor
         .addSelectionMenu(0, 0, 200, playerCondition)
         .setResponder(condition -> selectPlayerCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addPlayerConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addPlayerConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
         .addSelectionMenu(0, 0, 200, playerMultiplier)
         .setResponder(multiplier -> selectPlayerMultiplier(editor, consumer, multiplier))
-        .setOnMenuInit(() -> addPlayerMultiplierWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addPlayerMultiplierWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 

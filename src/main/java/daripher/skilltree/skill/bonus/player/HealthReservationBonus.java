@@ -102,14 +102,14 @@ public final class HealthReservationBonus implements SkillBonus<HealthReservatio
     editor
         .addSelectionMenu(0, 0, 200, playerCondition)
         .setResponder(condition -> selectPlayerCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addPlayerConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addPlayerConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
         .addSelectionMenu(0, 0, 200, playerMultiplier)
         .setResponder(multiplier -> selectPlayerMultiplier(editor, consumer, multiplier))
-        .setOnMenuInit(() -> addPlayerMultiplierWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addPlayerMultiplierWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 
@@ -173,7 +173,7 @@ public final class HealthReservationBonus implements SkillBonus<HealthReservatio
   public static class Serializer implements SkillBonus.Serializer {
     @Override
     public HealthReservationBonus deserialize(JsonObject json) throws JsonParseException {
-      float amount = json.get("amount").getAsFloat();
+      float amount = SerializationHelper.getElement(json, "amount").getAsFloat();
       HealthReservationBonus bonus = new HealthReservationBonus(amount);
       bonus.playerMultiplier =
           SerializationHelper.deserializeLivingMultiplier(json, "player_multiplier");

@@ -4,6 +4,7 @@ import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.SelectionList;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
+import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.skill.bonus.SkillBonus;
 import java.util.Objects;
@@ -185,8 +186,8 @@ public final class LootDuplicationBonus implements SkillBonus<LootDuplicationBon
   public static class Serializer implements SkillBonus.Serializer {
     @Override
     public LootDuplicationBonus deserialize(JsonObject json) throws JsonParseException {
-      float chance = json.get("chance").getAsFloat();
-      float multiplier = json.get("multiplier").getAsFloat();
+      float chance = SerializationHelper.getElement(json, "chance").getAsFloat();
+      float multiplier = SerializationHelper.getElement(json, "multiplier").getAsFloat();
       LootType lootType = LootType.byName(json.get("loot_type").getAsString());
       return new LootDuplicationBonus(chance, multiplier, lootType);
     }

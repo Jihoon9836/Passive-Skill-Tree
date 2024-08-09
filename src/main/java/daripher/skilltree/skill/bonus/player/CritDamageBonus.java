@@ -127,28 +127,28 @@ public final class CritDamageBonus implements SkillBonus<CritDamageBonus> {
     editor
         .addSelectionMenu(0, 0, 200, playerCondition)
         .setResponder(condition -> selectPlayerCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addPlayerConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addPlayerConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Target Condition", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
         .addSelectionMenu(0, 0, 200, targetCondition)
         .setResponder(condition -> selectTargetCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addTargetConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addTargetConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
         .addSelectionMenu(0, 0, 200, playerMultiplier)
         .setResponder(multiplier -> selectPlayerMultiplier(editor, consumer, multiplier))
-        .setOnMenuInit(() -> addPlayerMultiplierWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addPlayerMultiplierWidgets(editor, consumer));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Target Multiplier", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
         .addSelectionMenu(0, 0, 200, targetMultiplier)
         .setResponder(multiplier -> selectTargetMultiplier(editor, consumer, multiplier))
-        .setOnMenuInit(() -> addTargetMultiplierWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addTargetMultiplierWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 
@@ -263,7 +263,7 @@ public final class CritDamageBonus implements SkillBonus<CritDamageBonus> {
   public static class Serializer implements SkillBonus.Serializer {
     @Override
     public CritDamageBonus deserialize(JsonObject json) throws JsonParseException {
-      float amount = json.get("amount").getAsFloat();
+      float amount = SerializationHelper.getElement(json, "amount").getAsFloat();
       CritDamageBonus bonus = new CritDamageBonus(amount);
       bonus.playerMultiplier =
           SerializationHelper.deserializeLivingMultiplier(json, "player_multiplier");

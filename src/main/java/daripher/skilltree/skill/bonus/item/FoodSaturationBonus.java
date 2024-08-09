@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
+import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTItemBonuses;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -98,7 +99,7 @@ public final class FoodSaturationBonus implements ItemBonus<FoodSaturationBonus>
   public static class Serializer implements ItemBonus.Serializer {
     @Override
     public ItemBonus<?> deserialize(JsonObject json) throws JsonParseException {
-      float multiplier = json.get("multiplier").getAsFloat();
+      float multiplier = SerializationHelper.getElement(json, "multiplier").getAsFloat();
       return new FoodSaturationBonus(multiplier);
     }
 

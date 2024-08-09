@@ -1,15 +1,19 @@
 package daripher.skilltree.data.serializers;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.init.PSTRegistries;
 import daripher.skilltree.item.gem.bonus.GemBonusProvider;
 import daripher.skilltree.skill.bonus.SkillBonus;
 import daripher.skilltree.skill.bonus.condition.damage.DamageCondition;
+import daripher.skilltree.skill.bonus.condition.damage.NoneDamageCondition;
 import daripher.skilltree.skill.bonus.condition.enchantment.EnchantmentCondition;
+import daripher.skilltree.skill.bonus.condition.enchantment.NoneEnchantmentCondition;
 import daripher.skilltree.skill.bonus.condition.item.*;
 import daripher.skilltree.skill.bonus.condition.living.LivingCondition;
+import daripher.skilltree.skill.bonus.condition.living.NoneLivingCondition;
 import daripher.skilltree.skill.bonus.event.SkillEventListener;
 import daripher.skilltree.skill.bonus.item.ItemBonus;
 import daripher.skilltree.skill.bonus.multiplier.LivingMultiplier;
@@ -139,11 +143,13 @@ public class SerializationHelper {
   }
 
   public static @Nonnull LivingCondition deserializeLivingCondition(JsonObject json, String name) {
+    if (!json.has(name)) return NoneLivingCondition.INSTANCE;
     JsonObject conditionJson = json.getAsJsonObject(name);
     ResourceLocation serializerId = new ResourceLocation(conditionJson.get("type").getAsString());
     LivingCondition.Serializer serializer =
         PSTRegistries.LIVING_CONDITIONS.get().getValue(serializerId);
-    return Objects.requireNonNull(serializer).deserialize(conditionJson);
+    String errorMessage = "Unknown living condition: " + serializerId;
+    return deserializeObject(serializer, conditionJson, errorMessage);
   }
 
   public static void serializeLivingCondition(
@@ -159,11 +165,14 @@ public class SerializationHelper {
 
   @Nonnull
   public static DamageCondition deserializeDamageCondition(JsonObject json) {
-    JsonObject conditionJson = json.getAsJsonObject("damage_condition");
+    String name = "damage_condition";
+    if (!json.has(name)) return NoneDamageCondition.INSTANCE;
+    JsonObject conditionJson = json.getAsJsonObject(name);
     ResourceLocation serializerId = new ResourceLocation(conditionJson.get("type").getAsString());
     DamageCondition.Serializer serializer =
         PSTRegistries.DAMAGE_CONDITIONS.get().getValue(serializerId);
-    return Objects.requireNonNull(serializer).deserialize(conditionJson);
+    String errorMessage = "Unknown damage condition: " + serializerId;
+    return deserializeObject(serializer, conditionJson, errorMessage);
   }
 
   public static void serializeDamageCondition(JsonObject json, @Nonnull DamageCondition condition) {
@@ -176,11 +185,14 @@ public class SerializationHelper {
   }
 
   public static @Nonnull ItemCondition deserializeItemCondition(JsonObject json) {
-    JsonObject conditionJson = json.getAsJsonObject("item_condition");
+    String name = "item_condition";
+    if (!json.has(name)) return NoneItemCondition.INSTANCE;
+    JsonObject conditionJson = json.getAsJsonObject(name);
     ResourceLocation serializerId = new ResourceLocation(conditionJson.get("type").getAsString());
     ItemCondition.Serializer serializer =
         PSTRegistries.ITEM_CONDITIONS.get().getValue(serializerId);
-    return Objects.requireNonNull(serializer).deserialize(conditionJson);
+    String errorMessage = "Unknown item condition: " + serializerId;
+    return deserializeObject(serializer, conditionJson, errorMessage);
   }
 
   public static void serializeItemCondition(JsonObject json, @Nonnull ItemCondition condition) {
@@ -193,11 +205,12 @@ public class SerializationHelper {
   }
 
   public static @Nonnull SkillEventListener deserializeEventListener(JsonObject json) {
-    JsonObject conditionJson = json.getAsJsonObject("event_listener");
-    ResourceLocation serializerId = new ResourceLocation(conditionJson.get("type").getAsString());
+    JsonObject eventJson = json.getAsJsonObject("event_listener");
+    ResourceLocation serializerId = new ResourceLocation(eventJson.get("type").getAsString());
     SkillEventListener.Serializer serializer =
         PSTRegistries.EVENT_LISTENERS.get().getValue(serializerId);
-    return Objects.requireNonNull(serializer).deserialize(conditionJson);
+    String errorMessage = "Unknown event listener: " + serializerId;
+    return deserializeObject(serializer, eventJson, errorMessage);
   }
 
   public static void serializeEventListener(
@@ -210,8 +223,7 @@ public class SerializationHelper {
     json.add("event_listener", conditionJson);
   }
 
-  @Nullable
-  public static MobEffect deserializeEffect(JsonObject json) {
+  public static @Nullable MobEffect deserializeEffect(JsonObject json) {
     if (!json.has("effect")) return null;
     ResourceLocation effectId = new ResourceLocation(json.get("effect").getAsString());
     return ForgeRegistries.MOB_EFFECTS.getValue(effectId);
@@ -222,8 +234,7 @@ public class SerializationHelper {
     json.addProperty("effect", Objects.requireNonNull(effectId).toString());
   }
 
-  @Nullable
-  public static PotionCondition.Type deserializePotionType(JsonObject json) {
+  public static @Nullable PotionCondition.Type deserializePotionType(JsonObject json) {
     return PotionCondition.Type.byName(json.get("potion_type").getAsString());
   }
 
@@ -246,11 +257,14 @@ public class SerializationHelper {
 
   @Nonnull
   public static EnchantmentCondition deserializeEnchantmentCondition(JsonObject json) {
-    JsonObject conditionJson = json.getAsJsonObject("enchantment_condition");
+    String name = "enchantment_condition";
+    if (!json.has(name)) return NoneEnchantmentCondition.INSTANCE;
+    JsonObject conditionJson = json.getAsJsonObject(name);
     ResourceLocation serializerId = new ResourceLocation(conditionJson.get("type").getAsString());
     EnchantmentCondition.Serializer serializer =
         PSTRegistries.ENCHANTMENT_CONDITIONS.get().getValue(serializerId);
-    return Objects.requireNonNull(serializer).deserialize(conditionJson);
+    String errorMessage = "Unknown enchantment condition: " + serializerId;
+    return deserializeObject(serializer, conditionJson, errorMessage);
   }
 
   public static void serializeEnchantmentCondition(
@@ -276,9 +290,9 @@ public class SerializationHelper {
       JsonObject json, String elementName, List<T> objects, BiConsumer<JsonObject, T> serializer) {
     JsonArray objectsJson = new JsonArray();
     objects.forEach(
-        o -> {
+        object -> {
           JsonObject objectJson = new JsonObject();
-          serializer.accept(objectJson, o);
+          serializer.accept(objectJson, object);
           objectsJson.add(objectJson);
         });
     json.add(elementName, objectsJson);
@@ -553,5 +567,15 @@ public class SerializationHelper {
     CompoundTag bonusTag = provider.getSerializer().serialize(provider);
     bonusTag.putString("type", Objects.requireNonNull(serializerId).toString());
     tag.put("bonus_provider", bonusTag);
+  }
+
+  private static <T> T deserializeObject(
+      Serializer<T> serializer, JsonObject jsonObject, String errorMessage) {
+    return Objects.requireNonNull(serializer, errorMessage).deserialize(jsonObject);
+  }
+
+  public static JsonElement getElement(JsonObject json, String name) {
+    JsonElement element = json.get(name);
+    return Objects.requireNonNull(element, "Element not found: " + name);
   }
 }

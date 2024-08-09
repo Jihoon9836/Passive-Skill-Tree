@@ -103,14 +103,14 @@ public final class IncomingHealingBonus implements SkillBonus<IncomingHealingBon
     editor
         .addSelectionMenu(0, 0, 200, playerCondition)
         .setResponder(condition -> selectPlayerCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addPlayerConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addPlayerConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor
         .addSelectionMenu(0, 0, 200, playerMultiplier)
         .setResponder(multiplier -> selectPlayerMultiplier(editor, consumer, multiplier))
-        .setOnMenuInit(() -> addPlayerMultiplierWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addPlayerMultiplierWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 
@@ -172,7 +172,7 @@ public final class IncomingHealingBonus implements SkillBonus<IncomingHealingBon
   public static class Serializer implements SkillBonus.Serializer {
     @Override
     public IncomingHealingBonus deserialize(JsonObject json) throws JsonParseException {
-      float multiplier = json.get("multiplier").getAsFloat();
+      float multiplier = SerializationHelper.getElement(json, "multiplier").getAsFloat();
       IncomingHealingBonus bonus = new IncomingHealingBonus(multiplier);
       bonus.playerMultiplier =
           SerializationHelper.deserializeLivingMultiplier(json, "player_multiplier");

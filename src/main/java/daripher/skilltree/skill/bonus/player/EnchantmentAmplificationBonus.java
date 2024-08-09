@@ -139,7 +139,7 @@ public final class EnchantmentAmplificationBonus
     @Override
     public EnchantmentAmplificationBonus deserialize(JsonObject json) throws JsonParseException {
       EnchantmentCondition condition = SerializationHelper.deserializeEnchantmentCondition(json);
-      float multiplier = json.get("chance").getAsFloat();
+      float multiplier = SerializationHelper.getElement(json, "chance").getAsFloat();
       return new EnchantmentAmplificationBonus(condition, multiplier);
     }
 

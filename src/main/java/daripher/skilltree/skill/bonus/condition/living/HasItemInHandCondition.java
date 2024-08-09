@@ -51,7 +51,7 @@ public final class HasItemInHandCondition implements LivingCondition {
     editor
         .addSelectionMenu(0, 0, 200, itemCondition)
         .setResponder(condition -> selectItemCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addItemConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addItemConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 

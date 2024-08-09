@@ -3,6 +3,7 @@ package daripher.skilltree.skill.bonus.item;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
+import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTItemBonuses;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -96,7 +97,8 @@ public final class ItemSocketsBonus implements ItemBonus<ItemSocketsBonus> {
   public static class Serializer implements ItemBonus.Serializer {
     @Override
     public ItemBonus<?> deserialize(JsonObject json) throws JsonParseException {
-      return new ItemSocketsBonus(json.get("amount").getAsInt());
+      int amount = SerializationHelper.getElement(json, "amount").getAsInt();
+      return new ItemSocketsBonus(amount);
     }
 
     @Override

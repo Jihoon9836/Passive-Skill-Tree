@@ -85,7 +85,7 @@ public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBon
     editor
         .addSelectionMenu(0, 0, 200, playerCondition)
         .setResponder(condition -> selectPlayerCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addPlayerConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addPlayerConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 
@@ -147,7 +147,7 @@ public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBon
     public BlockBreakSpeedBonus deserialize(JsonObject json) throws JsonParseException {
       LivingCondition condition =
           SerializationHelper.deserializeLivingCondition(json, "player_condition");
-      float multiplier = json.get("multiplier").getAsFloat();
+      float multiplier = SerializationHelper.getElement(json, "multiplier").getAsFloat();
       return new BlockBreakSpeedBonus(condition, multiplier);
     }
 

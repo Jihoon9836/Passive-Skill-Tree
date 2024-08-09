@@ -98,28 +98,28 @@ public class DamageTakenEventListener implements SkillEventListener {
     editor
         .addSelectionMenu(0, 0, 200, playerCondition)
         .setResponder(condition -> selectPlayerCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addPlayerConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addPlayerConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Enemy Condition", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
         .addSelectionMenu(0, 0, 200, enemyCondition)
         .setResponder(condition -> selectTargetCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addTargetConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addTargetConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
         .addSelectionMenu(0, 0, 200, playerMultiplier)
         .setResponder(multiplier -> selectPlayerMultiplier(editor, consumer, multiplier))
-        .setOnMenuInit(() -> addPlayerMultiplierWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addPlayerMultiplierWidgets(editor, consumer));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Enemy Multiplier", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
         .addSelectionMenu(0, 0, 200, enemyMultiplier)
         .setResponder(multiplier -> selectTargetMultiplier(editor, consumer, multiplier))
-        .setOnMenuInit(() -> addTargetMultiplierWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addTargetMultiplierWidgets(editor, consumer));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Damage", ChatFormatting.GREEN);
     editor.addLabel(105, 0, "Target", ChatFormatting.GREEN);

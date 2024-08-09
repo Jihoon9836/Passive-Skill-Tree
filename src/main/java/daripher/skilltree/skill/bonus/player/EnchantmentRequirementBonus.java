@@ -3,6 +3,7 @@ package daripher.skilltree.skill.bonus.player;
 import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
+import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.skill.bonus.SkillBonus;
 import java.util.Objects;
@@ -106,7 +107,7 @@ public final class EnchantmentRequirementBonus implements SkillBonus<Enchantment
   public static class Serializer implements SkillBonus.Serializer {
     @Override
     public EnchantmentRequirementBonus deserialize(JsonObject json) throws JsonParseException {
-      float multiplier = json.get("multiplier").getAsFloat();
+      float multiplier = SerializationHelper.getElement(json, "multiplier").getAsFloat();
       return new EnchantmentRequirementBonus(multiplier);
     }
 

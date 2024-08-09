@@ -78,21 +78,21 @@ public class ItemUsedEventListener implements SkillEventListener {
     editor
         .addSelectionMenu(0, 0, 200, playerCondition)
         .setResponder(condition -> selectPlayerCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addPlayerConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addPlayerConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
         .addSelectionMenu(0, 0, 200, playerMultiplier)
         .setResponder(multiplier -> selectPlayerMultiplier(editor, consumer, multiplier))
-        .setOnMenuInit(() -> addPlayerMultiplierWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addPlayerMultiplierWidgets(editor, consumer));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Item Condition", ChatFormatting.GREEN);
     editor.increaseHeight(19);
     editor
         .addSelectionMenu(0, 0, 200, itemCondition)
         .setResponder(condition -> selectItemCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addItemConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addItemConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 

@@ -152,7 +152,7 @@ public final class MobEffectBonus implements EventListenerBonus<MobEffectBonus> 
     editor
         .addSelectionMenu(0, 0, 200, eventListener)
         .setResponder(eventListener -> selectEventListener(editor, consumer, eventListener))
-        .setOnMenuInit(() -> addEventListenerWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addEventListenerWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 
@@ -223,7 +223,7 @@ public final class MobEffectBonus implements EventListenerBonus<MobEffectBonus> 
   public static class Serializer implements SkillBonus.Serializer {
     @Override
     public MobEffectBonus deserialize(JsonObject json) throws JsonParseException {
-      float chance = json.get("chance").getAsFloat();
+      float chance = SerializationHelper.getElement(json, "chance").getAsFloat();
       MobEffectInstance effect = SerializationHelper.deserializeEffectInstance(json);
       MobEffectBonus bonus = new MobEffectBonus(chance, effect);
       bonus.eventListener = SerializationHelper.deserializeEventListener(json);

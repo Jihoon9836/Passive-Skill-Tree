@@ -17,7 +17,7 @@ public class SkillBonusSerializer
     String type = jsonObj.get("type").getAsString();
     ResourceLocation serializerId = new ResourceLocation(type);
     SkillBonus.Serializer serializer = PSTRegistries.SKILL_BONUSES.get().getValue(serializerId);
-    Objects.requireNonNull(serializer);
+    Objects.requireNonNull(serializer, "Unknown skill bonus: " + serializerId);
     return serializer.deserialize(jsonObj);
   }
 

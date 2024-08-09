@@ -82,7 +82,7 @@ public final class HasGemsCondition implements LivingCondition {
     editor
         .addSelectionMenu(0, 0, 200, itemCondition)
         .setResponder(condition -> selectItemCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addItemConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addItemConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Min", ChatFormatting.GREEN);
     editor.addLabel(55, 0, "Max", ChatFormatting.GREEN);

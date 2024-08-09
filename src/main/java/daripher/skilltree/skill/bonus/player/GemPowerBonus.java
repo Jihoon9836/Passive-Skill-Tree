@@ -87,7 +87,7 @@ public final class GemPowerBonus implements SkillBonus<GemPowerBonus> {
     editor
         .addSelectionMenu(0, 0, 200, itemCondition)
         .setResponder(condition -> selectItemCondition(editor, consumer, condition))
-        .setOnMenuInit(() -> addItemConditionWidgets(editor, consumer));
+        .setMenuInitFunc(() -> addItemConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 
@@ -147,7 +147,7 @@ public final class GemPowerBonus implements SkillBonus<GemPowerBonus> {
     @Override
     public GemPowerBonus deserialize(JsonObject json) throws JsonParseException {
       ItemCondition condition = SerializationHelper.deserializeItemCondition(json);
-      float multiplier = json.get("multiplier").getAsFloat();
+      float multiplier = SerializationHelper.getElement(json, "multiplier").getAsFloat();
       return new GemPowerBonus(condition, multiplier);
     }
 
