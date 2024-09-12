@@ -42,7 +42,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu {
   @Inject(method = "onTake", at = @At("HEAD"))
   private void changeRainbowJewelInsertionSeed(
       Player player, ItemStack itemStack, CallbackInfo callbackInfo) {
-    ItemStack gemStack = inputSlots.getItem(1);
+    ItemStack gemStack = inputSlots.getItem(SmithingMenu.ADDITIONAL_SLOT);
     if (gemStack.getItem() != PSTItems.GEM.get()) return;
     GemBonusProvider bonusProvider = GemItem.getGemType(gemStack).getBonusProvider(itemStack);
     if (bonusProvider instanceof RandomGemBonusProvider) {
