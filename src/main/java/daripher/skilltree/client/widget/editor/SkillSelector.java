@@ -133,11 +133,11 @@ public class SkillSelector extends AbstractWidget {
 
   @NotNull
   private Rectangle2D getSelectionArea(double mouseX, double mouseY) {
-    double selectionX = selectionStartX - skillButtons.getScrollX();
-    double selectionY = selectionStartY - skillButtons.getScrollY();
-    double selectionWidth = Math.abs(mouseX - selectionStartX);
-    double selectionHeight = Math.abs(mouseY - selectionStartY);
-    return new Rectangle2D.Double(selectionX, selectionY, selectionWidth, selectionHeight);
+    double x = Math.min(mouseX, selectionStartX) - skillButtons.getScrollX();
+    double y = Math.min(mouseY, selectionStartY) - skillButtons.getScrollY();
+    double width = Math.abs(mouseX - selectionStartX);
+    double height = Math.abs(mouseY - selectionStartY);
+    return new Rectangle2D.Double(x, y, width, height);
   }
 
   @NotNull
