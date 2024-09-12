@@ -30,11 +30,11 @@ public class MainEditorMenu extends EditorMenu {
     }
     editor
         .addConfirmationButton(0, 0, 200, 14, "Remove", "Confirm")
-        .setPressFunc(b -> deleteSelectedSkills(editor));
+        .setPressFunc(b -> deleteSelectedSkills());
     editor.increaseHeight(19);
   }
 
-  private static void deleteSelectedSkills(SkillTreeEditor editor) {
+  private void deleteSelectedSkills() {
     Set<PassiveSkill> selectedSkills = editor.getSelectedSkills();
     PassiveSkillTree skillTree = editor.getSkillTree();
     selectedSkills.forEach(

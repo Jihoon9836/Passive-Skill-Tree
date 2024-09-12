@@ -117,8 +117,6 @@ public class ScreenHelper {
 
   public static void renderGatewayConnection(
       GuiGraphics graphics,
-      double x,
-      double y,
       SkillConnection connection,
       boolean highlighted,
       float zoom,
@@ -130,7 +128,7 @@ public class ScreenHelper {
     SkillButton button2 = connection.getSecondButton();
     double connectionX = button1.x + button1.getWidth() / 2F;
     double connectionY = button1.y + button1.getHeight() / 2F;
-    graphics.pose().translate(connectionX + x, connectionY + y, 0);
+    graphics.pose().translate(connectionX, connectionY, 0);
     float rotation = ScreenHelper.getAngleBetweenButtons(button1, button2);
     graphics.pose().mulPose(Axis.ZP.rotation(rotation));
     int length = (int) (ScreenHelper.getDistanceBetweenButtons(button1, button2) / zoom);
@@ -142,8 +140,6 @@ public class ScreenHelper {
 
   public static void renderOneWayConnection(
       GuiGraphics graphics,
-      double x,
-      double y,
       SkillConnection connection,
       boolean highlighted,
       float zoom,
@@ -155,7 +151,7 @@ public class ScreenHelper {
     SkillButton button2 = connection.getSecondButton();
     double connectionX = button1.x + button1.getWidth() / 2F;
     double connectionY = button1.y + button1.getHeight() / 2F;
-    graphics.pose().translate(connectionX + x, connectionY + y, 0);
+    graphics.pose().translate(connectionX, connectionY, 0);
     float rotation = ScreenHelper.getAngleBetweenButtons(button1, button2);
     graphics.pose().mulPose(Axis.ZP.rotation(rotation));
     int length = (int) (ScreenHelper.getDistanceBetweenButtons(button1, button2) / zoom);
@@ -165,12 +161,7 @@ public class ScreenHelper {
   }
 
   public static void renderConnection(
-      GuiGraphics graphics,
-      double x,
-      double y,
-      SkillConnection connection,
-      float zoom,
-      float animation) {
+      GuiGraphics graphics, SkillConnection connection, float zoom, float animation) {
     ResourceLocation texture =
         new ResourceLocation("skilltree:textures/screen/direct_connection.png");
     graphics.pose().pushPose();
@@ -178,7 +169,7 @@ public class ScreenHelper {
     SkillButton button2 = connection.getSecondButton();
     double connectionX = button1.x + button1.getWidth() / 2F;
     double connectionY = button1.y + button1.getHeight() / 2F;
-    graphics.pose().translate(connectionX + x, connectionY + y, 0);
+    graphics.pose().translate(connectionX, connectionY, 0);
     float rotation = ScreenHelper.getAngleBetweenButtons(button1, button2);
     graphics.pose().mulPose(Axis.ZP.rotation(rotation));
     int length = (int) ScreenHelper.getDistanceBetweenButtons(button1, button2);

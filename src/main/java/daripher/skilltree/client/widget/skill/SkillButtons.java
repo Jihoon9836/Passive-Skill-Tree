@@ -39,10 +39,9 @@ public class SkillButtons extends ScrollableZoomableWidgetGroup<SkillButton> {
   }
 
   @Override
-  protected void renderWidget(
+  protected void renderBackground(
       @NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
     renderConnections(graphics, mouseX, mouseY);
-    super.renderWidget(graphics, mouseX, mouseY, partialTick);
   }
 
   protected void renderConnections(GuiGraphics graphics, int mouseX, int mouseY) {
@@ -59,7 +58,7 @@ public class SkillButtons extends ScrollableZoomableWidgetGroup<SkillButton> {
 
   private void renderDirectConnection(GuiGraphics graphics, SkillConnection connection) {
     ScreenHelper.renderConnection(
-        graphics, scrollX, scrollY, connection, getZoom(), animationFunc.get());
+        graphics, connection, getZoom(), animationFunc.get());
   }
 
   private void renderLongConnection(
@@ -70,12 +69,12 @@ public class SkillButtons extends ScrollableZoomableWidgetGroup<SkillButton> {
       return;
     }
     ScreenHelper.renderGatewayConnection(
-        graphics, scrollX, scrollY, connection, true, getZoom(), animationFunc.get());
+        graphics, connection, true, getZoom(), animationFunc.get());
   }
 
   private void renderOneWayConnection(GuiGraphics graphics, SkillConnection connection) {
     ScreenHelper.renderOneWayConnection(
-        graphics, scrollX, scrollY, connection, true, getZoom(), animationFunc.get());
+        graphics, connection, true, getZoom(), animationFunc.get());
   }
 
   public void renderTooltip(GuiGraphics graphics, float tooltipX, float tooltipY) {

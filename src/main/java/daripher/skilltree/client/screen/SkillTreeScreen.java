@@ -568,6 +568,8 @@ public class SkillTreeScreen extends Screen {
   }
 
   protected void renderConnections(GuiGraphics graphics, int mouseX, int mouseY) {
+    graphics.pose().pushPose();
+    graphics.pose().translate(scrollX, scrollY, 0);
     skillConnections.stream()
         .filter(c -> c.getType() == SkillConnection.Type.DIRECT)
         .forEach(c -> renderDirectConnection(graphics, c));
@@ -577,10 +579,11 @@ public class SkillTreeScreen extends Screen {
     skillConnections.stream()
         .filter(c -> c.getType() == SkillConnection.Type.ONE_WAY)
         .forEach(c -> renderOneWayConnection(graphics, c));
+    graphics.pose().popPose();
   }
 
   private void renderDirectConnection(GuiGraphics graphics, SkillConnection c) {
-    ScreenHelper.renderConnection(graphics, scrollX, scrollY, c, zoom, renderAnimation);
+    ScreenHelper.renderConnection(graphics, c, zoom, renderAnimation);
   }
 
   private void renderLongConnection(
@@ -592,14 +595,14 @@ public class SkillTreeScreen extends Screen {
     boolean hovered = hoveredSkill == button1 || hoveredSkill == button2;
     if (learned || hovered) {
       ScreenHelper.renderGatewayConnection(
-          graphics, scrollX, scrollY, connection, learned, zoom, renderAnimation);
+          graphics, connection, learned, zoom, renderAnimation);
     }
   }
 
   private void renderOneWayConnection(GuiGraphics graphics, SkillConnection connection) {
     boolean highlighted = isSkillLearned(connection.getFirstButton().skill);
     ScreenHelper.renderOneWayConnection(
-        graphics, scrollX, scrollY, connection, highlighted, zoom, renderAnimation);
+        graphics, connection, highlighted, zoom, renderAnimation);
   }
 
   public float getAnimation() {

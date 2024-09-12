@@ -27,6 +27,7 @@ public class ScrollableZoomableWidgetGroup<T extends AbstractWidget> extends Wid
     graphics.enableScissor(getX(), getY(), getX() + getWidth(), getY() + getHeight());
     graphics.pose().pushPose();
     graphics.pose().translate(scrollX, scrollY, 0);
+    renderBackground(graphics, mouseX, mouseY, partialTick);
     for (T widget : widgets) {
       graphics.pose().pushPose();
       double widgetCenterX = widget.getX() + widget.getWidth() / 2f;
@@ -39,6 +40,10 @@ public class ScrollableZoomableWidgetGroup<T extends AbstractWidget> extends Wid
     }
     graphics.pose().popPose();
     graphics.disableScissor();
+  }
+
+  protected void renderBackground(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+
   }
 
   @Override
