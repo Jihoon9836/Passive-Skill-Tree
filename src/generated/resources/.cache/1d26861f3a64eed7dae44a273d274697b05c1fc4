@@ -1,4 +1,4 @@
-// 1.20.1	2024-01-07T17:28:32.4213141	Item Models: skilltree
+// 1.20.1	2024-09-14T12:02:04.51267	Item Models: skilltree
 dcdc7c3496eee0556ca7020556201b091ab8684b assets/apotheosis/models/item/gems/citrine_0.json
 2d2caa24d5c066e97d9bec93eb47b9d276febe31 assets/apotheosis/models/item/gems/citrine_1.json
 f21343c673f274a2a973ba1043b721f04c769fb2 assets/apotheosis/models/item/gems/citrine_2.json
@@ -31,6 +31,7 @@ da502076c86401db44e4bd96d0106833208bf9e6 assets/apotheosis/models/item/gems/sapp
 cc99bdd3b4d071721ef844643f0ac0ba8c262366 assets/apotheosis/models/item/gems/sapphire_5.json
 d3c145794b33cd60f91971229eab5fa8f87d4cdd assets/apotheosis/models/item/gems/vacucite_3.json
 7f105626d8a7ca598d2b0804d3cf871e12ebf6c0 assets/skilltree/models/item/amnesia_scroll.json
+284e731e36b91111af73d9949e6defe866ce8251 assets/skilltree/models/item/ancient_gem.json
 694e18d4621f069f97383796e09d359d6c90882f assets/skilltree/models/item/armored_quiver.json
 fe9c855469e5ebbd37bd8a8df22f01aeaf2acae9 assets/skilltree/models/item/arsonist_necklace.json
 2f8b19d5040230bb290e93743907c9ffbc6cc590 assets/skilltree/models/item/assassin_necklace.json

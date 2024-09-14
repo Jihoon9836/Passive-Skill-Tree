@@ -3,6 +3,7 @@ package daripher.skilltree.init;
 import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.item.AmnesiaScrollItem;
 import daripher.skilltree.item.ResourceItem;
+import daripher.skilltree.item.UpgradeMaterialItem;
 import daripher.skilltree.item.WisdomScrollItem;
 import daripher.skilltree.item.gem.GemItem;
 import daripher.skilltree.item.necklace.ArsonistNecklace;
@@ -82,4 +83,7 @@ public class PSTItems {
   // resources
   public static final RegistryObject<Item> COPPER_NUGGET =
       REGISTRY.register("copper_nugget", ResourceItem::new);
+  // upgrade materials
+  public static final RegistryObject<Item> ANCIENT_GEM =
+      REGISTRY.register("ancient_gem", UpgradeMaterialItem::new);
 }

@@ -2,6 +2,7 @@ package daripher.skilltree.init;
 
 import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.recipe.*;
+import daripher.skilltree.recipe.upgrade.ItemUpgradeRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -25,4 +26,6 @@ public class PSTRecipeSerializers {
       REGISTRY.register("quiver_filling", QuiverFillingRecipe.Serializer::new);
   public static final RegistryObject<RecipeSerializer<?>> GEM_UPGRADE =
       REGISTRY.register("gem_upgrade", GemUpgradeRecipe.Serializer::new);
+  public static final RegistryObject<RecipeSerializer<?>> ITEM_UPGRADE =
+      REGISTRY.register("item_upgrade", ItemUpgradeRecipe.Serializer::new);
 }

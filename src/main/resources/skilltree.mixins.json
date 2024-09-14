@@ -29,10 +29,12 @@
     "LivingEntityAccessor",
     "CampfireBlockEntityAccessor",
     "ShapedRecipeAccessor",
-    "ShapelessRecipeAccessor"
+    "ShapelessRecipeAccessor",
+    "SmithingMenuAccessor"
   ],
   "client": [
     "minecraft/RecipeBookComponentMixin",
+    "minecraft/SmithingScreenMixin",
     "apotheosis/AdventureModuleClientMixin",
     "EditBoxAccessor",
     "RecipeCollectionAccessor"

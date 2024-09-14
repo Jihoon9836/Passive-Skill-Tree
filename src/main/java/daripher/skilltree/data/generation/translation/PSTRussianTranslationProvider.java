@@ -276,7 +276,6 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.DAMAGE.get(), "Урон");
     add(PSTSkillBonuses.CRIT_DAMAGE.get(), "Критический урон");
     add(PSTSkillBonuses.CRIT_CHANCE.get(), "Шанс критического удара");
-    add(PSTSkillBonuses.CRAFTED_ITEM_BONUS.get(), "Создаваем%s: %s");
     add(PSTSkillBonuses.GEM_POWER.get(), "Самоцветы вставляемые в %s: %s");
     add(PSTSkillBonuses.GEM_POWER.get(), "bonus", "Сила Эффектов");
     add(PSTSkillBonuses.PLAYER_SOCKETS.get(), "Гнёзда Самоцветов в %s");
@@ -293,6 +292,8 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.JUMP_HEIGHT.get(), "Высота прыжка");
     add(PSTSkillBonuses.INCOMING_HEALING.get(), "Получаемое лечение");
     add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "Шанс получить +%s%% %s");
+    add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "double", "Шанс получить двойные %s");
+    add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "triple", "Шанс получить тройные %s");
     add(PSTSkillBonuses.GAINED_EXPERIENCE.get(), "Опыт %s");
     add(PSTSkillBonuses.IGNITE.get(), "player", "Вы загораетесь на %s");
     add(PSTSkillBonuses.IGNITE.get(), "player.chance", "Шанс загореться на %s");
@@ -605,6 +606,7 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(
         "recipe.skilltree.potion_mixing.info",
         "(Объедините два разных зелья на верстаке, чтобы создать микстуру)");
+    add("upgrade_recipe.chance", "Шанс: %s%%");
     // potions info
     add("potion.superior", "Качественное %s");
     add("item.minecraft.potion.mixture", "Микстура");
@@ -672,9 +674,13 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTItems.TOXIC_QUIVER.get(), "Токсичный колчан");
     add(PSTItems.SILENT_QUIVER.get(), "Бесшумный колчан");
     add(PSTItems.BONE_QUIVER.get(), "Костяной колчан");
+    add(PSTItems.ANCIENT_GEM.get(), "Древний самоцвет");
     addTooltip(PSTItems.WISDOM_SCROLL.get(), "Дарует одно очко пассивных умений");
     addTooltip(PSTItems.AMNESIA_SCROLL.get(), "Сбрасывает ваше древо пассивных умений");
+    addTooltip(
+        PSTItems.ANCIENT_GEM.get(), "Позволяет улучшать оружие чтобы получать больше наград");
     addWarning(PSTItems.AMNESIA_SCROLL.get(), "%d%% очков умений будут потеряны");
+    add("ancient_material.tooltip", "Требует определенных знаний для использования");
     // attributes
     add(PSTAttributes.REGENERATION.get(), "Регенерация здоровья");
     add(PSTAttributes.EVASION.get(), "Уклонение");

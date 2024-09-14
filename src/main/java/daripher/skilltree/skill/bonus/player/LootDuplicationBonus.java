@@ -61,10 +61,18 @@ public final class LootDuplicationBonus implements SkillBonus<LootDuplicationBon
 
   @Override
   public MutableComponent getTooltip() {
-    MutableComponent lootDescription = Component.translatable(lootType.getDescriptionId());
+    Component lootDescription = Component.translatable(lootType.getDescriptionId());
     String multiplierDescription = ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(multiplier * 100);
-    MutableComponent bonusDescription =
-        Component.translatable(getDescriptionId(), multiplierDescription, lootDescription);
+    String descriptionId = getDescriptionId();
+    Component bonusDescription;
+    if (multiplier == 1) {
+      bonusDescription = Component.translatable(descriptionId + ".double", lootDescription);
+    } else if (multiplier == 2) {
+      bonusDescription = Component.translatable(descriptionId + ".triple", lootDescription);
+    } else {
+      bonusDescription =
+          Component.translatable(descriptionId, multiplierDescription, lootDescription);
+    }
     return TooltipHelper.getSkillBonusTooltip(
             bonusDescription, chance, AttributeModifier.Operation.MULTIPLY_BASE)
         .withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));

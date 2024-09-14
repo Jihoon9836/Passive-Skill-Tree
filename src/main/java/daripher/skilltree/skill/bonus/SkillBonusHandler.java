@@ -1,7 +1,6 @@
 package daripher.skilltree.skill.bonus;
 
 import com.mojang.datafixers.util.Either;
-import daripher.itemproduction.event.ItemProducedEvent;
 import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.capability.skill.PlayerSkillsProvider;
 import daripher.skilltree.effect.SkillBonusEffect;
@@ -10,7 +9,7 @@ import daripher.skilltree.entity.player.PlayerHelper;
 import daripher.skilltree.item.ItemBonusProvider;
 import daripher.skilltree.item.ItemHelper;
 import daripher.skilltree.mixin.AbstractArrowAccessor;
-import daripher.skilltree.potion.PotionHelper;
+import daripher.skilltree.recipe.upgrade.ItemUpgradeRecipe;
 import daripher.skilltree.skill.PassiveSkill;
 import daripher.skilltree.skill.bonus.event.*;
 import daripher.skilltree.skill.bonus.item.FoodHealingBonus;
@@ -243,26 +242,13 @@ public class SkillBonusHandler {
   }
 
   @SubscribeEvent
-  public static void addCraftedItemSkillBonusTooltips(ItemTooltipEvent event) {
+  public static void addUpgradeTooltip(ItemTooltipEvent event) {
     List<Component> components = event.getToolTip();
-    for (ItemBonus<?> itemBonus : ItemHelper.getItemBonusesExcludingGems(event.getItemStack())) {
-      if (!(itemBonus instanceof ItemSkillBonus skillBonus)) continue;
-      SkillBonus<?> bonus = skillBonus.getBonus();
-      if (bonus instanceof AttributeBonus) continue;
-      MutableComponent tooltip = bonus.getTooltip();
-      components.add(tooltip);
-    }
-  }
-
-  @SubscribeEvent
-  public static void setCraftedItemBonus(ItemProducedEvent event) {
-    ItemStack stack = event.getStack();
-    if (PotionHelper.isMixture(stack)) return;
-    Player player = event.getPlayer();
-    ItemHelper.removeItemBonuses(stack);
-    getSkillBonuses(player, CraftedItemBonus.class).forEach(bonus -> bonus.itemCrafted(stack));
-    ItemHelper.getItemBonuses(stack, ItemBonus.class).forEach(bonus -> bonus.itemCrafted(stack));
-    ItemHelper.refreshDurabilityBonuses(stack);
+    ItemBonus<?> itemBonus = ItemUpgradeRecipe.getUpgradedItemBonus(event.getItemStack());
+    if (itemBonus == null) return;
+    MutableComponent tooltip = itemBonus.getTooltip();
+    tooltip = tooltip.withStyle(tooltip.getStyle().withColor(0xDFB759));
+    components.add(tooltip);
   }
 
   @SubscribeEvent

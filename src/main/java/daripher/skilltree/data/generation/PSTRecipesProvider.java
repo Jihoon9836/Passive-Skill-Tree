@@ -3,6 +3,10 @@ package daripher.skilltree.data.generation;
 import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.init.PSTItems;
 import daripher.skilltree.init.PSTTags;
+import daripher.skilltree.recipe.builder.ItemUpgradeRecipeBuilder;
+import daripher.skilltree.skill.bonus.condition.item.EquipmentCondition;
+import daripher.skilltree.skill.bonus.item.ItemSkillBonus;
+import daripher.skilltree.skill.bonus.player.LootDuplicationBonus;
 import java.util.Objects;
 import java.util.function.Consumer;
 import net.minecraft.data.DataGenerator;
@@ -11,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -48,6 +53,16 @@ public class PSTRecipesProvider extends RecipeProvider {
     quiver(PSTItems.TOXIC_QUIVER, Items.FERMENTED_SPIDER_EYE, consumer);
     quiver(PSTItems.SILENT_QUIVER, Items.FEATHER, consumer);
     quiver(PSTItems.BONE_QUIVER, Items.BONE, consumer);
+    // upgrades
+    ItemUpgradeRecipeBuilder.create()
+        .baseCondition(new EquipmentCondition(EquipmentCondition.Type.WEAPON))
+        .additionalItem(Ingredient.of(PSTItems.ANCIENT_GEM.get()))
+        .itemBonus(
+            new ItemSkillBonus(
+                new LootDuplicationBonus(0.03f, 1f, LootDuplicationBonus.LootType.MOBS)))
+        .maxUpgrades(5)
+        .upgradeChances(1f, 0.9f, 0.8f, 0.7f, 0.6f)
+        .save(consumer, getRecipeId("upgrades/weapons_double_loot"));
   }
 
   protected void quiver(
@@ -153,5 +168,9 @@ public class PSTRecipesProvider extends RecipeProvider {
   private ResourceLocation getRecipeId(Item item) {
     ResourceLocation id = ForgeRegistries.ITEMS.getKey(item);
     return new ResourceLocation(SkillTreeMod.MOD_ID, Objects.requireNonNull(id).getPath());
+  }
+
+  private ResourceLocation getRecipeId(String path) {
+    return new ResourceLocation(SkillTreeMod.MOD_ID, path);
   }
 }

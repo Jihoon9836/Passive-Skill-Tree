@@ -274,7 +274,6 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.DAMAGE.get(), "Damage");
     add(PSTSkillBonuses.CRIT_DAMAGE.get(), "Critical Hit Damage");
     add(PSTSkillBonuses.CRIT_CHANCE.get(), "Critical Hit Chance");
-    add(PSTSkillBonuses.CRAFTED_ITEM_BONUS.get(), "Crafted %s: %s");
     add(PSTSkillBonuses.GEM_POWER.get(), "Gems inserted into %s: %s");
     add(PSTSkillBonuses.GEM_POWER.get(), "bonus", "Effect Power");
     add(PSTSkillBonuses.PLAYER_SOCKETS.get(), "Gem Sockets in %s");
@@ -291,6 +290,8 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.JUMP_HEIGHT.get(), "Jump Height");
     add(PSTSkillBonuses.INCOMING_HEALING.get(), "Incoming Healing");
     add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "Chance to get +%s%% %s");
+    add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "double", "Chance to get double %s");
+    add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "triple", "Chance to get triple %s");
     add(PSTSkillBonuses.GAINED_EXPERIENCE.get(), "Experience from %s");
     add(PSTSkillBonuses.IGNITE.get(), "player", "You catch fire for %s");
     add(PSTSkillBonuses.IGNITE.get(), "player.chance", "Chance to catch fire for %s");
@@ -496,11 +497,14 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
         PSTLivingMultipliers.ENCHANTS_LEVELS.get(),
         "enemy",
         "%s per enchantment level on enemy's %s");
-    add(PSTLivingMultipliers.GEMS_AMOUNT.get(), "player", "%s per Gem in %s");
-    add(PSTLivingMultipliers.GEMS_AMOUNT.get(), "enemy", "%s per Gem in enemy's %s");
-    add(PSTLivingMultipliers.FOOD_LEVEL.get(), "player", "%s per Hunger point");
-    add(PSTLivingMultipliers.FOOD_LEVEL.get(), "enemy", "%s per enemy's Hunger point");
-    add(PSTLivingMultipliers.DISTANCE_TO_TARGET.get(), "player", "%s per block to enemy");
+    add(PSTLivingMultipliers.GEMS_AMOUNT.get(), "player", "%s per gem in %s");
+    add(PSTLivingMultipliers.GEMS_AMOUNT.get(), "enemy", "%s per gem in enemy's %s");
+    add(PSTLivingMultipliers.FOOD_LEVEL.get(), "player", "%s per hunger point");
+    add(PSTLivingMultipliers.FOOD_LEVEL.get(), "enemy", "%s per enemy's hunger point");
+    add(
+        PSTLivingMultipliers.DISTANCE_TO_TARGET.get(),
+        "player",
+        "%s per block between you and enemy");
     add(PSTLivingMultipliers.MISSING_HEALTH_POINTS.get(), "player", "%s per %s missing health");
     add(
         PSTLivingMultipliers.MISSING_HEALTH_POINTS.get(),
@@ -515,11 +519,12 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add("recipe.skilltree.weapon_poisoning", "Weapon Poisoning");
     add(
         "recipe.skilltree.weapon_poisoning.info",
-        "(Combine a Melee Weapon and a Harmful Potion on a Crafting Bench to poison a weapon)");
+        "(Combine a melee weapon and a harmful potion on a crafting bench to poison a weapon)");
     add("recipe.skilltree.potion_mixing", "Potion Mixing");
     add(
         "recipe.skilltree.potion_mixing.info",
-        "(Combine two different potions on a Crafting Bench to create a mixture)");
+        "(Combine two different potions on a crafting bench to create a mixture)");
+    add("upgrade_recipe.chance", "Chance: %s%%");
     // potions info
     add("potion.superior", "Superior %s");
     add("item.minecraft.potion.mixture", "Mixture");
@@ -587,9 +592,12 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(PSTItems.TOXIC_QUIVER.get(), "Toxic Quiver");
     add(PSTItems.SILENT_QUIVER.get(), "Silent Quiver");
     add(PSTItems.BONE_QUIVER.get(), "Bone Quiver");
+    add(PSTItems.ANCIENT_GEM.get(), "Ancient Gem");
     addTooltip(PSTItems.WISDOM_SCROLL.get(), "Grants one passive skill point");
     addTooltip(PSTItems.AMNESIA_SCROLL.get(), "Resets your passive skill tree");
+    addTooltip(PSTItems.ANCIENT_GEM.get(), "Allows improving weapons to get more loot");
     addWarning(PSTItems.AMNESIA_SCROLL.get(), "%d%% of your skill points will be lost");
+    add("ancient_material.tooltip", "Requires certain knowledge to be used");
     // attributes
     add(PSTAttributes.REGENERATION.get(), "Life Regeneration");
     add(PSTAttributes.EVASION.get(), "Evasion");

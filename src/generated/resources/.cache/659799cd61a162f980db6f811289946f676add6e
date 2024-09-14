@@ -1,0 +1,3 @@
+// 1.20.1	2024-09-14T12:53:58.994416	Global Loot Modifiers : skilltree
+4b65a31ae970234be08eafe521dc8372c298c8bc data/forge/loot_modifiers/global_loot_modifiers.json
+9f7dd3f7caec03e74d58df8e39c7163f981841eb data/skilltree/loot_modifiers/ancient_gems_from_zombie_piglins.json

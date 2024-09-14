@@ -6,16 +6,9 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
-            "type": "skilltree:attribute",
-            "amount": 0.5000000074505806,
-            "attribute": "minecraft:generic.luck",
-            "id": "829dab29-6001-4155-b1dd-91f54d755d25",
-            "name": "Citrine",
-            "operation": 0,
+            "type": "skilltree:jump_height",
+            "multiplier": 0.049999997,
             "player_condition": {
-              "type": "skilltree:none"
-            },
-            "player_multiplier": {
               "type": "skilltree:none"
             }
           }
@@ -23,7 +16,25 @@
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "chestplate"
+        "equipment_type": "boots"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:loot_duplication",
+            "chance": 0.049999997,
+            "loot_type": "gems",
+            "multiplier": 2.0
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "helmet"
       }
     },
     {
@@ -35,7 +46,7 @@
             "type": "skilltree:attribute",
             "amount": 0.04999999888241291,
             "attribute": "minecraft:generic.luck",
-            "id": "12f9468f-7459-4a31-997d-c7e22af050fd",
+            "id": "6a40743f-29fe-4e02-abfd-1e5b5ca54ac4",
             "name": "Citrine",
             "operation": 1,
             "player_condition": {
@@ -107,9 +118,16 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
-            "type": "skilltree:jump_height",
-            "multiplier": 0.049999997,
+            "type": "skilltree:attribute",
+            "amount": 0.5000000074505806,
+            "attribute": "minecraft:generic.luck",
+            "id": "30343b0b-1cdd-4d8f-96f7-5899301fa241",
+            "name": "Citrine",
+            "operation": 0,
             "player_condition": {
+              "type": "skilltree:none"
+            },
+            "player_multiplier": {
               "type": "skilltree:none"
             }
           }
@@ -117,25 +135,7 @@
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "boots"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
-            "type": "skilltree:loot_duplication",
-            "chance": 0.049999997,
-            "loot_type": "gems",
-            "multiplier": 2.0
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "helmet"
+        "equipment_type": "chestplate"
       }
     }
   ],

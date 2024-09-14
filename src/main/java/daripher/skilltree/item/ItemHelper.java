@@ -8,6 +8,7 @@ import daripher.skilltree.init.PSTRegistries;
 import daripher.skilltree.init.PSTTags;
 import daripher.skilltree.item.gem.GemItem;
 import daripher.skilltree.item.quiver.QuiverItem;
+import daripher.skilltree.recipe.upgrade.ItemUpgradeRecipe;
 import daripher.skilltree.skill.bonus.condition.item.EquipmentCondition;
 import daripher.skilltree.skill.bonus.item.ItemBonus;
 import daripher.skilltree.skill.bonus.item.ItemDurabilityBonus;
@@ -129,14 +130,12 @@ public class ItemHelper {
     return sockets;
   }
 
+  // TODO: rewrite mess
   public static List<? extends ItemBonus<?>> getItemBonusesExcludingGems(ItemStack stack) {
     if (!stack.hasTag()) return ImmutableList.of();
     List<ItemBonus<?>> list = new ArrayList<>();
-    for (Tag tag : stack.getOrCreateTag().getList("SkillBonuses", Tag.TAG_COMPOUND)) {
-      CompoundTag compoundTag = (CompoundTag) tag;
-      ItemBonus<?> itemBonus = deserializeBonus(compoundTag);
-      if (itemBonus != null) list.add(itemBonus);
-    }
+    ItemBonus<?> itemBonus = ItemUpgradeRecipe.getUpgradedItemBonus(stack);
+    if (itemBonus != null) list.add(itemBonus);
     return list;
   }
 

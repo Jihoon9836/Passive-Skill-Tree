@@ -2,8 +2,6 @@ package daripher.skilltree.data.generation;
 
 import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.data.generation.loot.PSTLootTablesProvider;
-import daripher.skilltree.data.generation.skills.PSTSkillTreesProvider;
-import daripher.skilltree.data.generation.skills.PSTSkillsProvider;
 import daripher.skilltree.data.generation.translation.PSTEnglishTranslationProvider;
 import daripher.skilltree.data.generation.translation.PSTRussianTranslationProvider;
 import java.util.concurrent.CompletableFuture;
@@ -23,29 +21,25 @@ public class PSTDataGenerator {
     ExistingFileHelper fileHelper = event.getExistingFileHelper();
     CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
+    boolean includeServer = event.includeServer();
     PSTBlockTagsProvider blockTagsProvider =
         new PSTBlockTagsProvider(dataGenerator, lookupProvider, fileHelper);
-    dataGenerator.addProvider(event.includeServer(), blockTagsProvider);
+    dataGenerator.addProvider(includeServer, blockTagsProvider);
     dataGenerator.addProvider(
-        event.includeServer(),
+        includeServer,
         new PSTItemTagsProvider(dataGenerator, lookupProvider, blockTagsProvider, fileHelper));
     PSTGemTypesProvider gemTypesProvider = new PSTGemTypesProvider(dataGenerator);
-    dataGenerator.addProvider(event.includeServer(), gemTypesProvider);
+    dataGenerator.addProvider(includeServer, gemTypesProvider);
     dataGenerator.addProvider(
-        event.includeServer(), new PSTLootTablesProvider(dataGenerator, gemTypesProvider));
-    dataGenerator.addProvider(event.includeServer(), new PSTRecipesProvider(dataGenerator));
+        includeServer, new PSTLootTablesProvider(dataGenerator, gemTypesProvider));
+    dataGenerator.addProvider(includeServer, new PSTRecipesProvider(dataGenerator));
+    dataGenerator.addProvider(
+        includeServer, new PSTGlobalLootModifierProvider(dataGenerator));
 
+    boolean includeClient = event.includeClient();
+    dataGenerator.addProvider(includeClient, new PSTEnglishTranslationProvider(dataGenerator));
+    dataGenerator.addProvider(includeClient, new PSTRussianTranslationProvider(dataGenerator));
     dataGenerator.addProvider(
-        event.includeClient(), new PSTEnglishTranslationProvider(dataGenerator));
-    dataGenerator.addProvider(
-        event.includeClient(), new PSTRussianTranslationProvider(dataGenerator));
-    dataGenerator.addProvider(
-        event.includeClient(),
-        new PSTItemModelsProvider(dataGenerator, fileHelper, gemTypesProvider));
-
-    PSTSkillsProvider skillsProvider = new PSTSkillsProvider(dataGenerator);
-    dataGenerator.addProvider(event.includeServer(), skillsProvider);
-    dataGenerator.addProvider(
-        event.includeServer(), new PSTSkillTreesProvider(dataGenerator, skillsProvider));
+        includeClient, new PSTItemModelsProvider(dataGenerator, fileHelper, gemTypesProvider));
   }
 }
