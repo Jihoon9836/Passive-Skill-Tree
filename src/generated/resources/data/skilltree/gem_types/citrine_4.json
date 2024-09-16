@@ -6,47 +6,10 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
-            "type": "skilltree:jump_height",
-            "multiplier": 0.049999997,
-            "player_condition": {
-              "type": "skilltree:none"
-            }
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "boots"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
-            "type": "skilltree:loot_duplication",
-            "chance": 0.049999997,
-            "loot_type": "gems",
-            "multiplier": 2.0
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "helmet"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
             "type": "skilltree:attribute",
             "amount": 0.04999999888241291,
             "attribute": "minecraft:generic.luck",
-            "id": "6a40743f-29fe-4e02-abfd-1e5b5ca54ac4",
+            "id": "60f425a4-9e8f-4961-a882-6b343f88cd8c",
             "name": "Citrine",
             "operation": 1,
             "player_condition": {
@@ -61,24 +24,6 @@
       "item_condition": {
         "type": "skilltree:equipment_type",
         "equipment_type": "shield"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
-            "type": "skilltree:loot_duplication",
-            "chance": 0.049999997,
-            "loot_type": "fishing",
-            "multiplier": 1.0
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:tag",
-        "tag_id": "forge:curios/jewelry"
       }
     },
     {
@@ -118,10 +63,46 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
+            "type": "skilltree:loot_duplication",
+            "chance": 0.049999997,
+            "loot_type": "fishing",
+            "multiplier": 1.0
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:tag",
+        "tag_id": "forge:curios/jewelry"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:loot_duplication",
+            "chance": 0.049999997,
+            "loot_type": "gems",
+            "multiplier": 2.0
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "helmet"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
             "type": "skilltree:attribute",
             "amount": 0.5000000074505806,
             "attribute": "minecraft:generic.luck",
-            "id": "30343b0b-1cdd-4d8f-96f7-5899301fa241",
+            "id": "4db69645-d995-4ced-bbe6-9b3f60d1f5c5",
             "name": "Citrine",
             "operation": 0,
             "player_condition": {
@@ -136,6 +117,25 @@
       "item_condition": {
         "type": "skilltree:equipment_type",
         "equipment_type": "chestplate"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:jump_height",
+            "multiplier": 0.049999997,
+            "player_condition": {
+              "type": "skilltree:none"
+            }
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "boots"
       }
     }
   ],

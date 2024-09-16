@@ -592,11 +592,24 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(PSTItems.TOXIC_QUIVER.get(), "Toxic Quiver");
     add(PSTItems.SILENT_QUIVER.get(), "Silent Quiver");
     add(PSTItems.BONE_QUIVER.get(), "Bone Quiver");
-    add(PSTItems.ANCIENT_GEM.get(), "Ancient Gem");
+    add(PSTItems.ANCIENT_ALLOY_GILDED.get(), "Gilded Ancient Alloy");
+    add(PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT.get(), "Lightweight Ancient Alloy");
+    add(PSTItems.ANCIENT_ALLOY_CURATIVE.get(), "Curative Ancient Alloy");
+    add(PSTItems.ANCIENT_ALLOY_TOXIC.get(), "Toxic Ancient Alloy");
     addTooltip(PSTItems.WISDOM_SCROLL.get(), "Grants one passive skill point");
     addTooltip(PSTItems.AMNESIA_SCROLL.get(), "Resets your passive skill tree");
-    addTooltip(PSTItems.ANCIENT_GEM.get(), "Allows improving weapons to get more loot");
     addWarning(PSTItems.AMNESIA_SCROLL.get(), "%d%% of your skill points will be lost");
+    addTooltip(
+        PSTItems.ANCIENT_ALLOY_GILDED.get(), "Allows improving weapons, increasing loot from mobs");
+    addTooltip(
+        PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT.get(),
+        "Allows improving boots, increasing movement speed");
+    addTooltip(
+        PSTItems.ANCIENT_ALLOY_CURATIVE.get(),
+        "Allows improving chestplates, increasing incoming healing");
+    addTooltip(
+        PSTItems.ANCIENT_ALLOY_TOXIC.get(),
+        "Allows improving weapons, increasing poison damage");
     add("ancient_material.tooltip", "Requires certain knowledge to be used");
     // attributes
     add(PSTAttributes.REGENERATION.get(), "Life Regeneration");

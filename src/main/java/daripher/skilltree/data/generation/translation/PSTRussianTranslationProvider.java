@@ -674,12 +674,24 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTItems.TOXIC_QUIVER.get(), "Токсичный колчан");
     add(PSTItems.SILENT_QUIVER.get(), "Бесшумный колчан");
     add(PSTItems.BONE_QUIVER.get(), "Костяной колчан");
-    add(PSTItems.ANCIENT_GEM.get(), "Древний самоцвет");
+    add(PSTItems.ANCIENT_ALLOY_GILDED.get(), "Позолоченный древний сплав");
+    add(PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT.get(), "Облегченный древний сплав");
+    add(PSTItems.ANCIENT_ALLOY_CURATIVE.get(), "Целебный древний сплав");
+    add(PSTItems.ANCIENT_ALLOY_TOXIC.get(), "Токсичный древний сплав");
     addTooltip(PSTItems.WISDOM_SCROLL.get(), "Дарует одно очко пассивных умений");
     addTooltip(PSTItems.AMNESIA_SCROLL.get(), "Сбрасывает ваше древо пассивных умений");
-    addTooltip(
-        PSTItems.ANCIENT_GEM.get(), "Позволяет улучшать оружие чтобы получать больше наград");
     addWarning(PSTItems.AMNESIA_SCROLL.get(), "%d%% очков умений будут потеряны");
+    addTooltip(
+        PSTItems.ANCIENT_ALLOY_GILDED.get(),
+        "Позволяет улучшать оружие, увеличивая количество наград с монстров");
+    addTooltip(
+        PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT.get(), "Позволяет улучшать ботинки, увеличивая скорость передвижения");
+    addTooltip(
+        PSTItems.ANCIENT_ALLOY_CURATIVE.get(),
+        "Позволяет улучшать нагрудники, увеличивая входящее лечение");
+    addTooltip(
+        PSTItems.ANCIENT_ALLOY_TOXIC.get(),
+        "Позволяет улучшать оружие, увеличивая урон от яда");
     add("ancient_material.tooltip", "Требует определенных знаний для использования");
     // attributes
     add(PSTAttributes.REGENERATION.get(), "Регенерация здоровья");

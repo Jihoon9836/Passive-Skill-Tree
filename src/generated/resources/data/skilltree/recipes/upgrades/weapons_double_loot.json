@@ -1,7 +1,7 @@
 {
   "type": "skilltree:item_upgrade",
   "addition": {
-    "item": "skilltree:ancient_gem"
+    "item": "skilltree:ancient_alloy_gilded"
   },
   "item_bonus": {
     "type": "skilltree:skill_bonus",
@@ -22,6 +22,6 @@
     0.9,
     0.8,
     0.7,
-    0.6
+    0.5
   ]
 }

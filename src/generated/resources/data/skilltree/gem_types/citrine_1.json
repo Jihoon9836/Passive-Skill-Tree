@@ -6,47 +6,10 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
-            "type": "skilltree:jump_height",
-            "multiplier": 0.02,
-            "player_condition": {
-              "type": "skilltree:none"
-            }
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "boots"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
-            "type": "skilltree:loot_duplication",
-            "chance": 0.02,
-            "loot_type": "gems",
-            "multiplier": 2.0
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "helmet"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
             "type": "skilltree:attribute",
             "amount": 0.019999999552965164,
             "attribute": "minecraft:generic.luck",
-            "id": "53d6a42e-d4df-417a-bc1b-ae8a174088b9",
+            "id": "c59be2a2-edb7-4f11-af59-fa7c9e20d5e1",
             "name": "Citrine",
             "operation": 1,
             "player_condition": {
@@ -61,24 +24,6 @@
       "item_condition": {
         "type": "skilltree:equipment_type",
         "equipment_type": "shield"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
-            "type": "skilltree:loot_duplication",
-            "chance": 0.02,
-            "loot_type": "fishing",
-            "multiplier": 1.0
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:tag",
-        "tag_id": "forge:curios/jewelry"
       }
     },
     {
@@ -118,10 +63,46 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
+            "type": "skilltree:loot_duplication",
+            "chance": 0.02,
+            "loot_type": "fishing",
+            "multiplier": 1.0
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:tag",
+        "tag_id": "forge:curios/jewelry"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:loot_duplication",
+            "chance": 0.02,
+            "loot_type": "gems",
+            "multiplier": 2.0
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "helmet"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
             "type": "skilltree:attribute",
             "amount": 0.20000000298023224,
             "attribute": "minecraft:generic.luck",
-            "id": "8e41c101-cab8-4ac7-b346-23bcc4cd2f03",
+            "id": "7e4b26f4-1324-4c90-bf6e-0d9060e877c1",
             "name": "Citrine",
             "operation": 0,
             "player_condition": {
@@ -136,6 +117,25 @@
       "item_condition": {
         "type": "skilltree:equipment_type",
         "equipment_type": "chestplate"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:jump_height",
+            "multiplier": 0.02,
+            "player_condition": {
+              "type": "skilltree:none"
+            }
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "boots"
       }
     }
   ],

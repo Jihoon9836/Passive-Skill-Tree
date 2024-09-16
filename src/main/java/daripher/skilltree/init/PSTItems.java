@@ -84,6 +84,12 @@ public class PSTItems {
   public static final RegistryObject<Item> COPPER_NUGGET =
       REGISTRY.register("copper_nugget", ResourceItem::new);
   // upgrade materials
-  public static final RegistryObject<Item> ANCIENT_GEM =
-      REGISTRY.register("ancient_gem", UpgradeMaterialItem::new);
+  public static final RegistryObject<Item> ANCIENT_ALLOY_GILDED =
+      REGISTRY.register("ancient_alloy_gilded", UpgradeMaterialItem::new);
+  public static final RegistryObject<Item> ANCIENT_ALLOY_LIGHTWEIGHT =
+      REGISTRY.register("ancient_alloy_lightweight", UpgradeMaterialItem::new);
+  public static final RegistryObject<Item> ANCIENT_ALLOY_CURATIVE =
+      REGISTRY.register("ancient_alloy_curative", UpgradeMaterialItem::new);
+  public static final RegistryObject<Item> ANCIENT_ALLOY_TOXIC =
+      REGISTRY.register("ancient_alloy_toxic", UpgradeMaterialItem::new);
 }

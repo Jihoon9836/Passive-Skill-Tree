@@ -247,8 +247,12 @@ public class SkillBonusHandler {
     ItemBonus<?> itemBonus = ItemUpgradeRecipe.getUpgradedItemBonus(event.getItemStack());
     if (itemBonus == null) return;
     MutableComponent tooltip = itemBonus.getTooltip();
-    tooltip = tooltip.withStyle(tooltip.getStyle().withColor(0xDFB759));
-    components.add(tooltip);
+    MutableComponent finalTooltip = tooltip.withStyle(tooltip.getStyle().withColor(0xDFB759));
+    // removes duplicate tooltip in attribute modifiers description
+    if (itemBonus instanceof ItemSkillBonus bonus && bonus.getBonus() instanceof AttributeBonus) {
+      components.removeIf(component -> component.getString().equals(finalTooltip.getString()));
+    }
+    components.add(finalTooltip);
   }
 
   @SubscribeEvent

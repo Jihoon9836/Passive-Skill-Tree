@@ -19,12 +19,15 @@ public class PSTGlobalLootModifierProvider extends GlobalLootModifierProvider {
 
   @Override
   protected void start() {
-    addItem(
-        "ancient_gems_from_zombie_piglins",
-        "entities/zombified_piglin",
-        PSTItems.ANCIENT_GEM,
-        0.05f,
-        0.05f);
+    upgradeMaterial(
+        "zombie_piglins_ancient_gems", "entities/zombified_piglin", PSTItems.ANCIENT_ALLOY_GILDED);
+    upgradeMaterial("endermen_ancient_eyes", "entities/enderman", PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT);
+    upgradeMaterial("creepers_ancient_vines", "entities/creeper", PSTItems.ANCIENT_ALLOY_CURATIVE);
+  }
+
+  private void upgradeMaterial(
+      String modifierName, String lootTablePath, RegistryObject<Item> item) {
+    addItem(modifierName, lootTablePath, item, 0.05f, 0.05f);
   }
 
   private void addItem(
