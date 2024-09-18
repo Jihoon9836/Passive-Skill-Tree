@@ -20,6 +20,8 @@
     "minecraft/AbstractContainerMenuMixin",
     "minecraft/CraftingContainerMixin",
     "minecraft/ArmorSlotMixin",
+    "minecraft/MobEffectMixin",
+    "minecraft/ThrownPotionMixin",
     "easymagic/ModEnchantmentMenuMixin",
     "apotheosis/ApothEnchantContainerMixin",
     "apotheosis/SocketingRecipeMixin",
