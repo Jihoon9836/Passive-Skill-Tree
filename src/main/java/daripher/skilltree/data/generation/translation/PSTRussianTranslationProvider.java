@@ -276,16 +276,9 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.DAMAGE.get(), "Урон");
     add(PSTSkillBonuses.CRIT_DAMAGE.get(), "Критический урон");
     add(PSTSkillBonuses.CRIT_CHANCE.get(), "Шанс критического удара");
-    add(PSTSkillBonuses.GEM_POWER.get(), "Самоцветы вставляемые в %s: %s");
-    add(PSTSkillBonuses.GEM_POWER.get(), "bonus", "Сила Эффектов");
-    add(PSTSkillBonuses.PLAYER_SOCKETS.get(), "Гнёзда Самоцветов в %s");
     add(PSTSkillBonuses.BLOCK_BREAK_SPEED.get(), "Скорость добычи Блоков");
     add(PSTSkillBonuses.REPAIR_EFFICIENCY.get(), "Ремонтируем%s: %s");
     add(PSTSkillBonuses.REPAIR_EFFICIENCY.get(), "bonus", "Прочности восстановлено");
-    add(PSTSkillBonuses.ENCHANTMENT_AMPLIFICATION.get(), "%s: %s");
-    add(PSTSkillBonuses.ENCHANTMENT_AMPLIFICATION.get(), "bonus", "Шанс усиления");
-    add(PSTSkillBonuses.ENCHANTMENT_REQUIREMENT.get(), "Зачарование: %s");
-    add(PSTSkillBonuses.ENCHANTMENT_REQUIREMENT.get(), "bonus", "Требование к уровню");
     add(PSTSkillBonuses.FREE_ENCHANTMENT.get(), "Зачарование: %s");
     add(PSTSkillBonuses.FREE_ENCHANTMENT.get(), "bonus", "Шанс бесплатного зачарование");
     add(PSTSkillBonuses.RECIPE_UNLOCK.get(), "Открывает рецепт: %s");
@@ -316,6 +309,8 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.INFLICT_DAMAGE.get(), "player.chance", "Шанс получить %s урона");
     add(PSTSkillBonuses.INFLICT_DAMAGE.get(), "enemy", "Вы наносите %s урона");
     add(PSTSkillBonuses.INFLICT_DAMAGE.get(), "enemy.chance", "Шанс нанести %s урона");
+    add(PSTSkillBonuses.CAN_POISON_ANYONE.get(), "Ваши яды действуют на любых врагов");
+    add(PSTSkillBonuses.LETHAL_POISON.get(), "Ваши яды летальны");
     // item bonuses
     add(PSTItemBonuses.SOCKETS.get(), "+%d Гнезда для Самоцветов");
     add(PSTItemBonuses.DURABILITY.get(), "Прочность");
@@ -330,9 +325,9 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(GainedExperienceBonus.ExperienceSource.ORE.getDescriptionId(), "из Руды");
     add(GainedExperienceBonus.ExperienceSource.FISHING.getDescriptionId(), "за Рыбалку");
     // loot conditions
-    add(LootDuplicationBonus.LootType.MOBS.getDescriptionId(), "Награды с существ");
-    add(LootDuplicationBonus.LootType.FISHING.getDescriptionId(), "Награды с рыбалки");
-    add(LootDuplicationBonus.LootType.GEMS.getDescriptionId(), "Самоцветы из руды");
+    add(LootDuplicationBonus.LootType.MOBS.getDescriptionId(), "награды с существ");
+    add(LootDuplicationBonus.LootType.FISHING.getDescriptionId(), "награды с рыбалки");
+    add(LootDuplicationBonus.LootType.GEMS.getDescriptionId(), "самоцветы из руды");
     // living conditions
     add(PSTLivingConditions.EFFECT_AMOUNT.get(), "target.you", "Вас");
     add(PSTLivingConditions.EFFECT_AMOUNT.get(), "target.target", "Цели");
@@ -678,20 +673,25 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT.get(), "Облегченный древний сплав");
     add(PSTItems.ANCIENT_ALLOY_CURATIVE.get(), "Целебный древний сплав");
     add(PSTItems.ANCIENT_ALLOY_TOXIC.get(), "Токсичный древний сплав");
+    add(PSTItems.ANCIENT_ALLOY_ENCHANTED.get(), "Зачарованный древний сплав");
     addTooltip(PSTItems.WISDOM_SCROLL.get(), "Дарует одно очко пассивных умений");
     addTooltip(PSTItems.AMNESIA_SCROLL.get(), "Сбрасывает ваше древо пассивных умений");
     addWarning(PSTItems.AMNESIA_SCROLL.get(), "%d%% очков умений будут потеряны");
     addTooltip(
         PSTItems.ANCIENT_ALLOY_GILDED.get(),
-        "Позволяет улучшать оружие, увеличивая количество наград с монстров");
+        "Позволяет улучшать характеристики связанные с лутом на некоторых предметах");
     addTooltip(
-        PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT.get(), "Позволяет улучшать ботинки, увеличивая скорость передвижения");
+        PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT.get(),
+        "Позволяет улучшать характеристики скорости на некоторых предметах");
     addTooltip(
         PSTItems.ANCIENT_ALLOY_CURATIVE.get(),
-        "Позволяет улучшать нагрудники, увеличивая входящее лечение");
+        "Позволяет улучшать характеристики лечения на некоторых предметах");
     addTooltip(
         PSTItems.ANCIENT_ALLOY_TOXIC.get(),
-        "Позволяет улучшать оружие, увеличивая урон от яда");
+        "Позволяет улучшать характеристики ядов на некоторых предметах");
+    addTooltip(
+        PSTItems.ANCIENT_ALLOY_ENCHANTED.get(),
+        "Позволяет улучшать магические характеристики на некоторых предметах");
     add("ancient_material.tooltip", "Требует определенных знаний для использования");
     // attributes
     add(PSTAttributes.REGENERATION.get(), "Регенерация здоровья");
@@ -709,6 +709,7 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(
         PSTAttributes.STEALTH.get().getDescriptionId() + ".info",
         "(Скрытность снижает дальность агрессии монстров)");
+    add(PSTAttributes.POISON_DAMAGE.get(), "Урон ядом");
     // effects
     add(PSTEffects.CRIT_DAMAGE_BONUS.get(), "Критический урон");
     add(PSTEffects.DAMAGE_BONUS.get(), "Урон");

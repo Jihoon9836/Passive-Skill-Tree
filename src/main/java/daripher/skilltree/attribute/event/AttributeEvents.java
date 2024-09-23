@@ -1,26 +1,19 @@
 package daripher.skilltree.attribute.event;
 
 import daripher.skilltree.SkillTreeMod;
-import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.config.Config;
 import daripher.skilltree.entity.player.PlayerHelper;
 import daripher.skilltree.init.PSTAttributes;
-import daripher.skilltree.item.ItemHelper;
-import daripher.skilltree.mixin.AbstractArrowAccessor;
 import daripher.skilltree.mixin.LivingEntityAccessor;
 import daripher.skilltree.skill.bonus.EventListenerBonus;
 import daripher.skilltree.skill.bonus.SkillBonus;
 import daripher.skilltree.skill.bonus.SkillBonusHandler;
 import daripher.skilltree.skill.bonus.condition.item.EquipmentCondition;
 import daripher.skilltree.skill.bonus.event.EvasionEventListener;
-import java.util.List;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,7 +21,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.Tags;
@@ -36,8 +28,6 @@ import net.minecraftforge.event.GrindstoneEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.*;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
@@ -100,44 +90,6 @@ public class AttributeEvents {
     if (!(attacker instanceof LivingEntity livingAttacker)) return;
     LivingEntityAccessor entityAccessor = (LivingEntityAccessor) player;
     entityAccessor.invokeBlockUsingShield(livingAttacker);
-  }
-
-  @SubscribeEvent
-  public static void applyPoisonedWeaponEffects(LivingHurtEvent event) {
-    if (!(event.getSource().getDirectEntity() instanceof Player player)) return;
-    ItemStack weapon = player.getMainHandItem();
-    if (!ItemHelper.hasPoisons(weapon)) return;
-    List<MobEffectInstance> poisons = ItemHelper.getPoisons(weapon);
-    poisons.forEach(event.getEntity()::addEffect);
-  }
-
-  @SubscribeEvent
-  public static void applyPoisonedThrownTridentEffects(LivingHurtEvent event) {
-    DamageSource damageSource = event.getSource();
-    if (!(damageSource.getDirectEntity() instanceof ThrownTrident trident)) return;
-    AbstractArrowAccessor arrowAccessor = (AbstractArrowAccessor) trident;
-    ItemStack weapon = arrowAccessor.invokeGetPickupItem();
-    if (weapon == null) return;
-    if (!ItemHelper.hasPoisons(weapon)) return;
-    List<MobEffectInstance> poisons = ItemHelper.getPoisons(weapon);
-    LivingEntity target = event.getEntity();
-    for (MobEffectInstance poison : poisons) {
-      MobEffectInstance effectInstance = new MobEffectInstance(poison);
-      target.addEffect(effectInstance);
-    }
-  }
-
-  @SubscribeEvent(priority = EventPriority.HIGH)
-  public static void addPoisonedWeaponTooltips(ItemTooltipEvent event) {
-    ItemStack weapon = event.getItemStack();
-    if (!ItemHelper.hasPoisons(weapon)) return;
-    List<Component> tooltips = event.getToolTip();
-    tooltips.add(Component.empty());
-    tooltips.add(Component.translatable("weapon.poisoned").withStyle(ChatFormatting.DARK_PURPLE));
-    for (MobEffectInstance poison : ItemHelper.getPoisons(weapon)) {
-      Component tooltip = TooltipHelper.getEffectInstanceTooltip(poison);
-      tooltips.add(tooltip);
-    }
   }
 
   @SubscribeEvent

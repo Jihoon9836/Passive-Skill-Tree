@@ -58,7 +58,7 @@ public final class FoodEffectBonus implements ItemBonus<FoodEffectBonus> {
 
   @Override
   public MutableComponent getTooltip() {
-    Component effectDescription = TooltipHelper.getEffectInstanceTooltip(effect);
+    Component effectDescription = TooltipHelper.getEffectTooltip(effect);
     Component durationDescription = MobEffectUtil.formatDuration(effect, 1f);
     return Component.translatable(getDescriptionId(), effectDescription, durationDescription);
   }

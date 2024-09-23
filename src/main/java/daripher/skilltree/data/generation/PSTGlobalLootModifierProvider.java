@@ -20,9 +20,12 @@ public class PSTGlobalLootModifierProvider extends GlobalLootModifierProvider {
   @Override
   protected void start() {
     upgradeMaterial(
-        "zombie_piglins_ancient_gems", "entities/zombified_piglin", PSTItems.ANCIENT_ALLOY_GILDED);
-    upgradeMaterial("endermen_ancient_eyes", "entities/enderman", PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT);
-    upgradeMaterial("creepers_ancient_vines", "entities/creeper", PSTItems.ANCIENT_ALLOY_CURATIVE);
+        "zombie_piglins_alloys", "entities/zombified_piglin", PSTItems.ANCIENT_ALLOY_GILDED);
+    upgradeMaterial("endermen_alloys", "entities/enderman", PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT);
+    upgradeMaterial("creepers_alloys", "entities/creeper", PSTItems.ANCIENT_ALLOY_CURATIVE);
+    upgradeMaterial("spiders_alloys", "entities/spider", PSTItems.ANCIENT_ALLOY_TOXIC);
+    upgradeMaterial(
+        "wither_skeletons_alloys", "entities/creeper", PSTItems.ANCIENT_ALLOY_ENCHANTED);
   }
 
   private void upgradeMaterial(

@@ -31,7 +31,7 @@ public class SimpleGemBonusProvider implements GemBonusProvider {
 
   @Override
   public boolean canApply(Player player, ItemStack itemStack, ItemStack gemStack) {
-    int socket = ItemHelper.getFirstEmptySocket(itemStack, player);
+    int socket = ItemHelper.getFirstEmptySocket(itemStack);
     if (GemItem.hasGem(itemStack, socket)) return false;
     return getBonus(player, itemStack, gemStack) != null;
   }

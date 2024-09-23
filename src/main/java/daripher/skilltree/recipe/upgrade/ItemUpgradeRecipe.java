@@ -50,7 +50,8 @@ public class ItemUpgradeRecipe extends ChancedUpgradeRecipe implements SkillRequ
   }
 
   @Override
-  public boolean matches(Container container, @NotNull Level level) {
+  public boolean matches(@NotNull Container container, @NotNull Level level) {
+    if (isUncraftable(container, this)) return false;
     ItemStack baseItem = container.getItem(SmithingMenu.BASE_SLOT);
     ItemStack additionItem = container.getItem(SmithingMenu.ADDITIONAL_SLOT);
     return baseCondition.met(baseItem)
@@ -61,6 +62,7 @@ public class ItemUpgradeRecipe extends ChancedUpgradeRecipe implements SkillRequ
   @Override
   public @NotNull ItemStack assemble(
       @NotNull Container container, @NotNull RegistryAccess registryAccess) {
+    if (isUncraftable(container, this)) return ItemStack.EMPTY;
     if (!addition.test(container.getItem(SmithingMenu.ADDITIONAL_SLOT))) return ItemStack.EMPTY;
     ItemStack baseItem = container.getItem(SmithingMenu.BASE_SLOT);
     if (!baseCondition.met(baseItem)) return ItemStack.EMPTY;
@@ -103,11 +105,15 @@ public class ItemUpgradeRecipe extends ChancedUpgradeRecipe implements SkillRequ
 
   @Override
   public void craftingFailed(SmithingMenu menu, Player player) {
+    consumeIngredient(menu);
+    player.level().playSound(null, player, SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1F, 1F);
+  }
+
+  private static void consumeIngredient(SmithingMenu menu) {
     Slot additionalSlot = menu.getSlot(SmithingMenu.ADDITIONAL_SLOT);
     ItemStack additionalItem = additionalSlot.getItem();
     additionalItem.shrink(1);
     additionalSlot.set(additionalItem);
-    player.level().playSound(null, player, SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1F, 1F);
   }
 
   @Override

@@ -1,9 +1,7 @@
 package daripher.skilltree.compat.apotheosis;
 
-import com.google.common.collect.ImmutableList;
 import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.compat.apotheosis.gem.PSTGemBonus;
-import daripher.skilltree.entity.player.PlayerHelper;
 import daripher.skilltree.item.ItemHelper;
 import daripher.skilltree.skill.bonus.item.ItemBonus;
 import dev.shadowsoffire.apotheosis.Apotheosis;
@@ -13,7 +11,6 @@ import dev.shadowsoffire.apotheosis.adventure.loot.GemLootPoolEntry;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootRarity;
 import dev.shadowsoffire.apotheosis.adventure.socket.SocketHelper;
-import dev.shadowsoffire.apotheosis.adventure.socket.SocketedGems;
 import dev.shadowsoffire.apotheosis.adventure.socket.gem.Gem;
 import dev.shadowsoffire.apotheosis.adventure.socket.gem.GemInstance;
 import dev.shadowsoffire.apotheosis.adventure.socket.gem.GemItem;
@@ -22,9 +19,7 @@ import dev.shadowsoffire.apotheosis.adventure.socket.gem.bonus.GemBonus;
 import dev.shadowsoffire.placebo.reload.DynamicHolder;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import javax.annotation.Nullable;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -45,32 +40,6 @@ public enum ApotheosisCompatibility {
     forgeEventBus.addListener(this::addItemSockets);
   }
 
-  public SocketedGems getGems(ItemStack stack, int sockets) {
-    if (sockets <= 0 || stack.isEmpty()) {
-      return SocketedGems.EMPTY;
-    }
-    LootCategory cat = LootCategory.forItem(stack);
-    if (cat.isNone()) {
-      return SocketedGems.EMPTY;
-    }
-    List<GemInstance> gems = NonNullList.withSize(sockets, GemInstance.EMPTY);
-    int i = 0;
-    CompoundTag afxData = stack.getTagElement("affix_data");
-    if (afxData != null && afxData.contains("gems")) {
-      ListTag gemData = afxData.getList("gems", 10);
-      for (Tag tag : gemData) {
-        ItemStack gemStack = ItemStack.of((CompoundTag) tag);
-        gemStack.setCount(1);
-        GemInstance inst = GemInstance.socketed(stack, gemStack);
-        if (inst.isValid()) {
-          gems.set(i++, inst);
-        }
-        if (i >= sockets) break;
-      }
-    }
-    return new SocketedGems(ImmutableList.copyOf(gems));
-  }
-
   public List<? extends ItemBonus<?>> getGemBonuses(ItemStack stack) {
     List<ItemBonus<?>> list = new ArrayList<>();
     for (GemInstance gemInstance : SocketHelper.getGems(stack)) {
@@ -87,36 +56,6 @@ public enum ApotheosisCompatibility {
       }
     }
     return list;
-  }
-
-  public List<ItemStack> getGemStacks(ItemStack stack) {
-    return getGems(stack, getSockets(stack, null)).gems().stream()
-        .map(GemInstance::gemStack)
-        .toList();
-  }
-
-  public int getSockets(ItemStack stack, @Nullable Player player) {
-    int playerSockets = player == null ? 0 : PlayerHelper.getPlayerSockets(stack, player);
-    int sockets = SocketHelper.getSockets(stack);
-    int gems = SocketHelper.getGems(stack).size();
-    playerSockets -= gems;
-    if (playerSockets < 0) playerSockets = 0;
-    return sockets + playerSockets;
-  }
-
-  public boolean hasEmptySockets(ItemStack stack, Player player) {
-    return getGems(stack, getSockets(stack, player)).stream()
-        .anyMatch(Predicate.not(GemInstance::isValid));
-  }
-
-  public int getFirstEmptySocket(ItemStack stack, int sockets) {
-    SocketedGems gems = getGems(stack, sockets);
-    for (int socket = 0; socket < sockets; socket++) {
-      if (!gems.get(socket).isValid()) {
-        return socket;
-      }
-    }
-    return 0;
   }
 
   public void createGemStack(
@@ -161,5 +100,9 @@ public enum ApotheosisCompatibility {
       if (sockets < gemsTag.size()) sockets = gemsTag.size();
     }
     event.setSockets(sockets);
+  }
+
+  public List<ItemStack> getGemStacks(ItemStack stack) {
+    return SocketHelper.getGems(stack).stream().map(GemInstance::gemStack).toList();
   }
 }

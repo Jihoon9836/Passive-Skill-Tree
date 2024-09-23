@@ -274,16 +274,9 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.DAMAGE.get(), "Damage");
     add(PSTSkillBonuses.CRIT_DAMAGE.get(), "Critical Hit Damage");
     add(PSTSkillBonuses.CRIT_CHANCE.get(), "Critical Hit Chance");
-    add(PSTSkillBonuses.GEM_POWER.get(), "Gems inserted into %s: %s");
-    add(PSTSkillBonuses.GEM_POWER.get(), "bonus", "Effect Power");
-    add(PSTSkillBonuses.PLAYER_SOCKETS.get(), "Gem Sockets in %s");
     add(PSTSkillBonuses.BLOCK_BREAK_SPEED.get(), "Block Break Speed");
     add(PSTSkillBonuses.REPAIR_EFFICIENCY.get(), "Repaired %s: %s");
     add(PSTSkillBonuses.REPAIR_EFFICIENCY.get(), "bonus", "Durability Restored");
-    add(PSTSkillBonuses.ENCHANTMENT_AMPLIFICATION.get(), "%s: %s");
-    add(PSTSkillBonuses.ENCHANTMENT_AMPLIFICATION.get(), "bonus", "Amplification Chance");
-    add(PSTSkillBonuses.ENCHANTMENT_REQUIREMENT.get(), "Enchantments: %s");
-    add(PSTSkillBonuses.ENCHANTMENT_REQUIREMENT.get(), "bonus", "Level Requirement");
     add(PSTSkillBonuses.FREE_ENCHANTMENT.get(), "Enchantments: %s");
     add(PSTSkillBonuses.FREE_ENCHANTMENT.get(), "bonus", "Free Enchantment chance");
     add(PSTSkillBonuses.RECIPE_UNLOCK.get(), "Unlocks Recipe: %s");
@@ -314,6 +307,8 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.INFLICT_DAMAGE.get(), "player.chance", "Chance to take %s damage");
     add(PSTSkillBonuses.INFLICT_DAMAGE.get(), "enemy", "Inflict %s damage");
     add(PSTSkillBonuses.INFLICT_DAMAGE.get(), "enemy.chance", "Chance to inflict %s damage");
+    add(PSTSkillBonuses.CAN_POISON_ANYONE.get(), "Your poisons can affect any enemies");
+    add(PSTSkillBonuses.LETHAL_POISON.get(), "Your poisons are lethal");
     // item bonuses
     add(PSTItemBonuses.SOCKETS.get(), "+%d Gem Sockets");
     add(PSTItemBonuses.DURABILITY.get(), "Durability");
@@ -328,9 +323,9 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(GainedExperienceBonus.ExperienceSource.ORE.getDescriptionId(), "Ores");
     add(GainedExperienceBonus.ExperienceSource.FISHING.getDescriptionId(), "Fishing");
     // loot conditions
-    add(LootDuplicationBonus.LootType.MOBS.getDescriptionId(), "Mobs Loot");
-    add(LootDuplicationBonus.LootType.FISHING.getDescriptionId(), "Fishing Loot");
-    add(LootDuplicationBonus.LootType.GEMS.getDescriptionId(), "Gems from Ore");
+    add(LootDuplicationBonus.LootType.MOBS.getDescriptionId(), "mobs loot");
+    add(LootDuplicationBonus.LootType.FISHING.getDescriptionId(), "fishing loot");
+    add(LootDuplicationBonus.LootType.GEMS.getDescriptionId(), "gems from ore");
     // living conditions
     add(PSTLivingConditions.EFFECT_AMOUNT.get(), "target.you", "You have");
     add(PSTLivingConditions.EFFECT_AMOUNT.get(), "target.target", "Target has");
@@ -596,20 +591,25 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT.get(), "Lightweight Ancient Alloy");
     add(PSTItems.ANCIENT_ALLOY_CURATIVE.get(), "Curative Ancient Alloy");
     add(PSTItems.ANCIENT_ALLOY_TOXIC.get(), "Toxic Ancient Alloy");
+    add(PSTItems.ANCIENT_ALLOY_ENCHANTED.get(), "Enchanted Ancient Alloy");
     addTooltip(PSTItems.WISDOM_SCROLL.get(), "Grants one passive skill point");
     addTooltip(PSTItems.AMNESIA_SCROLL.get(), "Resets your passive skill tree");
     addWarning(PSTItems.AMNESIA_SCROLL.get(), "%d%% of your skill points will be lost");
     addTooltip(
-        PSTItems.ANCIENT_ALLOY_GILDED.get(), "Allows improving weapons, increasing loot from mobs");
+        PSTItems.ANCIENT_ALLOY_GILDED.get(),
+        "Allows improving loot-related attributes of certain items");
     addTooltip(
         PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT.get(),
-        "Allows improving boots, increasing movement speed");
+        "Allows improving speed attributes of certain items");
     addTooltip(
         PSTItems.ANCIENT_ALLOY_CURATIVE.get(),
-        "Allows improving chestplates, increasing incoming healing");
+        "Allows improving healing attributes of certain items");
     addTooltip(
         PSTItems.ANCIENT_ALLOY_TOXIC.get(),
-        "Allows improving weapons, increasing poison damage");
+        "Allows improving poison attributes of certain items");
+    addTooltip(
+        PSTItems.ANCIENT_ALLOY_ENCHANTED.get(),
+        "Allows improving magic attributes of certain items");
     add("ancient_material.tooltip", "Requires certain knowledge to be used");
     // attributes
     add(PSTAttributes.REGENERATION.get(), "Life Regeneration");
@@ -627,6 +627,7 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(
         PSTAttributes.STEALTH.get().getDescriptionId() + ".info",
         "(Stealth reduces monsters aggression range)");
+    add(PSTAttributes.POISON_DAMAGE.get(), "Poison Damage");
     // effects
     add(PSTEffects.CRIT_DAMAGE_BONUS.get(), "Critical Damage");
     add(PSTEffects.DAMAGE_BONUS.get(), "Damage");

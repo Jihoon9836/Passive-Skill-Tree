@@ -1,20 +1,20 @@
 package daripher.skilltree.client.tooltip;
 
 import daripher.skilltree.effect.SkillBonusEffect;
+import daripher.skilltree.skill.bonus.SkillBonus;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
-
-import daripher.skilltree.skill.bonus.SkillBonus;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +25,7 @@ public class TooltipHelper {
   private static final Style ITEM_BONUS_STYLE = Style.EMPTY.withColor(0x7AB3E2);
   private static final Style ITEM_BONUS_STYLE_NEGATIVE = Style.EMPTY.withColor(0xDB9792);
 
-  public static Component getEffectInstanceTooltip(MobEffectInstance effect) {
+  public static Component getEffectTooltip(MobEffectInstance effect) {
     Component effectDescription;
     if (effect.getEffect() instanceof SkillBonusEffect skillEffect) {
       effectDescription =
@@ -43,6 +43,14 @@ public class TooltipHelper {
           Component.translatable("potion.withAmplifier", effectDescription, amplifier);
     }
     return effectDescription;
+  }
+
+  public static Component getEffectTooltipWithTime(MobEffectInstance effect) {
+    Component effectDescription = getEffectTooltip(effect);
+    Component durationDescription = MobEffectUtil.formatDuration(effect, 1f);
+    ChatFormatting style = effect.getEffect().getCategory().getTooltipFormatting();
+    return Component.translatable("potion.withDuration", effectDescription, durationDescription)
+        .withStyle(style);
   }
 
   public static Component getOperationName(AttributeModifier.Operation operation) {

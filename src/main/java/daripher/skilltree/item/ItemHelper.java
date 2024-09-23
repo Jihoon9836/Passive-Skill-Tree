@@ -3,7 +3,6 @@ package daripher.skilltree.item;
 import com.google.common.collect.ImmutableList;
 import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.config.Config;
-import daripher.skilltree.entity.player.PlayerHelper;
 import daripher.skilltree.init.PSTRegistries;
 import daripher.skilltree.init.PSTTags;
 import daripher.skilltree.item.gem.GemItem;
@@ -16,13 +15,11 @@ import daripher.skilltree.skill.bonus.item.ItemSocketsBonus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -43,8 +40,8 @@ public class ItemHelper {
     return EquipmentCondition.isEquipment(stack) || stack.is(PSTTags.JEWELRY);
   }
 
-  public static int getFirstEmptySocket(ItemStack stack, Player player) {
-    int sockets = ItemHelper.getMaximumSockets(stack, player);
+  public static int getFirstEmptySocket(ItemStack stack) {
+    int sockets = ItemHelper.getMaximumSockets(stack);
     int socket = 0;
     for (int i = 0; i < sockets; i++) {
       socket = i;
@@ -121,13 +118,9 @@ public class ItemHelper {
     return !stack.isEmpty() && stack.getItem() instanceof QuiverItem;
   }
 
-  public static int getMaximumSockets(ItemStack stack, @Nullable Player player) {
+  public static int getMaximumSockets(ItemStack stack) {
     if (SkillTreeMod.apotheosisEnabled()) return 0;
-    int sockets = ItemHelper.getDefaultSockets(stack) + ItemHelper.getAdditionalSockets(stack);
-    if (player != null) {
-      sockets += PlayerHelper.getPlayerSockets(stack, player);
-    }
-    return sockets;
+    return ItemHelper.getDefaultSockets(stack) + ItemHelper.getAdditionalSockets(stack);
   }
 
   // TODO: rewrite mess
@@ -178,11 +171,6 @@ public class ItemHelper {
       }
     }
     stack.getOrCreateTag().put("SkillBonuses", bonusesTag);
-  }
-
-  public static void removeItemBonuses(ItemStack stack) {
-    if (!stack.hasTag()) return;
-    stack.getOrCreateTag().remove("SkillBonuses");
   }
 
   public static void refreshDurabilityBonuses(ItemStack stack) {

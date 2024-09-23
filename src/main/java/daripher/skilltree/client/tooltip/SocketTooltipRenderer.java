@@ -98,7 +98,7 @@ public class SocketTooltipRenderer implements ClientTooltipComponent {
     public SocketComponent(ItemStack stack) {
       this.stack = stack;
       this.gems = GemItem.getGems(stack);
-      this.sockets = ItemHelper.getMaximumSockets(stack, Minecraft.getInstance().player);
+      this.sockets = ItemHelper.getMaximumSockets(stack);
       if (sockets < gems.size()) sockets = gems.size();
     }
   }

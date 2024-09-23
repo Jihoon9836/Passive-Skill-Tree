@@ -7,7 +7,7 @@
     "type": "skilltree:skill_bonus",
     "skill_bonus": {
       "type": "skilltree:loot_duplication",
-      "chance": 0.03,
+      "chance": 0.02,
       "loot_type": "mobs",
       "multiplier": 1.0
     }
@@ -16,12 +16,13 @@
     "type": "skilltree:equipment_type",
     "equipment_type": "weapon"
   },
-  "max_upgrades": 5,
+  "max_upgrades": 10,
   "upgrade_chances": [
     1.0,
     0.9,
     0.8,
     0.7,
-    0.5
+    0.5,
+    0.4
   ]
 }

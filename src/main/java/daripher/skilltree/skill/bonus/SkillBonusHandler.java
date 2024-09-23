@@ -3,6 +3,7 @@ package daripher.skilltree.skill.bonus;
 import com.mojang.datafixers.util.Either;
 import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.capability.skill.PlayerSkillsProvider;
+import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.effect.SkillBonusEffect;
 import daripher.skilltree.entity.EquippedEntity;
 import daripher.skilltree.entity.player.PlayerHelper;
@@ -30,10 +31,10 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,8 +43,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderTooltipEvent;
@@ -515,6 +516,55 @@ public class SkillBonusHandler {
     }
   }
 
+  @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
+  public static void inflictPoisonForcefully(MobEffectEvent.Applicable event) {
+    if (event.getEffectInstance().getEffect() != MobEffects.POISON) return;
+    if (!(event.getEntity().getKillCredit() instanceof Player player)) return;
+    if (getSkillBonuses(player, CanPoisonAnyoneBonus.class).isEmpty()) return;
+    event.setResult(Event.Result.ALLOW);
+  }
+
+  @SubscribeEvent(priority = EventPriority.HIGH)
+  public static void addPoisonedWeaponTooltips(ItemTooltipEvent event) {
+    ItemStack weapon = event.getItemStack();
+    if (!ItemHelper.hasPoisons(weapon)) return;
+    List<Component> tooltips = event.getToolTip();
+    tooltips.add(Component.translatable("weapon.poisoned").withStyle(ChatFormatting.DARK_PURPLE));
+    for (MobEffectInstance poison : ItemHelper.getPoisons(weapon)) {
+      Component tooltip = TooltipHelper.getEffectTooltipWithTime(poison);
+      tooltips.add(Component.literal(" ").append(tooltip));
+    }
+  }
+
+  @SubscribeEvent
+  public static void applyPoisonedWeaponEffects(LivingHurtEvent event) {
+    if (!(event.getSource().getDirectEntity() instanceof Player player)) return;
+    event.getEntity().setLastHurtByPlayer(player);
+    ItemStack weapon = player.getMainHandItem();
+    if (!ItemHelper.hasPoisons(weapon)) return;
+    List<MobEffectInstance> poisons = ItemHelper.getPoisons(weapon);
+    poisons.forEach(event.getEntity()::addEffect);
+  }
+
+  @SubscribeEvent
+  public static void applyPoisonedThrownTridentEffects(LivingHurtEvent event) {
+    DamageSource damageSource = event.getSource();
+    if (!(damageSource.getDirectEntity() instanceof ThrownTrident trident)) return;
+    AbstractArrowAccessor arrowAccessor = (AbstractArrowAccessor) trident;
+    ItemStack weapon = arrowAccessor.invokeGetPickupItem();
+    if (weapon == null) return;
+    if (!ItemHelper.hasPoisons(weapon)) return;
+    List<MobEffectInstance> poisons = ItemHelper.getPoisons(weapon);
+    LivingEntity target = event.getEntity();
+    if (trident.getOwner() instanceof Player player) {
+      target.setLastHurtByPlayer(player);
+    }
+    for (MobEffectInstance poison : poisons) {
+      MobEffectInstance effectInstance = new MobEffectInstance(poison);
+      target.addEffect(effectInstance);
+    }
+  }
+
   public static float getLootMultiplier(Player player, LootDuplicationBonus.LootType lootType) {
     Map<Float, Float> multipliers = getLootMultipliers(player, lootType);
     float multiplier = 0f;
@@ -575,55 +625,11 @@ public class SkillBonusHandler {
     return multiplier;
   }
 
-  public static void amplifyEnchantments(
-      List<EnchantmentInstance> enchantments, RandomSource random, Player player) {
-    enchantments.replaceAll(
-        enchantmentInstance -> amplifyEnchantment(enchantmentInstance, random, player));
-  }
-
-  private static EnchantmentInstance amplifyEnchantment(
-      EnchantmentInstance enchantment, RandomSource random, Player player) {
-    if (enchantment.enchantment.getMaxLevel() == 1) {
-      return enchantment;
-    }
-    float amplificationChance = getAmplificationChance(enchantment, player);
-    if (amplificationChance == 0) return enchantment;
-    int levelBonus = (int) amplificationChance;
-    amplificationChance -= levelBonus;
-    int enchantmentLevel = enchantment.level + levelBonus;
-    if (random.nextFloat() < amplificationChance) enchantmentLevel++;
-    return new EnchantmentInstance(enchantment.enchantment, enchantmentLevel);
-  }
-
-  public static int adjustEnchantmentCost(int cost, @Nonnull Player player) {
-    return (int) Math.max(1, cost * getEnchantmentCostMultiplier(player));
-  }
-
   public static float getFreeEnchantmentChance(@Nonnull Player player) {
     float chance = 0f;
     for (FreeEnchantmentBonus bonus :
         SkillBonusHandler.getSkillBonuses(player, FreeEnchantmentBonus.class)) {
       chance += bonus.getChance();
-    }
-    return chance;
-  }
-
-  private static double getEnchantmentCostMultiplier(@Nonnull Player player) {
-    float multiplier = 1f;
-    for (EnchantmentRequirementBonus bonus :
-        SkillBonusHandler.getSkillBonuses(player, EnchantmentRequirementBonus.class)) {
-      multiplier += bonus.getMultiplier();
-    }
-    return multiplier;
-  }
-
-  private static float getAmplificationChance(EnchantmentInstance enchantment, Player player) {
-    float chance = 0f;
-    for (EnchantmentAmplificationBonus bonus :
-        SkillBonusHandler.getSkillBonuses(player, EnchantmentAmplificationBonus.class)) {
-      if (bonus.getCondition().met(enchantment.enchantment.category)) {
-        chance += bonus.getChance();
-      }
     }
     return chance;
   }

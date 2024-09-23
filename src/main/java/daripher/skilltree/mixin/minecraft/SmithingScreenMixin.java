@@ -27,7 +27,8 @@ public abstract class SmithingScreenMixin extends ItemCombinerScreen<SmithingMen
       GuiGraphics graphics, int mouseX, int mouseY, CallbackInfo callback) {
     ItemStack baseItem = menu.slots.get(SmithingMenu.BASE_SLOT).getItem();
     ItemStack additionalItem = menu.slots.get(SmithingMenu.ADDITIONAL_SLOT).getItem();
-    if (baseItem.isEmpty() || additionalItem.isEmpty()) return;
+    ItemStack resultItem = menu.slots.get(SmithingMenu.RESULT_SLOT).getItem();
+    if (baseItem.isEmpty() || additionalItem.isEmpty() || resultItem.isEmpty()) return;
     SmithingRecipe recipe = ((SmithingMenuAccessor) menu).getSelectedRecipe();
     if (!(recipe instanceof ChancedUpgradeRecipe chancedRecipe)) return;
     int chance = (int) (chancedRecipe.getUpgradeChance(menu) * 100);

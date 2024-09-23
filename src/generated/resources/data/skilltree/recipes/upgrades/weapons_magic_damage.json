@@ -1,28 +1,34 @@
 {
   "type": "skilltree:item_upgrade",
   "addition": {
-    "item": "skilltree:ancient_alloy_lightweight"
+    "item": "skilltree:ancient_alloy_enchanted"
   },
   "item_bonus": {
     "type": "skilltree:skill_bonus",
     "skill_bonus": {
-      "type": "skilltree:attribute",
-      "amount": 0.009999999776482582,
-      "attribute": "minecraft:generic.movement_speed",
-      "id": "df254342-cbb2-4a2d-be27-09dc6c95f7c6",
-      "name": "Upgrade",
+      "type": "skilltree:damage",
+      "amount": 0.02,
+      "damage_condition": {
+        "type": "skilltree:magic"
+      },
+      "enemy_multiplier": {
+        "type": "skilltree:none"
+      },
       "operation": 1,
       "player_condition": {
         "type": "skilltree:none"
       },
       "player_multiplier": {
         "type": "skilltree:none"
+      },
+      "target_condition": {
+        "type": "skilltree:none"
       }
     }
   },
   "item_condition": {
     "type": "skilltree:equipment_type",
-    "equipment_type": "boots"
+    "equipment_type": "weapon"
   },
   "max_upgrades": 10,
   "upgrade_chances": [

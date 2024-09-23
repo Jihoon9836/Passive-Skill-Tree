@@ -1,15 +1,15 @@
 {
   "type": "skilltree:item_upgrade",
   "addition": {
-    "item": "skilltree:ancient_alloy_lightweight"
+    "item": "skilltree:ancient_alloy_toxic"
   },
   "item_bonus": {
     "type": "skilltree:skill_bonus",
     "skill_bonus": {
       "type": "skilltree:attribute",
-      "amount": 0.009999999776482582,
-      "attribute": "minecraft:generic.movement_speed",
-      "id": "df254342-cbb2-4a2d-be27-09dc6c95f7c6",
+      "amount": 0.019999999552965164,
+      "attribute": "skilltree:poison_damage",
+      "id": "08b19b29-91da-4d45-9782-3086daf72b73",
       "name": "Upgrade",
       "operation": 1,
       "player_condition": {
@@ -22,7 +22,7 @@
   },
   "item_condition": {
     "type": "skilltree:equipment_type",
-    "equipment_type": "boots"
+    "equipment_type": "weapon"
   },
   "max_upgrades": 10,
   "upgrade_chances": [

@@ -1,12 +1,15 @@
 package daripher.skilltree.data.generation;
 
 import daripher.skilltree.SkillTreeMod;
+import daripher.skilltree.init.PSTAttributes;
 import daripher.skilltree.init.PSTItems;
 import daripher.skilltree.init.PSTTags;
 import daripher.skilltree.recipe.builder.ItemUpgradeRecipeBuilder;
+import daripher.skilltree.skill.bonus.condition.damage.MagicDamageCondition;
 import daripher.skilltree.skill.bonus.condition.item.EquipmentCondition;
 import daripher.skilltree.skill.bonus.item.ItemSkillBonus;
 import daripher.skilltree.skill.bonus.player.AttributeBonus;
+import daripher.skilltree.skill.bonus.player.DamageBonus;
 import daripher.skilltree.skill.bonus.player.IncomingHealingBonus;
 import daripher.skilltree.skill.bonus.player.LootDuplicationBonus;
 import java.util.Objects;
@@ -63,9 +66,7 @@ public class PSTRecipesProvider extends RecipeProvider {
         .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_GILDED.get()))
         .itemBonus(
             new ItemSkillBonus(
-                new LootDuplicationBonus(0.03f, 1f, LootDuplicationBonus.LootType.MOBS)))
-        .maxUpgrades(5)
-        .upgradeChances(1f, 0.9f, 0.8f, 0.7f, 0.5f)
+                new LootDuplicationBonus(0.02f, 1f, LootDuplicationBonus.LootType.MOBS)))
         .save(consumer, getRecipeId("upgrades/weapons_double_loot"));
     ItemUpgradeRecipeBuilder.create()
         .baseCondition(new EquipmentCondition(EquipmentCondition.Type.BOOTS))
@@ -77,16 +78,38 @@ public class PSTRecipesProvider extends RecipeProvider {
                     "Upgrade",
                     0.01f,
                     AttributeModifier.Operation.MULTIPLY_BASE)))
-        .maxUpgrades(10)
-        .upgradeChances(1f, 0.9f, 0.8f, 0.7f, 0.6f, 0.5f, 0.4f)
         .save(consumer, getRecipeId("upgrades/boots_movespeed"));
     ItemUpgradeRecipeBuilder.create()
         .baseCondition(new EquipmentCondition(EquipmentCondition.Type.CHESTPLATE))
         .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_CURATIVE.get()))
         .itemBonus(new ItemSkillBonus(new IncomingHealingBonus(0.02f)))
-        .maxUpgrades(10)
-        .upgradeChances(1f, 0.9f, 0.8f, 0.7f, 0.6f, 0.5f, 0.4f)
         .save(consumer, getRecipeId("upgrades/chestplates_incoming_healing"));
+    ItemUpgradeRecipeBuilder.create()
+        .baseCondition(new EquipmentCondition(EquipmentCondition.Type.WEAPON))
+        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_TOXIC.get()))
+        .itemBonus(
+            new ItemSkillBonus(
+                new AttributeBonus(
+                    PSTAttributes.POISON_DAMAGE.get(),
+                    "Upgrade",
+                    0.02f,
+                    AttributeModifier.Operation.MULTIPLY_BASE)))
+        .save(consumer, getRecipeId("upgrades/weapons_poison_damage"));
+    ItemUpgradeRecipeBuilder.create()
+        .baseCondition(new EquipmentCondition(EquipmentCondition.Type.WEAPON))
+        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_ENCHANTED.get()))
+        .itemBonus(
+            new ItemSkillBonus(
+                new DamageBonus(0.02f, AttributeModifier.Operation.MULTIPLY_BASE)
+                    .setDamageCondition(new MagicDamageCondition())))
+        .save(consumer, getRecipeId("upgrades/weapons_magic_damage"));
+    ItemUpgradeRecipeBuilder.create()
+        .baseCondition(new EquipmentCondition(EquipmentCondition.Type.PICKAXE))
+        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_GILDED.get()))
+        .itemBonus(
+            new ItemSkillBonus(
+                new LootDuplicationBonus(0.02f, 1f, LootDuplicationBonus.LootType.GEMS)))
+        .save(consumer, getRecipeId("upgrades/pickaxes_double_gems"));
   }
 
   protected void quiver(

@@ -25,20 +25,12 @@ public class PSTSkillBonuses {
       REGISTRY.register("crit_damage", CritDamageBonus.Serializer::new);
   public static final RegistryObject<SkillBonus.Serializer> CRIT_CHANCE =
       REGISTRY.register("crit_chance", CritChanceBonus.Serializer::new);
-  public static final RegistryObject<SkillBonus.Serializer> GEM_POWER =
-      REGISTRY.register("gem_power", GemPowerBonus.Serializer::new);
-  public static final RegistryObject<SkillBonus.Serializer> PLAYER_SOCKETS =
-      REGISTRY.register("player_sockets", PlayerSocketsBonus.Serializer::new);
   public static final RegistryObject<SkillBonus.Serializer> REPAIR_EFFICIENCY =
       REGISTRY.register("repair_efficiency", RepairEfficiencyBonus.Serializer::new);
   public static final RegistryObject<SkillBonus.Serializer> BLOCK_BREAK_SPEED =
       REGISTRY.register("block_break_speed", BlockBreakSpeedBonus.Serializer::new);
   public static final RegistryObject<SkillBonus.Serializer> RECIPE_UNLOCK =
       REGISTRY.register("recipe_unlock", RecipeUnlockBonus.Serializer::new);
-  public static final RegistryObject<SkillBonus.Serializer> ENCHANTMENT_AMPLIFICATION =
-      REGISTRY.register("enchantment_amplification", EnchantmentAmplificationBonus.Serializer::new);
-  public static final RegistryObject<SkillBonus.Serializer> ENCHANTMENT_REQUIREMENT =
-      REGISTRY.register("enchantment_requirement", EnchantmentRequirementBonus.Serializer::new);
   public static final RegistryObject<SkillBonus.Serializer> FREE_ENCHANTMENT =
       REGISTRY.register("free_enchantment", FreeEnchantmentBonus.Serializer::new);
   public static final RegistryObject<SkillBonus.Serializer> JUMP_HEIGHT =
@@ -65,6 +57,10 @@ public class PSTSkillBonuses {
       REGISTRY.register("healing", HealingBonus.Serializer::new);
   public static final RegistryObject<SkillBonus.Serializer> INFLICT_DAMAGE =
       REGISTRY.register("inflict_damage", InflictDamageBonus.Serializer::new);
+  public static final RegistryObject<SkillBonus.Serializer> CAN_POISON_ANYONE =
+      REGISTRY.register("can_poison_anyone", CanPoisonAnyoneBonus.Serializer::new);
+  public static final RegistryObject<SkillBonus.Serializer> LETHAL_POISON =
+      REGISTRY.register("lethal_poison", LethalPoisonBonus.Serializer::new);
 
   @SuppressWarnings("rawtypes")
   public static List<SkillBonus> bonusList() {

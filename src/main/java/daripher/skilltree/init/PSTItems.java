@@ -92,4 +92,6 @@ public class PSTItems {
       REGISTRY.register("ancient_alloy_curative", UpgradeMaterialItem::new);
   public static final RegistryObject<Item> ANCIENT_ALLOY_TOXIC =
       REGISTRY.register("ancient_alloy_toxic", UpgradeMaterialItem::new);
+  public static final RegistryObject<Item> ANCIENT_ALLOY_ENCHANTED =
+      REGISTRY.register("ancient_alloy_enchanted", UpgradeMaterialItem::new);
 }

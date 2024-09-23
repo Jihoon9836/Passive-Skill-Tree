@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.init.PSTRecipeSerializers;
-import daripher.skilltree.recipe.upgrade.ItemUpgradeRecipe;
 import daripher.skilltree.skill.bonus.condition.item.ItemCondition;
 import daripher.skilltree.skill.bonus.condition.item.NoneItemCondition;
 import daripher.skilltree.skill.bonus.item.ItemBonus;
@@ -22,8 +21,8 @@ public class ItemUpgradeRecipeBuilder {
   private ItemCondition baseCondition = NoneItemCondition.INSTANCE;
   private Ingredient additionalItem = Ingredient.EMPTY;
   private ItemBonus<?> itemBonus = new ItemSocketsBonus(1);
-  private int maxUpgrades = 1;
-  private float[] upgradeChances = {1f};
+  private int maxUpgrades = 10;
+  private float[] upgradeChances = {1f, 0.9f, 0.8f, 0.7f, 0.5f, 0.4f};
 
   public static ItemUpgradeRecipeBuilder create() {
     return new ItemUpgradeRecipeBuilder();

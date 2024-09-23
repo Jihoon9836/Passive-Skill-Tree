@@ -16,7 +16,7 @@ public interface GemBonusProvider {
   default void addGemBonus(Player player, ItemStack itemStack, ItemStack gemStack) {
     ItemBonus<?> bonus = getBonus(player, itemStack, gemStack);
     if (bonus != null) {
-      GemItem.addGemBonus(player, itemStack, gemStack, bonus);
+      GemItem.addGemBonus(itemStack, gemStack, bonus);
     }
   }
 

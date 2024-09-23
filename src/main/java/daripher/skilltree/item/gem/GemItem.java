@@ -4,7 +4,6 @@ import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.compat.apotheosis.ApotheosisCompatibility;
 import daripher.skilltree.data.reloader.GemTypesReloader;
 import daripher.skilltree.data.serializers.SerializationHelper;
-import daripher.skilltree.entity.player.PlayerHelper;
 import daripher.skilltree.init.PSTItems;
 import daripher.skilltree.item.ItemHelper;
 import daripher.skilltree.item.gem.bonus.GemBonusProvider;
@@ -101,13 +100,10 @@ public class GemItem extends Item {
   }
 
   public static void addGemBonus(
-      @Nonnull Player player,
       @Nonnull ItemStack itemStack,
       @Nonnull ItemStack gemStack,
       @Nonnull ItemBonus<?> bonus) {
     GemType gemType = getGemType(gemStack);
-    float gemPower = PlayerHelper.getGemPower(player, itemStack);
-    bonus = bonus.copy().multiply(gemPower);
     ListTag bonusesTag = itemStack.getOrCreateTag().getList("gem_bonuses", Tag.TAG_COMPOUND);
     ListTag gemsTag = itemStack.getOrCreateTag().getList("gems", Tag.TAG_STRING);
     CompoundTag bonusTag = new CompoundTag();
