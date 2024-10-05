@@ -29,11 +29,11 @@
       "gem_class": {
         "key": "weapon",
         "types": [
-          "bow",
-          "sword",
-          "heavy_weapon",
+          "crossbow",
           "trident",
-          "crossbow"
+          "heavy_weapon",
+          "sword",
+          "bow"
         ]
       }
     },
@@ -46,7 +46,7 @@
             "type": "skilltree:attribute",
             "amount": 1.5,
             "attribute": "minecraft:generic.luck",
-            "id": "c95469bc-90ea-4fd1-a101-702e8ef2978e",
+            "id": "04b941f9-a06e-44e1-9472-7e9e12bce36d",
             "name": "Citrine",
             "operation": 0,
             "player_condition": {
@@ -115,7 +115,7 @@
             "type": "skilltree:attribute",
             "amount": 0.07500000111758709,
             "attribute": "minecraft:generic.luck",
-            "id": "45deb2a7-46b1-4ec7-a59e-cd49c2bd4cac",
+            "id": "97701c36-0d36-46e5-8938-c59e2205e2a0",
             "name": "Citrine",
             "operation": 1,
             "player_condition": {
@@ -150,8 +150,8 @@
       "gem_class": {
         "key": "jewelry",
         "types": [
-          "curios:ring",
-          "curios:necklace"
+          "curios:necklace",
+          "curios:ring"
         ]
       }
     }

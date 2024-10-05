@@ -62,20 +62,30 @@ public final class LootDuplicationBonus implements SkillBonus<LootDuplicationBon
   @Override
   public MutableComponent getTooltip() {
     Component lootDescription = Component.translatable(lootType.getDescriptionId());
-    String multiplierDescription = ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(multiplier * 100);
     String descriptionId = getDescriptionId();
-    Component bonusDescription;
+    MutableComponent multiplierDescription;
     if (multiplier == 1) {
-      bonusDescription = Component.translatable(descriptionId + ".double", lootDescription);
+      multiplierDescription = Component.translatable(descriptionId + ".double");
     } else if (multiplier == 2) {
-      bonusDescription = Component.translatable(descriptionId + ".triple", lootDescription);
+      multiplierDescription = Component.translatable(descriptionId + ".triple");
     } else {
+      String formattedMultiplier = ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(multiplier * 100);
+      multiplierDescription =
+          Component.translatable(descriptionId + ".multiplier", formattedMultiplier);
+    }
+    MutableComponent bonusDescription;
+    if (chance < 1) {
       bonusDescription =
           Component.translatable(descriptionId, multiplierDescription, lootDescription);
+      bonusDescription =
+          TooltipHelper.getSkillBonusTooltip(
+              bonusDescription, chance, AttributeModifier.Operation.MULTIPLY_BASE);
+    } else {
+      bonusDescription =
+          Component.translatable(
+              descriptionId + ".guaranteed", multiplierDescription, lootDescription);
     }
-    return TooltipHelper.getSkillBonusTooltip(
-            bonusDescription, chance, AttributeModifier.Operation.MULTIPLY_BASE)
-        .withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
+    return bonusDescription.withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
   }
 
   @Override

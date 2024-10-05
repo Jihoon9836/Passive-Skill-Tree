@@ -19,7 +19,7 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.DAMAGE.get(), "Урон");
     add(PSTSkillBonuses.CRIT_DAMAGE.get(), "Критический урон");
     add(PSTSkillBonuses.CRIT_CHANCE.get(), "Шанс критического удара");
-    add(PSTSkillBonuses.BLOCK_BREAK_SPEED.get(), "Скорость добычи Блоков");
+    add(PSTSkillBonuses.BLOCK_BREAK_SPEED.get(), "Скорость добычи блоков");
     add(PSTSkillBonuses.REPAIR_EFFICIENCY.get(), "Ремонтируем%s: %s");
     add(PSTSkillBonuses.REPAIR_EFFICIENCY.get(), "bonus", "Прочности восстановлено");
     add(PSTSkillBonuses.FREE_ENCHANTMENT.get(), "Зачарование: %s");
@@ -27,9 +27,11 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.RECIPE_UNLOCK.get(), "Открывает рецепт: %s");
     add(PSTSkillBonuses.JUMP_HEIGHT.get(), "Высота прыжка");
     add(PSTSkillBonuses.INCOMING_HEALING.get(), "Получаемое лечение");
-    add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "Шанс получить +%s%% %s");
-    add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "double", "Шанс получить двойные %s");
-    add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "triple", "Шанс получить тройные %s");
+    add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "Шанс получить %s %s");
+    add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "multiplier", "+%s%%");
+    add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "guaranteed", "Вы всегда получаете %s %s");
+    add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "double", "двойные");
+    add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "triple", "тройные");
     add(PSTSkillBonuses.GAINED_EXPERIENCE.get(), "Опыт %s");
     add(PSTSkillBonuses.IGNITE.get(), "player", "Вы загораетесь на %s");
     add(PSTSkillBonuses.IGNITE.get(), "player.chance", "Шанс загореться на %s");
