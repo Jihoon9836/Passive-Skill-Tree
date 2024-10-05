@@ -61,6 +61,12 @@ public class PSTSkillBonuses {
       REGISTRY.register("can_poison_anyone", CanPoisonAnyoneBonus.Serializer::new);
   public static final RegistryObject<SkillBonus.Serializer> LETHAL_POISON =
       REGISTRY.register("lethal_poison", LethalPoisonBonus.Serializer::new);
+  public static final RegistryObject<SkillBonus.Serializer> CURIO_SLOTS =
+      REGISTRY.register("curio_slots", CurioSlotsBonus.Serializer::new);
+  public static final RegistryObject<SkillBonus.Serializer> DAMAGE_TAKEN =
+      REGISTRY.register("damage_taken", DamageTakenBonus.Serializer::new);
+  public static final RegistryObject<SkillBonus.Serializer> DAMAGE_AVOIDANCE =
+      REGISTRY.register("damage_avoidance", DamageAvoidanceBonus.Serializer::new);
 
   @SuppressWarnings("rawtypes")
   public static List<SkillBonus> bonusList() {

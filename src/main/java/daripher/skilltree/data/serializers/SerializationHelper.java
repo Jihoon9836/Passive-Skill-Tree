@@ -35,7 +35,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import top.theillusivec4.curios.api.SlotAttribute;
 
 public class SerializationHelper {
   public static SkillBonus<?> deserializeSkillBonus(JsonObject json) {
@@ -74,11 +73,7 @@ public class SerializationHelper {
   public static Attribute deserializeAttribute(JsonObject json) {
     ResourceLocation attributeId = new ResourceLocation(json.get("attribute").getAsString());
     Attribute attribute;
-    if (attributeId.getNamespace().equals("curios")) {
-      attribute = SlotAttribute.getOrCreate(attributeId.getPath());
-    } else {
-      attribute = ForgeRegistries.ATTRIBUTES.getValue(attributeId);
-    }
+    attribute = ForgeRegistries.ATTRIBUTES.getValue(attributeId);
     if (attribute == null) {
       throw new RuntimeException("Attribute " + attributeId + " doesn't exist!");
     }
@@ -87,12 +82,8 @@ public class SerializationHelper {
 
   public static void serializeAttribute(JsonObject json, Attribute attribute) {
     ResourceLocation attributeId;
-    if (attribute instanceof SlotAttribute wrapper) {
-      attributeId = new ResourceLocation("curios", wrapper.getIdentifier());
-    } else {
-      attributeId = ForgeRegistries.ATTRIBUTES.getKey(attribute);
-    }
-    assert attributeId != null;
+    attributeId = ForgeRegistries.ATTRIBUTES.getKey(attribute);
+    Objects.requireNonNull(attributeId);
     json.addProperty("attribute", attributeId.toString());
   }
 
@@ -137,7 +128,7 @@ public class SerializationHelper {
     LivingMultiplier.Serializer serializer = multiplier.getSerializer();
     serializer.serialize(multiplierJson, multiplier);
     ResourceLocation serializerId = PSTRegistries.LIVING_MULTIPLIERS.get().getKey(serializer);
-    assert serializerId != null;
+    Objects.requireNonNull(serializerId);
     multiplierJson.addProperty("type", serializerId.toString());
     json.add(name, multiplierJson);
   }
@@ -158,7 +149,7 @@ public class SerializationHelper {
     LivingCondition.Serializer serializer = condition.getSerializer();
     serializer.serialize(conditionJson, condition);
     ResourceLocation serializerId = PSTRegistries.LIVING_CONDITIONS.get().getKey(serializer);
-    assert serializerId != null;
+    Objects.requireNonNull(serializerId);
     conditionJson.addProperty("type", serializerId.toString());
     json.add(name, conditionJson);
   }
@@ -318,12 +309,7 @@ public class SerializationHelper {
   @Nullable
   public static Attribute deserializeAttribute(CompoundTag tag) {
     ResourceLocation attributeId = new ResourceLocation(tag.getString("attribute"));
-    Attribute attribute;
-    if (attributeId.getNamespace().equals("curios")) {
-      attribute = SlotAttribute.getOrCreate(attributeId.getPath());
-    } else {
-      attribute = ForgeRegistries.ATTRIBUTES.getValue(attributeId);
-    }
+    Attribute attribute = ForgeRegistries.ATTRIBUTES.getValue(attributeId);
     if (attribute == null) {
       SkillTreeMod.LOGGER.error("Attribute {} doesn't exist!", attributeId);
     }
@@ -331,13 +317,8 @@ public class SerializationHelper {
   }
 
   public static void serializeAttribute(CompoundTag tag, Attribute attribute) {
-    ResourceLocation attributeId;
-    if (attribute instanceof SlotAttribute wrapper) {
-      attributeId = new ResourceLocation("curios", wrapper.getIdentifier());
-    } else {
-      attributeId = ForgeRegistries.ATTRIBUTES.getKey(attribute);
-    }
-    assert attributeId != null;
+    ResourceLocation attributeId = ForgeRegistries.ATTRIBUTES.getKey(attribute);
+    Objects.requireNonNull(attributeId);
     tag.putString("attribute", attributeId.toString());
   }
 
@@ -398,7 +379,7 @@ public class SerializationHelper {
     LivingCondition.Serializer serializer = condition.getSerializer();
     CompoundTag conditionTag = serializer.serialize(condition);
     ResourceLocation serializerId = PSTRegistries.LIVING_CONDITIONS.get().getKey(serializer);
-    assert serializerId != null;
+    Objects.requireNonNull(serializerId);
     conditionTag.putString("type", serializerId.toString());
     tag.put(name, conditionTag);
   }

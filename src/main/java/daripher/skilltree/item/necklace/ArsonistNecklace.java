@@ -6,11 +6,12 @@ import daripher.skilltree.skill.bonus.item.ItemSkillBonus;
 import daripher.skilltree.skill.bonus.player.DamageBonus;
 import java.util.List;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class ArsonistNecklace extends NecklaceItem {
   @Override
-  public @NotNull List<ItemBonus<?>> getItemBonuses() {
+  public @NotNull List<ItemBonus<?>> getItemBonuses(ItemStack itemStack) {
     return List.of(
         new ItemSkillBonus(
             new DamageBonus(0.05f, Operation.MULTIPLY_BASE)

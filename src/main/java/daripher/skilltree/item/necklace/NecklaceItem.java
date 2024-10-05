@@ -16,12 +16,12 @@ public class NecklaceItem extends Item implements ICurioItem, ItemBonusProvider 
 
   @Override
   public List<Component> getAttributesTooltip(List<Component> tooltips, ItemStack stack) {
-    getItemBonuses().stream().map(ItemBonus::getTooltip).forEach(tooltips::add);
+    getItemBonuses(stack).stream().map(ItemBonus::getTooltip).forEach(tooltips::add);
     return tooltips;
   }
 
   @Override
-  public @NotNull List<ItemBonus<?>> getItemBonuses() {
+  public @NotNull List<ItemBonus<?>> getItemBonuses(ItemStack itemStack) {
     return List.of();
   }
 }

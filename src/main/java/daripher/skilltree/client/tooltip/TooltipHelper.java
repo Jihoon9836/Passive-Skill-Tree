@@ -174,4 +174,12 @@ public class TooltipHelper {
   public static String getTrimmedString(String message, int maxWidth) {
     return getTrimmedString(Minecraft.getInstance().font, message, maxWidth);
   }
+
+  public static Component getSlotTooltip(String slotName, String type) {
+    return Component.translatable("curio.slot.%s.%s".formatted(slotName, type));
+  }
+
+  public static Component getSlotTooltip(String slotName) {
+    return Component.translatable("curio.slot.%s".formatted(slotName));
+  }
 }

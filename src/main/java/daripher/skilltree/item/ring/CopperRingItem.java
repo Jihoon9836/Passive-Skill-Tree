@@ -1,22 +1,17 @@
 package daripher.skilltree.item.ring;
 
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
-import daripher.skilltree.init.PSTAttributes;
-import java.util.UUID;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import daripher.skilltree.item.ItemBonusProvider;
+import daripher.skilltree.skill.bonus.item.ItemBonus;
+import daripher.skilltree.skill.bonus.item.ItemSkillBonus;
+import daripher.skilltree.skill.bonus.player.DamageTakenBonus;
+import java.util.List;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.item.ItemStack;
-import top.theillusivec4.curios.api.SlotContext;
+import org.jetbrains.annotations.NotNull;
 
-public class CopperRingItem extends RingItem {
+public class CopperRingItem extends RingItem implements ItemBonusProvider {
   @Override
-  public Multimap<Attribute, AttributeModifier> getAttributeModifiers(
-      SlotContext slotContext, UUID uuid, ItemStack stack) {
-    Multimap<Attribute, AttributeModifier> modifiers = LinkedHashMultimap.create();
-    modifiers.put(
-        PSTAttributes.BLOCKING.get(), new AttributeModifier(uuid, "Ring", 1, Operation.ADDITION));
-    return modifiers;
+  public @NotNull List<ItemBonus<?>> getItemBonuses(ItemStack itemStack) {
+    return List.of(new ItemSkillBonus(new DamageTakenBonus(-0.01f, Operation.MULTIPLY_BASE)));
   }
 }

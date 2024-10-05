@@ -7,10 +7,12 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithLootingCondition;
 import net.minecraftforge.common.data.GlobalLootModifierProvider;
 import net.minecraftforge.common.loot.LootTableIdCondition;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
 
 public class PSTGlobalLootModifierProvider extends GlobalLootModifierProvider {
   public PSTGlobalLootModifierProvider(DataGenerator generator) {
@@ -19,33 +21,38 @@ public class PSTGlobalLootModifierProvider extends GlobalLootModifierProvider {
 
   @Override
   protected void start() {
-    upgradeMaterial(
-        "zombie_piglins_alloys", "entities/zombified_piglin", PSTItems.ANCIENT_ALLOY_GILDED);
-    upgradeMaterial("endermen_alloys", "entities/enderman", PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT);
-    upgradeMaterial("creepers_alloys", "entities/creeper", PSTItems.ANCIENT_ALLOY_CURATIVE);
-    upgradeMaterial("spiders_alloys", "entities/spider", PSTItems.ANCIENT_ALLOY_TOXIC);
-    upgradeMaterial(
-        "wither_skeletons_alloys", "entities/creeper", PSTItems.ANCIENT_ALLOY_ENCHANTED);
+    upgradeMaterial("entities/zombified_piglin", PSTItems.ANCIENT_ALLOY_GILDED);
+    upgradeMaterial("entities/phantom", PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT);
+    upgradeMaterial("entities/creeper", PSTItems.ANCIENT_ALLOY_CURATIVE);
+    upgradeMaterial("entities/spider", PSTItems.ANCIENT_ALLOY_TOXIC);
+    upgradeMaterial("entities/wither_skeleton", PSTItems.ANCIENT_ALLOY_ENCHANTED);
+    upgradeMaterial("entities/enderman", PSTItems.ANCIENT_ALLOY_SPATIAL);
   }
 
-  private void upgradeMaterial(
-      String modifierName, String lootTablePath, RegistryObject<Item> item) {
-    addItem(modifierName, lootTablePath, item, 0.05f, 0.05f);
+  private void upgradeMaterial(String lootTablePath, RegistryObject<Item> item) {
+    addItem(lootTablePath, item, 0.05f, 0.05f);
   }
 
   private void addItem(
-      String modifierName,
-      String lootTablePath,
-      RegistryObject<Item> item,
-      float chance,
-      float lootingMultiplier) {
+      String lootTablePath, RegistryObject<Item> item, float chance, float lootingMultiplier) {
+    String modifierName = lootTablePath.replaceAll("/", "_") + item.getId().getPath();
     add(
         modifierName,
         new AddItemModifier(
             new ItemStack(item.get()),
-            LootTableIdCondition.builder(new ResourceLocation(lootTablePath)).build(),
-            LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(
-                    chance, lootingMultiplier)
-                .build()));
+            lootTableCondition(lootTablePath),
+            randomChanceCondition(chance, lootingMultiplier)));
+  }
+
+  private static LootItemCondition lootTableCondition(String lootTablePath) {
+    ResourceLocation lootTableId = new ResourceLocation(lootTablePath);
+    return LootTableIdCondition.builder(lootTableId).build();
+  }
+
+  @NotNull
+  private static LootItemCondition randomChanceCondition(float chance, float lootingMultiplier) {
+    return LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(
+            chance, lootingMultiplier)
+        .build();
   }
 }

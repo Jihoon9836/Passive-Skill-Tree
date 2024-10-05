@@ -24,6 +24,8 @@ public class PSTDamageConditions {
       REGISTRY.register("melee", MeleeDamageCondition.Serializer::new);
   public static final RegistryObject<DamageCondition.Serializer> MAGIC =
       REGISTRY.register("magic", MagicDamageCondition.Serializer::new);
+  public static final RegistryObject<DamageCondition.Serializer> FALL =
+      REGISTRY.register("fall", FallDamageCondition.Serializer::new);
 
   public static List<DamageCondition> conditionsList() {
     return PSTRegistries.DAMAGE_CONDITIONS.get().getValues().stream()

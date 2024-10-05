@@ -4,15 +4,21 @@ import com.google.gson.*;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTSkillBonuses;
+import daripher.skilltree.recipe.SkillRequiringRecipe;
 import daripher.skilltree.skill.bonus.SkillBonus;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
 
 public final class RecipeUnlockBonus implements SkillBonus<RecipeUnlockBonus> {
   private ResourceLocation recipeId;
@@ -78,15 +84,23 @@ public final class RecipeUnlockBonus implements SkillBonus<RecipeUnlockBonus> {
       SkillTreeEditor editor, int row, Consumer<RecipeUnlockBonus> consumer) {
     editor.addLabel(0, 0, "Recipe ID", ChatFormatting.GOLD);
     editor.increaseHeight(19);
+    ClientLevel level = Objects.requireNonNull(Minecraft.getInstance().level);
+    RecipeManager recipeManager = level.getRecipeManager();
+    List<ResourceLocation> recipeIds =
+        recipeManager.getRecipes().stream()
+            .filter(SkillRequiringRecipe.class::isInstance)
+            .map(Recipe::getId)
+            .toList();
     editor
-        .addTextField(0, 0, 200, 14, recipeId.toString())
-        .setSoftFilter(ResourceLocation::isValidResourceLocation)
+        .addSelectionMenu(0, 0, 200, recipeIds)
+        .setValue(getRecipeId())
+        .setElementNameGetter(recipeId -> Component.literal(recipeId.toString()))
         .setResponder(value -> selectRecipeId(consumer, value));
     editor.increaseHeight(19);
   }
 
-  private void selectRecipeId(Consumer<RecipeUnlockBonus> consumer, String value) {
-    setRecipeId(new ResourceLocation(value));
+  private void selectRecipeId(Consumer<RecipeUnlockBonus> consumer, ResourceLocation value) {
+    setRecipeId(value);
     consumer.accept(this.copy());
   }
 

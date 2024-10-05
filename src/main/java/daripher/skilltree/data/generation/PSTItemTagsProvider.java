@@ -5,7 +5,6 @@ import daripher.skilltree.init.PSTItems;
 import daripher.skilltree.init.PSTTags;
 import daripher.skilltree.item.gem.GemItem;
 import daripher.skilltree.item.necklace.NecklaceItem;
-import daripher.skilltree.item.quiver.QuiverItem;
 import daripher.skilltree.item.ring.RingItem;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
@@ -43,7 +42,6 @@ public class PSTItemTagsProvider extends ItemTagsProvider {
     add(PSTTags.GEMS, GemItem.class);
     add(PSTTags.RINGS, RingItem.class);
     add(PSTTags.NECKLACES, NecklaceItem.class);
-    add(PSTTags.QUIVERS, QuiverItem.class);
     add(PSTTags.NUGGETS_COPPER, PSTItems.COPPER_NUGGET.get());
     tag(PSTTags.JEWELRY).addTags(PSTTags.RINGS, PSTTags.NECKLACES);
     tag(Tags.Items.TOOLS).addOptionalTag(KNIVES);

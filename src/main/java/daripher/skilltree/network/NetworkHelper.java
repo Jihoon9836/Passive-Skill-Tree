@@ -31,7 +31,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import top.theillusivec4.curios.api.SlotAttribute;
 
 public class NetworkHelper {
   public static void writePassiveSkill(FriendlyByteBuf buf, PassiveSkill skill) {
@@ -76,24 +75,14 @@ public class NetworkHelper {
   }
 
   public static void writeAttribute(FriendlyByteBuf buf, Attribute attribute) {
-    String attributeId;
-    if (attribute instanceof SlotAttribute wrapper) {
-      attributeId = "curios:" + wrapper.getIdentifier();
-    } else {
-      attributeId = Objects.requireNonNull(ForgeRegistries.ATTRIBUTES.getKey(attribute)).toString();
-    }
+    String attributeId =
+        Objects.requireNonNull(ForgeRegistries.ATTRIBUTES.getKey(attribute)).toString();
     buf.writeUtf(attributeId);
   }
 
   public static @Nullable Attribute readAttribute(FriendlyByteBuf buf) {
     String attributeId = buf.readUtf();
-    Attribute attribute;
-    if (attributeId.startsWith("curios:")) {
-      attributeId = attributeId.replace("curios:", "");
-      attribute = SlotAttribute.getOrCreate(attributeId);
-    } else {
-      attribute = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(attributeId));
-    }
+    Attribute attribute = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(attributeId));
     if (attribute == null) {
       SkillTreeMod.LOGGER.error("Attribute {} does not exist", attributeId);
     }

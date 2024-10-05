@@ -1,6 +1,5 @@
-// 1.20.1	2024-05-05T09:04:00.5408448	Tags for minecraft:item mod id skilltree
+// 1.20.1	2024-09-26T20:44:03.5085005	Tags for minecraft:item mod id skilltree
 912807fae1f5d4fb0cd2645e952105207b245f35 data/curios/tags/items/necklace.json
-b0448e1e3142f31d11b1998a19dca53dfcab0a31 data/curios/tags/items/quiver.json
 66bb644ad4f941567a9624ab40ffcf18a197606b data/curios/tags/items/ring.json
 f9fb803cf86084b22047f5e6424e656d385660a2 data/forge/tags/items/curios/jewelry.json
 e3a08329a8faa4e76467f3cc10cb6daa98b57c64 data/forge/tags/items/nuggets/copper.json

@@ -192,7 +192,7 @@ public class SkillTreeEditor extends WidgetGroup<AbstractWidget> {
     Collection<MobEffect> values = ForgeRegistries.MOB_EFFECTS.getValues();
     return addSelectionMenu(x, y, width, values)
         .setValue(defaultValue)
-        .setElementNameGetter(e -> Component.translatable(e.getDescriptionId()));
+        .setElementNameGetter(e -> Component.literal(e.getDescriptionId()));
   }
 
   public SelectionMenuButton<DamageCondition> addSelectionMenu(

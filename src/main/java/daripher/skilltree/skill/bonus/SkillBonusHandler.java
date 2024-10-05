@@ -16,6 +16,7 @@ import daripher.skilltree.skill.bonus.event.*;
 import daripher.skilltree.skill.bonus.item.FoodHealingBonus;
 import daripher.skilltree.skill.bonus.item.ItemBonus;
 import daripher.skilltree.skill.bonus.item.ItemSkillBonus;
+import daripher.skilltree.skill.bonus.item.ItemSocketsBonus;
 import daripher.skilltree.skill.bonus.player.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -61,12 +63,16 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 import top.theillusivec4.curios.api.event.CurioEquipEvent;
 
 @Mod.EventBusSubscriber(modid = SkillTreeMod.MOD_ID)
 public class SkillBonusHandler {
+
+  public static final int UPGRADE_STYLE = 0xDFB759;
+
   @SubscribeEvent
   public static void applyBreakSpeedMultiplier(PlayerEvent.BreakSpeed event) {
     Player player = event.getEntity();
@@ -237,7 +243,12 @@ public class SkillBonusHandler {
     int sockets = ItemHelper.getAdditionalSockets(stack);
     if (sockets > 0) {
       String key = "gem.additional_socket_" + sockets;
-      Component socketTooltip = Component.translatable(key).withStyle(ChatFormatting.YELLOW);
+      MutableComponent socketTooltip = Component.translatable(key);
+      if (ItemUpgradeRecipe.getUpgradedItemBonus(stack) instanceof ItemSocketsBonus) {
+        socketTooltip = socketTooltip.withStyle(Style.EMPTY.withColor(UPGRADE_STYLE));
+      } else {
+        socketTooltip = socketTooltip.withStyle(ChatFormatting.YELLOW);
+      }
       event.getToolTip().add(1, socketTooltip);
     }
   }
@@ -247,8 +258,10 @@ public class SkillBonusHandler {
     List<Component> components = event.getToolTip();
     ItemBonus<?> itemBonus = ItemUpgradeRecipe.getUpgradedItemBonus(event.getItemStack());
     if (itemBonus == null) return;
+    // handled in the above method instead
+    if (itemBonus instanceof ItemSocketsBonus) return;
     MutableComponent tooltip = itemBonus.getTooltip();
-    MutableComponent finalTooltip = tooltip.withStyle(tooltip.getStyle().withColor(0xDFB759));
+    MutableComponent finalTooltip = tooltip.withStyle(tooltip.getStyle().withColor(UPGRADE_STYLE));
     // removes duplicate tooltip in attribute modifiers description
     if (itemBonus instanceof ItemSkillBonus bonus && bonus.getBonus() instanceof AttributeBonus) {
       components.removeIf(component -> component.getString().equals(finalTooltip.getString()));
@@ -565,6 +578,52 @@ public class SkillBonusHandler {
     }
   }
 
+  @SubscribeEvent(priority = EventPriority.LOWEST)
+  public static void applyDamageTakenBonuses(LivingHurtEvent event) {
+    if (!(event.getEntity() instanceof Player player)) return;
+    DamageSource damageSource = event.getSource();
+    if (!(damageSource.getEntity() instanceof LivingEntity attacker)) return;
+    float damageTaken = event.getAmount();
+    float addition =
+        getDamageTaken(player, attacker, damageSource, AttributeModifier.Operation.ADDITION);
+    damageTaken += addition;
+    float multiplier =
+        getDamageTaken(player, attacker, damageSource, AttributeModifier.Operation.MULTIPLY_BASE);
+    damageTaken *= 1 + multiplier;
+    float multiplierTotal =
+        getDamageTaken(player, attacker, damageSource, AttributeModifier.Operation.MULTIPLY_TOTAL);
+    damageTaken *= 1 + multiplierTotal;
+    event.setAmount(damageTaken);
+  }
+
+  @SubscribeEvent(priority = EventPriority.LOWEST)
+  public static void applyDamageAvoidanceBonuses(LivingAttackEvent event) {
+    if (!(event.getEntity() instanceof Player player)) return;
+    DamageSource damageSource = event.getSource();
+    if (!(damageSource.getEntity() instanceof LivingEntity attacker)) return;
+    float avoidance =
+        getSkillBonuses(player, DamageAvoidanceBonus.class).stream()
+            .map(b -> b.getAvoidanceChance(damageSource, player, attacker))
+            .reduce(Float::sum)
+            .orElse(0f);
+    if (player.getRandom().nextFloat() < avoidance) {
+      event.setCanceled(true);
+    }
+  }
+
+  @NotNull
+  private static Float getDamageTaken(
+      Player player,
+      LivingEntity attacker,
+      DamageSource damageSource,
+      AttributeModifier.Operation operation) {
+    List<DamageTakenBonus> damageTakenBonuses = getSkillBonuses(player, DamageTakenBonus.class);
+    return damageTakenBonuses.stream()
+        .map(b -> b.getDamageBonus(operation, damageSource, player, attacker))
+        .reduce(Float::sum)
+        .orElse(0f);
+  }
+
   public static float getLootMultiplier(Player player, LootDuplicationBonus.LootType lootType) {
     Map<Float, Float> multipliers = getLootMultipliers(player, lootType);
     float multiplier = 0f;
@@ -680,7 +739,7 @@ public class SkillBonusHandler {
   private static <T> List<T> getItemBonuses(ItemStack stack, Class<T> type) {
     List<ItemBonus<?>> itemBonuses = new ArrayList<>();
     if (stack.getItem() instanceof ItemBonusProvider provider) {
-      itemBonuses.addAll(provider.getItemBonuses());
+      itemBonuses.addAll(provider.getItemBonuses(stack));
     }
     itemBonuses.addAll(ItemHelper.getItemBonuses(stack));
     List<T> bonuses = new ArrayList<>();

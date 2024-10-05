@@ -1,6 +1,5 @@
 package daripher.skilltree.data.generation.translation;
 
-import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.init.PSTRegistries;
 import daripher.skilltree.skill.bonus.SkillBonus;
 import daripher.skilltree.skill.bonus.condition.damage.DamageCondition;
@@ -11,7 +10,7 @@ import daripher.skilltree.skill.bonus.event.SkillEventListener;
 import daripher.skilltree.skill.bonus.item.ItemBonus;
 import daripher.skilltree.skill.bonus.multiplier.LivingMultiplier;
 import java.util.Arrays;
-import javax.annotation.Nullable;
+
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -36,20 +35,25 @@ public abstract class PSTTranslationProvider extends LanguageProvider {
   protected void add(Attribute attribute, String name) {
     add(attribute.getDescriptionId(), name);
   }
-
-  protected void addSkill(String skillName, String name, @Nullable String description) {
-    String skillId = "skill.%s.%s".formatted(SkillTreeMod.MOD_ID, skillName);
-    add(skillId + ".name", name);
-    if (description != null) add(skillId + ".description", description);
+  protected void addInfo(Attribute attribute, String name) {
+    add(attribute.getDescriptionId() + ".info", "(%s)".formatted(name));
   }
 
-  protected void addSkill(String skillName, String name) {
-    addSkill(skillName, name, null);
+  protected void addCurioSlot(String slotName, String name) {
+    add("curio.slot.%s".formatted(slotName), name);
   }
 
-  protected void addSkillBranch(String skillName, String name, int from, int to) {
+  protected void addCurioSlot(String slotName, String type, String name) {
+    add("curio.slot.%s.%s".formatted(slotName, type), name);
+  }
+
+  protected void addSkill(int skillId, String name) {
+    add("skill.skilltree.new_skill_%d.name".formatted(skillId), name);
+  }
+
+  protected void addSkillBranch(String name, int from, int to) {
     for (int i = from; i <= to; i++) {
-      addSkill("%s_%d".formatted(skillName, i), name, null);
+      addSkill(i, name);
     }
   }
 

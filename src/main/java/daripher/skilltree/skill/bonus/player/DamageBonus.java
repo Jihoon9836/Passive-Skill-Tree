@@ -43,13 +43,13 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
   public float getDamageBonus(
       AttributeModifier.Operation operation,
       DamageSource source,
-      Player attacker,
+      Player player,
       LivingEntity target) {
     if (this.operation != operation) return 0f;
     if (!damageCondition.met(source)) return 0f;
-    if (!playerCondition.met(attacker)) return 0f;
+    if (!playerCondition.met(player)) return 0f;
     if (!targetCondition.met(target)) return 0f;
-    return amount * playerMultiplier.getValue(attacker);
+    return amount * playerMultiplier.getValue(player) * targetMultiplier.getValue(target);
   }
 
   @Override

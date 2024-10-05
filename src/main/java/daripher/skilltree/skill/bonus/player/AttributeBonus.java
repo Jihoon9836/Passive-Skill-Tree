@@ -25,8 +25,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotAttribute;
 
 public final class AttributeBonus implements SkillBonus<AttributeBonus>, SkillBonus.Ticking {
   private Attribute attribute;
@@ -51,12 +49,6 @@ public final class AttributeBonus implements SkillBonus<AttributeBonus>, SkillBo
         || playerMultiplier != NoneLivingMultiplier.INSTANCE) {
       return;
     }
-    if (attribute instanceof SlotAttribute wrapper) {
-      if (firstTime)
-        CuriosApi.getSlotHelper()
-            .growSlotType(wrapper.getIdentifier(), (int) modifier.getAmount(), player);
-      return;
-    }
     AttributeInstance instance = player.getAttribute(attribute);
     if (instance == null) {
       SkillTreeMod.LOGGER.error(
@@ -71,11 +63,6 @@ public final class AttributeBonus implements SkillBonus<AttributeBonus>, SkillBo
 
   @Override
   public void onSkillRemoved(ServerPlayer player) {
-    if (attribute instanceof SlotAttribute wrapper) {
-      CuriosApi.getSlotHelper()
-          .shrinkSlotType(wrapper.getIdentifier(), (int) modifier.getAmount(), player);
-      return;
-    }
     AttributeInstance instance = player.getAttribute(attribute);
     if (instance == null) {
       SkillTreeMod.LOGGER.error(

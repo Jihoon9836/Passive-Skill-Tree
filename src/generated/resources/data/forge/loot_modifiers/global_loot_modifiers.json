@@ -1,8 +1,11 @@
 {
   "entries": [
-    "skilltree:endermen_ancient_eyes",
-    "skilltree:creepers_ancient_vines",
-    "skilltree:zombie_piglins_ancient_gems"
+    "skilltree:entities_creeperancient_alloy_curative",
+    "skilltree:entities_wither_skeletonancient_alloy_enchanted",
+    "skilltree:entities_zombified_piglinancient_alloy_gilded",
+    "skilltree:entities_endermanancient_alloy_spatial",
+    "skilltree:entities_spiderancient_alloy_toxic",
+    "skilltree:entities_phantomancient_alloy_lightweight"
   ],
   "replace": false
 }

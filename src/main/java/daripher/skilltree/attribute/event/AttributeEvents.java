@@ -2,28 +2,12 @@ package daripher.skilltree.attribute.event;
 
 import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.config.Config;
-import daripher.skilltree.entity.player.PlayerHelper;
 import daripher.skilltree.init.PSTAttributes;
-import daripher.skilltree.mixin.LivingEntityAccessor;
-import daripher.skilltree.skill.bonus.EventListenerBonus;
-import daripher.skilltree.skill.bonus.SkillBonus;
-import daripher.skilltree.skill.bonus.SkillBonusHandler;
 import daripher.skilltree.skill.bonus.condition.item.EquipmentCondition;
-import daripher.skilltree.skill.bonus.event.EvasionEventListener;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.GrindstoneEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
@@ -47,52 +31,6 @@ public class AttributeEvents {
   }
 
   @SubscribeEvent
-  public static void applyEvasionBonus(LivingAttackEvent event) {
-    if (!(event.getEntity() instanceof Player player)) return;
-    if (!(event.getSource().getEntity() instanceof LivingEntity attacker)) return;
-    double evasion = player.getAttributeValue(PSTAttributes.EVASION.get());
-    double evasionChance = (evasion * 0.05) / (1 + evasion * 0.05) * 0.8;
-    if (!(player.getRandom().nextFloat() < evasionChance)) return;
-    player
-        .level()
-        .playSound(null, player, SoundEvents.ENDER_DRAGON_FLAP, SoundSource.PLAYERS, 0.5F, 1.5F);
-    event.setCanceled(true);
-    for (EventListenerBonus<?> bonus :
-        SkillBonusHandler.getSkillBonuses(player, EventListenerBonus.class)) {
-      if (!(bonus.getEventListener() instanceof EvasionEventListener listener)) continue;
-      SkillBonus<? extends EventListenerBonus<?>> copy = bonus.copy();
-      listener.onEvent(player, attacker, (EventListenerBonus<?>) copy);
-    }
-  }
-
-  @SubscribeEvent
-  public static void applyBlockingBonus(LivingAttackEvent event) {
-    if (!(event.getEntity() instanceof Player player)) return;
-    float damage = event.getAmount();
-    if (damage <= 0) return;
-    DamageSource damageSource = event.getSource();
-    if (damageSource.is(DamageTypeTags.BYPASSES_SHIELD)) return;
-    Entity attacker = damageSource.getDirectEntity();
-    if (attacker instanceof AbstractArrow arrow && arrow.getPierceLevel() > 0) return;
-    ItemStack shield = player.getOffhandItem();
-    if (!shield.is(Tags.Items.TOOLS_SHIELDS)) return;
-    double blocking = player.getAttributeValue(PSTAttributes.BLOCKING.get());
-    double blockChance = (blocking * 0.05) / (1 + blocking * 0.05) * 0.8;
-    if (player.getRandom().nextFloat() >= blockChance) return;
-    ShieldBlockEvent blockEvent = ForgeHooks.onShieldBlock(player, damageSource, damage);
-    if (blockEvent.isCanceled()) return;
-    event.setCanceled(true);
-    player.level().broadcastEntityEvent(player, (byte) 29);
-    if (blockEvent.shieldTakesDamage()) {
-      PlayerHelper.hurtShield(player, shield, damage);
-    }
-    if (damageSource.is(DamageTypeTags.IS_PROJECTILE)) return;
-    if (!(attacker instanceof LivingEntity livingAttacker)) return;
-    LivingEntityAccessor entityAccessor = (LivingEntityAccessor) player;
-    entityAccessor.invokeBlockUsingShield(livingAttacker);
-  }
-
-  @SubscribeEvent
   public static void applyExperiencePerMinuteBonus(PlayerTickEvent event) {
     Player player = event.player;
     if (player.level().isClientSide) return;
@@ -102,18 +40,6 @@ public class AttributeEvents {
       ExperienceOrb expOrb =
           new ExperienceOrb(player.level(), player.getX(), player.getY(), player.getZ(), 1);
       player.level().addFreshEntity(expOrb);
-    }
-  }
-
-  @SubscribeEvent
-  public static void applyStealthBonus(LivingChangeTargetEvent event) {
-    if (!(event.getNewTarget() instanceof Player player)) return;
-    double stealth = player.getAttributeValue(PSTAttributes.STEALTH.get()) / 100d;
-    if (stealth == 0) return;
-    LivingEntity attacker = event.getEntity();
-    double followRange = attacker.getAttributeValue(Attributes.FOLLOW_RANGE);
-    if (attacker.distanceTo(player) > followRange * (1 - stealth)) {
-      event.setCanceled(true);
     }
   }
 

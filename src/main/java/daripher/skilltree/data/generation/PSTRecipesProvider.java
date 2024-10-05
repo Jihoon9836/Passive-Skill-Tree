@@ -7,11 +7,10 @@ import daripher.skilltree.init.PSTTags;
 import daripher.skilltree.recipe.builder.ItemUpgradeRecipeBuilder;
 import daripher.skilltree.skill.bonus.condition.damage.MagicDamageCondition;
 import daripher.skilltree.skill.bonus.condition.item.EquipmentCondition;
+import daripher.skilltree.skill.bonus.condition.item.ItemTagCondition;
 import daripher.skilltree.skill.bonus.item.ItemSkillBonus;
-import daripher.skilltree.skill.bonus.player.AttributeBonus;
-import daripher.skilltree.skill.bonus.player.DamageBonus;
-import daripher.skilltree.skill.bonus.player.IncomingHealingBonus;
-import daripher.skilltree.skill.bonus.player.LootDuplicationBonus;
+import daripher.skilltree.skill.bonus.item.ItemSocketsBonus;
+import daripher.skilltree.skill.bonus.player.*;
 import java.util.Objects;
 import java.util.function.Consumer;
 import net.minecraft.data.DataGenerator;
@@ -50,16 +49,6 @@ public class PSTRecipesProvider extends RecipeProvider {
     necklace(PSTItems.SCHOLAR_NECKLACE, Items.ENDER_PEARL, consumer);
     necklace(PSTItems.ARSONIST_NECKLACE, Items.FIRE_CHARGE, consumer);
     necklace(PSTItems.FISHERMAN_NECKLACE, Items.TROPICAL_FISH, consumer);
-    // quviers
-    quiver(PSTItems.QUIVER, consumer);
-    quiver(PSTItems.ARMORED_QUIVER, Tags.Items.INGOTS_IRON, consumer);
-    quiver(PSTItems.DIAMOND_QUIVER, Tags.Items.GEMS_DIAMOND, consumer);
-    quiver(PSTItems.FIERY_QUIVER, Items.BLAZE_POWDER, consumer);
-    quiver(PSTItems.GILDED_QUIVER, Tags.Items.INGOTS_GOLD, consumer);
-    quiver(PSTItems.HEALING_QUIVER, Items.GHAST_TEAR, consumer);
-    quiver(PSTItems.TOXIC_QUIVER, Items.FERMENTED_SPIDER_EYE, consumer);
-    quiver(PSTItems.SILENT_QUIVER, Items.FEATHER, consumer);
-    quiver(PSTItems.BONE_QUIVER, Items.BONE, consumer);
     // upgrades
     ItemUpgradeRecipeBuilder.create()
         .baseCondition(new EquipmentCondition(EquipmentCondition.Type.WEAPON))
@@ -110,46 +99,81 @@ public class PSTRecipesProvider extends RecipeProvider {
             new ItemSkillBonus(
                 new LootDuplicationBonus(0.02f, 1f, LootDuplicationBonus.LootType.GEMS)))
         .save(consumer, getRecipeId("upgrades/pickaxes_double_gems"));
-  }
-
-  protected void quiver(
-      RegistryObject<Item> result, Item material, Consumer<FinishedRecipe> consumer) {
-    ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, result.get())
-        .define('#', material)
-        .define('l', Items.LEATHER)
-        .define('s', Items.STRING)
-        .pattern("#ls")
-        .pattern("#ls")
-        .pattern("#ls")
-        .group(getItemName(result.get()))
-        .unlockedBy(getHasName(material), has(material))
-        .save(consumer, getRecipeId(result.get()));
-  }
-
-  protected void quiver(
-      RegistryObject<Item> result, TagKey<Item> material, Consumer<FinishedRecipe> consumer) {
-    ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, result.get())
-        .define('#', material)
-        .define('l', Items.LEATHER)
-        .define('s', Items.STRING)
-        .pattern("#ls")
-        .pattern("#ls")
-        .pattern("#ls")
-        .group(getItemName(result.get()))
-        .unlockedBy(getHasName(material), has(material))
-        .save(consumer, getRecipeId(result.get()));
-  }
-
-  protected void quiver(RegistryObject<Item> result, Consumer<FinishedRecipe> consumer) {
-    ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, result.get())
-        .define('l', Items.LEATHER)
-        .define('s', Items.STRING)
-        .pattern("ls")
-        .pattern("ls")
-        .pattern("ls")
-        .group(getItemName(result.get()))
-        .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
-        .save(consumer, getRecipeId(result.get()));
+    ItemUpgradeRecipeBuilder.create()
+        .baseCondition(new EquipmentCondition(EquipmentCondition.Type.WEAPON))
+        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_SPATIAL.get()))
+        .itemBonus(new ItemSocketsBonus(1))
+        .maxUpgrades(1)
+        .upgradeChances(1f)
+        .save(consumer, getRecipeId("upgrades/weapons_sockets"));
+    ItemUpgradeRecipeBuilder.create()
+        .baseCondition(new ItemTagCondition(PSTTags.JEWELRY.location()))
+        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_SPATIAL.get()))
+        .itemBonus(new ItemSocketsBonus(1))
+        .maxUpgrades(1)
+        .upgradeChances(1f)
+        .save(consumer, getRecipeId("upgrades/jewelry_sockets"));
+    ItemUpgradeRecipeBuilder.create()
+        .baseCondition(new EquipmentCondition(EquipmentCondition.Type.CHESTPLATE))
+        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_SPATIAL.get()))
+        .itemBonus(new ItemSocketsBonus(1))
+        .maxUpgrades(1)
+        .upgradeChances(1f)
+        .save(consumer, getRecipeId("upgrades/chestplates_sockets"));
+    ItemUpgradeRecipeBuilder.create()
+        .baseCondition(new EquipmentCondition(EquipmentCondition.Type.WEAPON))
+        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT.get()))
+        .itemBonus(
+            new ItemSkillBonus(
+                new AttributeBonus(
+                    Attributes.ATTACK_SPEED,
+                    "Upgrade",
+                    0.1f,
+                    AttributeModifier.Operation.MULTIPLY_BASE)))
+        .save(consumer, getRecipeId("upgrades/weapons_attack_speed"));
+    ItemUpgradeRecipeBuilder.create()
+        .baseCondition(new EquipmentCondition(EquipmentCondition.Type.CHESTPLATE))
+        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT.get()))
+        .itemBonus(new ItemSkillBonus(new DamageAvoidanceBonus(0.01f)))
+        .save(consumer, getRecipeId("upgrades/chestplates_damage_avoidance"));
+    ItemUpgradeRecipeBuilder.create()
+        .baseCondition(new EquipmentCondition(EquipmentCondition.Type.WEAPON))
+        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_GILDED.get()))
+        .itemBonus(
+            new ItemSkillBonus(
+                new AttributeBonus(
+                    Attributes.LUCK, "Upgrade", 1f, AttributeModifier.Operation.ADDITION)))
+        .maxUpgrades(10)
+        .upgradeChances(0.9f, 0.8f, 0.7f, 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f)
+        .save(consumer, getRecipeId("upgrades/weapons_luck"));
+    ItemUpgradeRecipeBuilder.create()
+        .baseCondition(new ItemTagCondition(PSTTags.JEWELRY.location()))
+        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_CURATIVE.get()))
+        .itemBonus(
+            new ItemSkillBonus(
+                new AttributeBonus(
+                    Attributes.MAX_HEALTH,
+                    "Upgrade",
+                    0.01f,
+                    AttributeModifier.Operation.MULTIPLY_BASE)))
+        .save(consumer, getRecipeId("upgrades/jewelry_max_health"));
+    ItemUpgradeRecipeBuilder.create()
+        .baseCondition(new EquipmentCondition(EquipmentCondition.Type.SHIELD))
+        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_SPATIAL.get()))
+        .itemBonus(new ItemSocketsBonus(1))
+        .maxUpgrades(1)
+        .upgradeChances(1f)
+        .save(consumer, getRecipeId("upgrades/shields_sockets"));
+    ItemUpgradeRecipeBuilder.create()
+        .baseCondition(new ItemTagCondition(PSTTags.JEWELRY.location()))
+        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_GILDED.get()))
+        .itemBonus(
+            new ItemSkillBonus(
+                new AttributeBonus(
+                    Attributes.LUCK, "Upgrade", 0.01f, AttributeModifier.Operation.MULTIPLY_BASE)))
+        .maxUpgrades(10)
+        .upgradeChances(0.9f, 0.8f, 0.7f, 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f)
+        .save(consumer, getRecipeId("upgrades/jewelry_luck"));
   }
 
   protected void necklace(

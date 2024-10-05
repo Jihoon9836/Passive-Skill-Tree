@@ -22,11 +22,12 @@ public class PSTAttributes {
       DeferredRegister.create(ForgeRegistries.ATTRIBUTES, SkillTreeMod.MOD_ID);
 
   public static final RegistryObject<Attribute> EXP_PER_MINUTE = create("exp_per_minute", 1000d);
-  public static final RegistryObject<Attribute> EVASION = create("evasion", 1000d);
   public static final RegistryObject<Attribute> REGENERATION = create("regeneration", 1000d);
-  public static final RegistryObject<Attribute> BLOCKING = create("blocking", 1000d);
-  public static final RegistryObject<Attribute> STEALTH = create("stealth", 90d);
   public static final RegistryObject<Attribute> POISON_DAMAGE = create("poison_damage", 1d, 1000d);
+  public static final RegistryObject<Attribute> VITALITY = create("vitality", 0d, 1000d);
+  public static final RegistryObject<Attribute> STRENGTH = create("strength", 0d, 1000d);
+  public static final RegistryObject<Attribute> DEXTERITY = create("dexterity", 0d, 1000d);
+  public static final RegistryObject<Attribute> INTELLIGENCE = create("intelligence", 0d, 1000d);
 
   private static RegistryObject<Attribute> create(String name, double maxValue) {
     return create(name, 0, maxValue);
@@ -35,7 +36,8 @@ public class PSTAttributes {
   private static RegistryObject<Attribute> create(String name, double minValue, double maxValue) {
     String descriptionId = "attribute.name.%s.%s".formatted(SkillTreeMod.MOD_ID, name);
     return REGISTRY.register(
-        name, () -> new RangedAttribute(descriptionId, minValue, minValue, maxValue).setSyncable(true));
+        name,
+        () -> new RangedAttribute(descriptionId, minValue, minValue, maxValue).setSyncable(true));
   }
 
   @SubscribeEvent

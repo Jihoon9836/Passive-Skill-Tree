@@ -6,7 +6,6 @@ import daripher.skilltree.config.Config;
 import daripher.skilltree.init.PSTRegistries;
 import daripher.skilltree.init.PSTTags;
 import daripher.skilltree.item.gem.GemItem;
-import daripher.skilltree.item.quiver.QuiverItem;
 import daripher.skilltree.recipe.upgrade.ItemUpgradeRecipe;
 import daripher.skilltree.skill.bonus.condition.item.EquipmentCondition;
 import daripher.skilltree.skill.bonus.item.ItemBonus;
@@ -112,10 +111,6 @@ public class ItemHelper {
       sockets += bonus.getAdditionalSockets();
     }
     return sockets;
-  }
-
-  public static boolean isQuiver(ItemStack stack) {
-    return !stack.isEmpty() && stack.getItem() instanceof QuiverItem;
   }
 
   public static int getMaximumSockets(ItemStack stack) {

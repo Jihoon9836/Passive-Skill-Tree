@@ -1,4 +1,4 @@
-// 1.20.1	2024-09-19T14:39:25.919144	Item Models: skilltree
+// 1.20.1	2024-09-26T20:44:03.5004932	Item Models: skilltree
 dcdc7c3496eee0556ca7020556201b091ab8684b assets/apotheosis/models/item/gems/citrine_0.json
 2d2caa24d5c066e97d9bec93eb47b9d276febe31 assets/apotheosis/models/item/gems/citrine_1.json
 f21343c673f274a2a973ba1043b721f04c769fb2 assets/apotheosis/models/item/gems/citrine_2.json
@@ -35,15 +35,12 @@ d3c145794b33cd60f91971229eab5fa8f87d4cdd assets/apotheosis/models/item/gems/vacu
 75b9e4bcb3339624b2fcd0cc8c4a7465d090ca92 assets/skilltree/models/item/ancient_alloy_enchanted.json
 f59a1197bb2f58b21362f067b58952a5b1c6f954 assets/skilltree/models/item/ancient_alloy_gilded.json
 ec3197d2ab64ccffa73afb1e76be2b9d9aad9de0 assets/skilltree/models/item/ancient_alloy_lightweight.json
+763a45bc19193fdbd9c9810d4424d4b367a8d442 assets/skilltree/models/item/ancient_alloy_spatial.json
 b2c89bf9c293bf45ba0300d68d0a8e614ec96c0b assets/skilltree/models/item/ancient_alloy_toxic.json
-694e18d4621f069f97383796e09d359d6c90882f assets/skilltree/models/item/armored_quiver.json
 fe9c855469e5ebbd37bd8a8df22f01aeaf2acae9 assets/skilltree/models/item/arsonist_necklace.json
 2f8b19d5040230bb290e93743907c9ffbc6cc590 assets/skilltree/models/item/assassin_necklace.json
-eafb7376380bf954455e3f48dc144283927edffa assets/skilltree/models/item/bone_quiver.json
 4edc69c003ad38c47b6b629c466a870d7b578304 assets/skilltree/models/item/copper_nugget.json
 50c767e9f51012abb9e221a888e725a1a47b6f10 assets/skilltree/models/item/copper_ring.json
-286f13e230d4f566b65edb905b44b7e9ed9b70d7 assets/skilltree/models/item/diamond_quiver.json
-73f76d224b3b05d6ce116d82c7f5ac62b46eeaf8 assets/skilltree/models/item/fiery_quiver.json
 895c081bcacbdb18e8d02cf90e72e6f71f9e0b58 assets/skilltree/models/item/fisherman_necklace.json
 1405ee2c92096588ddcc34bc7191d8a64dfc28ba assets/skilltree/models/item/gem.json
 dcdc7c3496eee0556ca7020556201b091ab8684b assets/skilltree/models/item/gems/citrine_0.json
@@ -77,15 +74,10 @@ fb66f07baf5ecc02c8960aa3336bdcd8bad26a97 assets/skilltree/models/item/gems/sapph
 da502076c86401db44e4bd96d0106833208bf9e6 assets/skilltree/models/item/gems/sapphire_4.json
 cc99bdd3b4d071721ef844643f0ac0ba8c262366 assets/skilltree/models/item/gems/sapphire_5.json
 d3c145794b33cd60f91971229eab5fa8f87d4cdd assets/skilltree/models/item/gems/vacucite_3.json
-4cfda358b0302a839ef1d7595da9fc853abafb54 assets/skilltree/models/item/gilded_quiver.json
 fe57c993da264dad1d8a535a0349c67a270c3d9a assets/skilltree/models/item/golden_ring.json
 221c8b63eafc7b3a08a0b17d4a23d0cd50787742 assets/skilltree/models/item/healer_necklace.json
-9ea64e5faf593fd5a8b478939e3c4922271e4175 assets/skilltree/models/item/healing_quiver.json
 37a30c93acfb1c167cc8ff739f02b0b2828ec27d assets/skilltree/models/item/iron_ring.json
-67f15c2380f71d94ea28ecb9fcfce0d30c2fc80e assets/skilltree/models/item/quiver.json
 971a90d3ce9094deee4d06329efc5472ecbaf9d1 assets/skilltree/models/item/scholar_necklace.json
-da9410245414e10f4b4f6d17fe3b90e09dcb9746 assets/skilltree/models/item/silent_quiver.json
 cf9b85863a66b03b291a26781c327637dd60051c assets/skilltree/models/item/simple_necklace.json
-6f4f646798ae4e319607da49237454e8bc0ec065 assets/skilltree/models/item/toxic_quiver.json
 12bd2f35d928716ca2382b6f012b00345d2f751e assets/skilltree/models/item/traveler_necklace.json
 b2dda19d8e8f5cd65954cc60490f1dab8dade95a assets/skilltree/models/item/wisdom_scroll.json

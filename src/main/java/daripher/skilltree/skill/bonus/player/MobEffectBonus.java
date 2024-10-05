@@ -17,7 +17,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.util.StringUtil;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -59,7 +58,13 @@ public final class MobEffectBonus implements EventListenerBonus<MobEffectBonus> 
 
   @Override
   public MobEffectBonus multiply(double multiplier) {
-    chance *= (float) multiplier;
+    if (chance < 1) {
+      chance *= (float) multiplier;
+    } else {
+      int newDuration = (int) (effect.getDuration() * multiplier);
+      effect = new MobEffectInstance(effect.getEffect(), newDuration, effect.getAmplifier());
+      return new MobEffectBonus(chance, effect, eventListener);
+    }
     return this;
   }
 
@@ -75,7 +80,13 @@ public final class MobEffectBonus implements EventListenerBonus<MobEffectBonus> 
     if (!(other instanceof MobEffectBonus otherBonus)) {
       throw new IllegalArgumentException();
     }
-    return new MobEffectBonus(otherBonus.chance + this.chance, effect, eventListener);
+    if (chance < 1) {
+      return new MobEffectBonus(otherBonus.chance + this.chance, effect, eventListener);
+    } else {
+      int newDuration = effect.getDuration() + otherBonus.effect.getDuration();
+      effect = new MobEffectInstance(effect.getEffect(), newDuration, effect.getAmplifier());
+      return new MobEffectBonus(chance, effect, eventListener);
+    }
   }
 
   @Override
@@ -89,9 +100,7 @@ public final class MobEffectBonus implements EventListenerBonus<MobEffectBonus> 
     }
     MutableComponent tooltip;
     if (duration > 0) {
-      Component durationDescription =
-          Component.translatable(
-              getDescriptionId() + ".duration", StringUtil.formatTickDuration(duration));
+      Component durationDescription = getDurationDescription();
       tooltip = Component.translatable(bonusDescription, effectDescription, durationDescription);
     } else {
       tooltip = Component.translatable(bonusDescription, effectDescription, "");
@@ -103,6 +112,13 @@ public final class MobEffectBonus implements EventListenerBonus<MobEffectBonus> 
     }
     tooltip = eventListener.getTooltip(tooltip);
     return tooltip.withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
+  }
+
+  private Component getDurationDescription() {
+    boolean measureInSeconds = effect.getDuration() < 1200;
+    String measurement = measureInSeconds ? "seconds" : "minutes";
+    Object duration = measureInSeconds ? effect.getDuration() / 20 : effect.getDuration() / 1200f;
+    return Component.translatable(getDescriptionId() + "." + measurement, duration);
   }
 
   @Override
