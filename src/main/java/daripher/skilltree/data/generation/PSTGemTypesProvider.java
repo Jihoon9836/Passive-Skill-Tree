@@ -254,7 +254,7 @@ public class PSTGemTypesProvider implements DataProvider {
         Triple.of(
             new EquipmentCondition(EquipmentCondition.Type.SHIELD), shieldsClass, shieldBonus));
     bonuses.add(
-        Triple.of(new ItemTagCondition(PSTTags.JEWELRY.location()), jewelryClass, jewelryBonus));
+        Triple.of(new ItemTagCondition(PSTTags.Items.JEWELRY.location()), jewelryClass, jewelryBonus));
     return bonuses;
   }
 

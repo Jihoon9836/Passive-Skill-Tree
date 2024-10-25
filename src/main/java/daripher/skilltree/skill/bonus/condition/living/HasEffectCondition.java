@@ -8,6 +8,8 @@ import daripher.skilltree.init.PSTLivingConditions;
 import daripher.skilltree.network.NetworkHelper;
 import java.util.Objects;
 import java.util.function.Consumer;
+
+import daripher.skilltree.skill.bonus.SkillBonus;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -39,9 +41,9 @@ public final class HasEffectCondition implements LivingCondition {
   }
 
   @Override
-  public MutableComponent getTooltip(MutableComponent bonusTooltip, String target) {
+  public MutableComponent getTooltip(MutableComponent bonusTooltip, SkillBonus.Target target) {
     String key = getDescriptionId();
-    Component targetDescription = Component.translatable("%s.target.%s".formatted(key, target));
+    Component targetDescription = Component.translatable("%s.target.%s".formatted(key, target.getName()));
     Component effectDescription = effect.getDisplayName();
     if (amplifier == 0) {
       return Component.translatable(key, bonusTooltip, targetDescription, effectDescription);

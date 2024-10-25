@@ -56,8 +56,8 @@ public class KillEventListener implements SkillEventListener {
     } else {
       eventTooltip = Component.translatable(getDescriptionId(), bonusTooltip);
     }
-    eventTooltip = playerCondition.getTooltip(eventTooltip, "you");
-    eventTooltip = enemyCondition.getTooltip(eventTooltip, "target");
+    eventTooltip = playerCondition.getTooltip(eventTooltip, SkillBonus.Target.PLAYER);
+    eventTooltip = enemyCondition.getTooltip(eventTooltip, SkillBonus.Target.ENEMY);
     eventTooltip = playerMultiplier.getTooltip(eventTooltip, SkillBonus.Target.PLAYER);
     eventTooltip = enemyMultiplier.getTooltip(eventTooltip, SkillBonus.Target.ENEMY);
     return eventTooltip;

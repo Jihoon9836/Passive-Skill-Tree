@@ -7,22 +7,27 @@ import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.effect.SkillBonusEffect;
 import daripher.skilltree.entity.EquippedEntity;
 import daripher.skilltree.entity.player.PlayerHelper;
+import daripher.skilltree.init.PSTAttributes;
 import daripher.skilltree.item.ItemBonusProvider;
 import daripher.skilltree.item.ItemHelper;
 import daripher.skilltree.mixin.AbstractArrowAccessor;
 import daripher.skilltree.recipe.upgrade.ItemUpgradeRecipe;
 import daripher.skilltree.skill.PassiveSkill;
+import daripher.skilltree.skill.bonus.condition.damage.DamageCondition;
+import daripher.skilltree.skill.bonus.condition.damage.MagicDamageCondition;
+import daripher.skilltree.skill.bonus.condition.damage.MeleeDamageCondition;
+import daripher.skilltree.skill.bonus.condition.damage.ProjectileDamageCondition;
+import daripher.skilltree.skill.bonus.condition.living.numeric.provider.AttributeValueProvider;
 import daripher.skilltree.skill.bonus.event.*;
 import daripher.skilltree.skill.bonus.item.FoodHealingBonus;
 import daripher.skilltree.skill.bonus.item.ItemBonus;
 import daripher.skilltree.skill.bonus.item.ItemSkillBonus;
 import daripher.skilltree.skill.bonus.item.ItemSocketsBonus;
+import daripher.skilltree.skill.bonus.multiplier.NumericValueMultiplier;
 import daripher.skilltree.skill.bonus.player.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -32,6 +37,8 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -42,6 +49,7 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -611,8 +619,68 @@ public class SkillBonusHandler {
     }
   }
 
+  @SubscribeEvent(priority = EventPriority.LOWEST)
+  public static void applyDamageConversionBonuses(LivingHurtEvent event) {
+    DamageSource originalDamageSource = event.getSource();
+    if (!(originalDamageSource.getEntity() instanceof Player player)) return;
+    if (getDamageConversionBonuses(player, originalDamageSource).findAny().isEmpty()) return;
+    LivingEntity target = event.getEntity();
+    float originalDamageAmount = event.getAmount();
+    getDamageConversionMap(event, player, originalDamageSource)
+        .forEach(
+            (damageCondition, amount) -> {
+              DamageSource damageSource = damageCondition.createDamageSource(player);
+              forcefullyInflictDamage(damageSource, amount * originalDamageAmount, target);
+            });
+    float convertedDamage = getConvertedDamagePercentage(player, originalDamageSource, target);
+    event.setAmount(originalDamageAmount * (1 - convertedDamage));
+  }
+
+  private static float getConvertedDamagePercentage(
+      Player player, DamageSource originalDamageSource, LivingEntity target) {
+    return getDamageConversionBonuses(player, originalDamageSource)
+        .map(b -> b.getConversionRate(originalDamageSource, player, target))
+        .reduce(Float::sum)
+        .orElse(0f);
+  }
+
   @NotNull
-  private static Float getDamageTaken(
+  private static Map<DamageCondition, Float> getDamageConversionMap(
+      LivingHurtEvent event, Player player, DamageSource originalDamageSource) {
+    Map<DamageCondition, Float> conversions = new HashMap<>();
+    getDamageConversionBonuses(player, originalDamageSource)
+        .forEach(
+            bonus -> {
+              DamageCondition resultDamageSource = bonus.getResultDamageCondition();
+              conversions.put(
+                  resultDamageSource,
+                  conversions.getOrDefault(resultDamageSource, 0f)
+                      + bonus.getConversionRate(originalDamageSource, player, event.getEntity()));
+            });
+    return conversions;
+  }
+
+  @NotNull
+  private static Stream<DamageConversionBonus> getDamageConversionBonuses(
+      Player player, DamageSource damageSource) {
+    return getSkillBonuses(player, DamageConversionBonus.class).stream()
+        .filter(b -> b.getOriginalDamageCondition().met(damageSource))
+        .filter(b -> !b.getResultDamageCondition().met(damageSource));
+  }
+
+  public static void forcefullyInflictDamage(DamageSource source, float amount, Entity entity) {
+    MinecraftServer server = entity.getServer();
+    if (server == null) return;
+    server.tell(
+        new TickTask(
+            server.getTickCount() + 1,
+            () -> {
+              entity.invulnerableTime = 0;
+              entity.hurt(source, amount);
+            }));
+  }
+
+  private static float getDamageTaken(
       Player player,
       LivingEntity attacker,
       DamageSource damageSource,
@@ -696,10 +764,55 @@ public class SkillBonusHandler {
   public static <T> List<T> getSkillBonuses(@Nonnull Player player, Class<T> type) {
     if (!PlayerSkillsProvider.hasSkills(player)) return List.of();
     List<T> bonuses = new ArrayList<>();
+    bonuses.addAll(getAttributeBonuses(type));
     bonuses.addAll(getPlayerBonuses(player, type));
     bonuses.addAll(getEffectBonuses(player, type));
     bonuses.addAll(getEquipmentBonuses(player, type));
     return bonuses;
+  }
+
+  private static <T> List<? extends T> getAttributeBonuses(Class<T> type) {
+    List<T> list = new ArrayList<>();
+    for (SkillBonus<?> skillBonus : getAttributeBonuses()) {
+      if (type.isInstance(skillBonus)) {
+        list.add(type.cast(skillBonus));
+      }
+    }
+    return list;
+  }
+
+  private static List<SkillBonus<?>> getAttributeBonuses() {
+    List<SkillBonus<?>> list = new ArrayList<>();
+    list.add(
+        new AttributeBonus(
+                Attributes.MAX_HEALTH,
+                new AttributeModifier(
+                    UUID.fromString("d446a7b4-9bba-480c-8f83-1e77c6d6d8b2"),
+                    "Vitality",
+                    0.01f,
+                    AttributeModifier.Operation.MULTIPLY_BASE))
+            .setMultiplier(
+                new NumericValueMultiplier(
+                    new AttributeValueProvider(PSTAttributes.VITALITY.get()), 1)));
+    list.add(
+        new DamageBonus(0.01f, AttributeModifier.Operation.MULTIPLY_BASE)
+            .setPlayerMultiplier(
+                new NumericValueMultiplier(
+                    new AttributeValueProvider(PSTAttributes.INTELLIGENCE.get()), 1))
+            .setDamageCondition(new MagicDamageCondition()));
+    list.add(
+        new DamageBonus(0.01f, AttributeModifier.Operation.MULTIPLY_BASE)
+            .setPlayerMultiplier(
+                new NumericValueMultiplier(
+                    new AttributeValueProvider(PSTAttributes.STRENGTH.get()), 1))
+            .setDamageCondition(new MeleeDamageCondition()));
+    list.add(
+        new DamageBonus(0.01f, AttributeModifier.Operation.MULTIPLY_BASE)
+            .setPlayerMultiplier(
+                new NumericValueMultiplier(
+                    new AttributeValueProvider(PSTAttributes.DEXTERITY.get()), 1))
+            .setDamageCondition(new ProjectileDamageCondition()));
+    return list;
   }
 
   private static <T> List<T> getPlayerBonuses(Player player, Class<T> type) {

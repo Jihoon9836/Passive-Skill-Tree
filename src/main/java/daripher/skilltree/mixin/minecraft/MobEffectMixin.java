@@ -22,30 +22,39 @@ public abstract class MobEffectMixin implements IForgeMobEffect {
   public void inflictPoisonDamage(
       LivingEntity livingEntity, int amplifier, CallbackInfo callbackInfo) {
     //noinspection ConstantValue
-    if (((Object) this) == MobEffects.POISON) {
-      LivingEntity attacker = livingEntity.getKillCredit();
-      float damage = 1f;
-      if (attacker != null) {
-        Attribute poisonDamage = PSTAttributes.POISON_DAMAGE.get();
-        if (attacker.getAttributes().hasAttribute(poisonDamage)) {
-          damage = (float) attacker.getAttributeValue(poisonDamage);
-        }
-      }
-      boolean isLowHealth = livingEntity.getHealth() <= damage;
-      boolean canKillWithPoison =
-          attacker instanceof Player player
-              && !SkillBonusHandler.getSkillBonuses(player, LethalPoisonBonus.class).isEmpty();
-      if (isLowHealth && !canKillWithPoison) {
-        return;
-      }
-      DamageSources damageSources = livingEntity.damageSources();
-      DamageSource damageSource = damageSources.magic();
-      if (attacker instanceof Player player) {
-        damageSource = damageSources.indirectMagic(player, null);
-        // resets hurt timer
-        livingEntity.setLastHurtByPlayer(player);
-      }
-      livingEntity.hurt(damageSource, damage);
+    if (((Object) this) != MobEffects.POISON) return;
+    handlePoisonDamage(livingEntity);
+  }
+
+  private static void handlePoisonDamage(LivingEntity livingEntity) {
+    LivingEntity attacker = livingEntity.getKillCredit();
+    float damage = getPoisonDamage(attacker);
+    boolean isLowHealth = livingEntity.getHealth() <= damage;
+    boolean isPoisonLethal = isPoisonLethal(attacker);
+    if (isLowHealth && !isPoisonLethal) return;
+    DamageSources damageSources = livingEntity.damageSources();
+    DamageSource damageSource = damageSources.magic();
+    if (attacker instanceof Player player) {
+      damageSource = damageSources.indirectMagic(player, null);
+      // resets hurt timer
+      livingEntity.setLastHurtByPlayer(player);
     }
+    SkillBonusHandler.forcefullyInflictDamage(damageSource, damage, livingEntity);
+  }
+
+  private static boolean isPoisonLethal(LivingEntity attacker) {
+    return attacker instanceof Player player
+        && !SkillBonusHandler.getSkillBonuses(player, LethalPoisonBonus.class).isEmpty();
+  }
+
+  private static float getPoisonDamage(LivingEntity attacker) {
+    float damage = 1f;
+    if (attacker != null) {
+      Attribute poisonDamage = PSTAttributes.POISON_DAMAGE.get();
+      if (attacker.getAttributes().hasAttribute(poisonDamage)) {
+        damage = (float) attacker.getAttributeValue(poisonDamage);
+      }
+    }
+    return damage;
   }
 }

@@ -11,7 +11,6 @@ import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
@@ -52,11 +51,8 @@ public final class FreeEnchantmentBonus implements SkillBonus<FreeEnchantmentBon
 
   @Override
   public MutableComponent getTooltip() {
-    MutableComponent bonusDescription =
-        TooltipHelper.getSkillBonusTooltip(
-                getDescriptionId() + ".bonus", chance, AttributeModifier.Operation.MULTIPLY_BASE)
-            .withStyle(TooltipHelper.getItemBonusStyle(isPositive()));
-    return Component.translatable(getDescriptionId(), bonusDescription)
+    return TooltipHelper.getSkillBonusTooltip(
+            getDescriptionId(), chance, AttributeModifier.Operation.MULTIPLY_BASE)
         .withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
   }
 

@@ -117,8 +117,9 @@ public final class MobEffectBonus implements EventListenerBonus<MobEffectBonus> 
   private Component getDurationDescription() {
     boolean measureInSeconds = effect.getDuration() < 1200;
     String measurement = measureInSeconds ? "seconds" : "minutes";
-    Object duration = measureInSeconds ? effect.getDuration() / 20 : effect.getDuration() / 1200f;
-    return Component.translatable(getDescriptionId() + "." + measurement, duration);
+    float duration = measureInSeconds ? effect.getDuration() / 20f : effect.getDuration() / 1200f;
+    String formattedDuration = TooltipHelper.formatNumber(duration);
+    return Component.translatable(getDescriptionId() + "." + measurement, formattedDuration);
   }
 
   @Override

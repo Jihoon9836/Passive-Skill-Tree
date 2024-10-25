@@ -80,7 +80,7 @@ public final class IncomingHealingBonus implements SkillBonus<IncomingHealingBon
         TooltipHelper.getSkillBonusTooltip(
             getDescriptionId(), multiplier, AttributeModifier.Operation.MULTIPLY_BASE);
     tooltip = playerMultiplier.getTooltip(tooltip, Target.PLAYER);
-    tooltip = playerCondition.getTooltip(tooltip, "you");
+    tooltip = playerCondition.getTooltip(tooltip, Target.PLAYER);
     return tooltip.withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
   }
 

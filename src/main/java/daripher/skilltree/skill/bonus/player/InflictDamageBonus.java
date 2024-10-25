@@ -1,17 +1,19 @@
 package daripher.skilltree.skill.bonus.player;
 
-import com.google.gson.*;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
+import daripher.skilltree.init.PSTDamageConditions;
 import daripher.skilltree.init.PSTSkillBonuses;
 import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.EventListenerBonus;
 import daripher.skilltree.skill.bonus.SkillBonus;
+import daripher.skilltree.skill.bonus.condition.damage.DamageCondition;
+import daripher.skilltree.skill.bonus.condition.damage.MagicDamageCondition;
 import daripher.skilltree.skill.bonus.event.BlockEventListener;
 import daripher.skilltree.skill.bonus.event.SkillEventListener;
-import java.util.Objects;
-import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,19 +22,25 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Consumer;
+
 public final class InflictDamageBonus implements EventListenerBonus<InflictDamageBonus> {
   private float chance;
   private float damage;
   private SkillEventListener eventListener;
+  private DamageCondition damageType;
 
-  public InflictDamageBonus(float chance, float damage, SkillEventListener eventListener) {
+  public InflictDamageBonus(float chance, float damage, SkillEventListener eventListener, DamageCondition damageType) {
     this.chance = chance;
     this.damage = damage;
     this.eventListener = eventListener;
+    this.damageType = damageType;
   }
 
   public InflictDamageBonus(float chance, float damage) {
-    this(chance, damage, new BlockEventListener());
+    this(chance, damage, new BlockEventListener(), new MagicDamageCondition());
   }
 
   @Override
@@ -47,7 +55,7 @@ public final class InflictDamageBonus implements EventListenerBonus<InflictDamag
 
   @Override
   public InflictDamageBonus copy() {
-    return new InflictDamageBonus(chance, damage, eventListener);
+    return new InflictDamageBonus(chance, damage, eventListener, damageType);
   }
 
   @Override
@@ -62,11 +70,14 @@ public final class InflictDamageBonus implements EventListenerBonus<InflictDamag
 
   @Override
   public boolean canMerge(SkillBonus<?> other) {
-    if (!(other instanceof InflictDamageBonus otherBonus)) return false;
+    if (!(other instanceof InflictDamageBonus otherBonus)) {
+      return false;
+    }
     if (otherBonus.chance < 1 && this.chance < 1 && otherBonus.damage != this.damage) {
       return false;
     }
-    return Objects.equals(otherBonus.eventListener, this.eventListener);
+    if (!Objects.equals(otherBonus.eventListener, this.eventListener)) return false;
+    return Objects.equals(damageType, otherBonus.damageType);
   }
 
   @Override
@@ -75,9 +86,9 @@ public final class InflictDamageBonus implements EventListenerBonus<InflictDamag
       throw new IllegalArgumentException();
     }
     if (otherBonus.chance < 1 && this.chance < 1) {
-      return new InflictDamageBonus(otherBonus.chance + this.chance, damage, eventListener);
+      return new InflictDamageBonus(otherBonus.chance + this.chance, damage, eventListener, damageType);
     } else {
-      return new InflictDamageBonus(chance, otherBonus.damage + this.damage, eventListener);
+      return new InflictDamageBonus(chance, otherBonus.damage + this.damage, eventListener, damageType);
     }
   }
 
@@ -86,14 +97,13 @@ public final class InflictDamageBonus implements EventListenerBonus<InflictDamag
     String damageDescription = TooltipHelper.formatNumber(damage);
     String targetDescription = eventListener.getTarget().name().toLowerCase();
     String bonusDescription = getDescriptionId() + "." + targetDescription;
+    Component damageTypeDescription = damageType.getTooltip();
     if (chance < 1) {
       bonusDescription += ".chance";
     }
-    MutableComponent tooltip = Component.translatable(bonusDescription, damageDescription);
+    MutableComponent tooltip = Component.translatable(bonusDescription, damageDescription, damageTypeDescription);
     if (chance < 1) {
-      tooltip =
-          TooltipHelper.getSkillBonusTooltip(
-              tooltip, chance, AttributeModifier.Operation.MULTIPLY_BASE);
+      tooltip = TooltipHelper.getSkillBonusTooltip(tooltip, chance, AttributeModifier.Operation.MULTIPLY_BASE);
     }
     tooltip = eventListener.getTooltip(tooltip);
     return tooltip.withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
@@ -110,60 +120,60 @@ public final class InflictDamageBonus implements EventListenerBonus<InflictDamag
   }
 
   @Override
-  public void addEditorWidgets(
-      SkillTreeEditor editor, int row, Consumer<EventListenerBonus<InflictDamageBonus>> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, int row, Consumer<EventListenerBonus<InflictDamageBonus>> consumer) {
     editor.addLabel(0, 0, "Chance", ChatFormatting.GOLD);
     editor.addLabel(110, 0, "Damage", ChatFormatting.GOLD);
     editor.increaseHeight(19);
-    editor
-        .addNumericTextField(0, 0, 90, 14, chance)
-        .setNumericResponder(value -> selectChance(consumer, value));
-    editor
-        .addNumericTextField(110, 0, 90, 14, damage)
-        .setNumericResponder(value -> selectDamage(consumer, value));
+    editor.addNumericTextField(0, 0, 90, 14, chance).setNumericResponder(value -> selectChance(consumer, value));
+    editor.addNumericTextField(110, 0, 90, 14, damage).setNumericResponder(value -> selectDamage(consumer, value));
+    editor.increaseHeight(19);
+    editor.addLabel(0, 0, "Damage Type", ChatFormatting.GOLD);
+    editor.increaseHeight(19);
+    List<DamageCondition> damageTypes = PSTDamageConditions.conditionsList().stream().filter(DamageCondition::canCreateDamageSource).toList();
+    editor.addSelectionMenu(0, 0, 200, damageTypes).setValue(damageType).setElementNameGetter(c -> Component.translatable(PSTDamageConditions.getName(c))).setResponder(damageType -> selectDamageType(editor, consumer, damageType));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Event", ChatFormatting.GOLD);
     editor.increaseHeight(19);
-    editor
-        .addSelectionMenu(0, 0, 200, eventListener)
-        .setResponder(eventListener -> selectEventListener(editor, consumer, eventListener))
-        .setMenuInitFunc(() -> addEventListenerWidgets(editor, consumer));
+    editor.addSelectionMenu(0, 0, 200, eventListener).setResponder(eventListener -> selectEventListener(editor, consumer, eventListener)).setMenuInitFunc(() -> addEventListenerWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 
-  private void addEventListenerWidgets(
-      SkillTreeEditor editor, Consumer<EventListenerBonus<InflictDamageBonus>> consumer) {
-    eventListener.addEditorWidgets(
-        editor,
-        eventListener -> {
-          setEventListener(eventListener);
-          consumer.accept(this.copy());
-        });
+  private void addEventListenerWidgets(SkillTreeEditor editor, Consumer<EventListenerBonus<InflictDamageBonus>> consumer) {
+    eventListener.addEditorWidgets(editor, eventListener -> {
+      setEventListener(eventListener);
+      consumer.accept(this.copy());
+    });
   }
 
-  private void selectEventListener(
-      SkillTreeEditor editor,
-      Consumer<EventListenerBonus<InflictDamageBonus>> consumer,
-      SkillEventListener eventListener) {
+  private void selectEventListener(SkillTreeEditor editor, Consumer<EventListenerBonus<InflictDamageBonus>> consumer,
+                                   SkillEventListener eventListener) {
     setEventListener(eventListener);
     consumer.accept(this.copy());
     editor.rebuildWidgets();
   }
 
-  private void selectDamage(
-      Consumer<EventListenerBonus<InflictDamageBonus>> consumer, Double value) {
+  private void selectDamageType(SkillTreeEditor editor, Consumer<EventListenerBonus<InflictDamageBonus>> consumer, DamageCondition damageType) {
+    setDamageType(damageType);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void selectDamage(Consumer<EventListenerBonus<InflictDamageBonus>> consumer, Double value) {
     setDamage(value.intValue());
     consumer.accept(this.copy());
   }
 
-  private void selectChance(
-      Consumer<EventListenerBonus<InflictDamageBonus>> consumer, Double value) {
+  private void selectChance(Consumer<EventListenerBonus<InflictDamageBonus>> consumer, Double value) {
     setChance(value.floatValue());
     consumer.accept(this.copy());
   }
 
   public void setEventListener(SkillEventListener eventListener) {
     this.eventListener = eventListener;
+  }
+
+  public void setDamageType(DamageCondition damageType) {
+    this.damageType = damageType;
   }
 
   public void setChance(float chance) {
@@ -181,6 +191,9 @@ public final class InflictDamageBonus implements EventListenerBonus<InflictDamag
       float damage = json.get("damage").getAsInt();
       InflictDamageBonus bonus = new InflictDamageBonus(chance, damage);
       bonus.eventListener = SerializationHelper.deserializeEventListener(json);
+      if (json.has("damage_type")) {
+        bonus.damageType = SerializationHelper.deserializeDamageCondition(json, "damage_type");
+      }
       return bonus;
     }
 
@@ -192,6 +205,7 @@ public final class InflictDamageBonus implements EventListenerBonus<InflictDamag
       json.addProperty("chance", aBonus.chance);
       json.addProperty("damage", aBonus.damage);
       SerializationHelper.serializeEventListener(json, aBonus.eventListener);
+      SerializationHelper.serializeDamageCondition(json, aBonus.damageType, "damage_type");
     }
 
     @Override
@@ -200,6 +214,9 @@ public final class InflictDamageBonus implements EventListenerBonus<InflictDamag
       float damage = tag.getFloat("damage");
       InflictDamageBonus bonus = new InflictDamageBonus(chance, damage);
       bonus.eventListener = SerializationHelper.deserializeEventListener(tag);
+      if (tag.contains("damage_type")) {
+        bonus.damageType = SerializationHelper.deserializeDamageCondition(tag, "damage_type");
+      }
       return bonus;
     }
 
@@ -212,6 +229,7 @@ public final class InflictDamageBonus implements EventListenerBonus<InflictDamag
       tag.putFloat("chance", aBonus.chance);
       tag.putFloat("damage", aBonus.damage);
       SerializationHelper.serializeEventListener(tag, aBonus.eventListener);
+      SerializationHelper.serializeDamageCondition(tag, aBonus.damageType, "damage_type");
       return tag;
     }
 
@@ -221,6 +239,7 @@ public final class InflictDamageBonus implements EventListenerBonus<InflictDamag
       float damage = buf.readFloat();
       InflictDamageBonus bonus = new InflictDamageBonus(amount, damage);
       bonus.eventListener = NetworkHelper.readEventListener(buf);
+      bonus.damageType = NetworkHelper.readDamageCondition(buf);
       return bonus;
     }
 
@@ -232,6 +251,7 @@ public final class InflictDamageBonus implements EventListenerBonus<InflictDamag
       buf.writeFloat(aBonus.chance);
       buf.writeFloat(aBonus.damage);
       NetworkHelper.writeEventListener(buf, aBonus.eventListener);
+      NetworkHelper.writeDamageCondition(buf, aBonus.damageType);
     }
 
     @Override

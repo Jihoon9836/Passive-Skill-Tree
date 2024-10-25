@@ -14,12 +14,10 @@ public interface LivingMultiplier {
 
   Serializer getSerializer();
 
-  default String getDescriptionId(SkillBonus.Target target) {
+  default String getDescriptionId() {
     ResourceLocation id = PSTRegistries.LIVING_MULTIPLIERS.get().getKey(getSerializer());
     Objects.requireNonNull(id);
-    String targetDescription = target.name().toLowerCase();
-    return "skill_bonus_multiplier.%s.%s.%s"
-        .formatted(id.getNamespace(), id.getPath(), targetDescription);
+    return "skill_bonus_multiplier.%s.%s".formatted(id.getNamespace(), id.getPath());
   }
 
   MutableComponent getTooltip(MutableComponent bonusTooltip, SkillBonus.Target target);

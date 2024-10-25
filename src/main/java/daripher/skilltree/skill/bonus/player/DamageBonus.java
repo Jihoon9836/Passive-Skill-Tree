@@ -106,8 +106,8 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
         TooltipHelper.getSkillBonusTooltip(damageCondition.getTooltip(), amount, operation);
     tooltip = playerMultiplier.getTooltip(tooltip, Target.PLAYER);
     tooltip = targetMultiplier.getTooltip(tooltip, Target.ENEMY);
-    tooltip = playerCondition.getTooltip(tooltip, "you");
-    tooltip = targetCondition.getTooltip(tooltip, "target");
+    tooltip = playerCondition.getTooltip(tooltip, Target.PLAYER);
+    tooltip = targetCondition.getTooltip(tooltip, Target.ENEMY);
     return tooltip.withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
   }
 
@@ -249,27 +249,27 @@ public final class DamageBonus implements SkillBonus<DamageBonus> {
     consumer.accept(this.copy());
   }
 
-  public SkillBonus<?> setPlayerCondition(LivingCondition condition) {
+  public DamageBonus setPlayerCondition(LivingCondition condition) {
     this.playerCondition = condition;
     return this;
   }
 
-  public SkillBonus<?> setDamageCondition(DamageCondition condition) {
+  public DamageBonus setDamageCondition(DamageCondition condition) {
     this.damageCondition = condition;
     return this;
   }
 
-  public SkillBonus<?> setTargetCondition(LivingCondition condition) {
+  public DamageBonus setTargetCondition(LivingCondition condition) {
     this.targetCondition = condition;
     return this;
   }
 
-  public SkillBonus<?> setPlayerMultiplier(LivingMultiplier multiplier) {
+  public DamageBonus setPlayerMultiplier(LivingMultiplier multiplier) {
     this.playerMultiplier = multiplier;
     return this;
   }
 
-  public SkillBonus<?> setEnemyMultiplier(LivingMultiplier multiplier) {
+  public DamageBonus setEnemyMultiplier(LivingMultiplier multiplier) {
     this.targetMultiplier = multiplier;
     return this;
   }

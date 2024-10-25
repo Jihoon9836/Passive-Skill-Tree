@@ -72,7 +72,7 @@ public final class JumpHeightBonus implements SkillBonus<JumpHeightBonus> {
     MutableComponent tooltip =
         TooltipHelper.getSkillBonusTooltip(
             getDescriptionId(), multiplier, AttributeModifier.Operation.MULTIPLY_BASE);
-    tooltip = playerCondition.getTooltip(tooltip, "you");
+    tooltip = playerCondition.getTooltip(tooltip, Target.PLAYER);
     return tooltip.withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
   }
 

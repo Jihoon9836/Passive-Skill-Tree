@@ -186,7 +186,7 @@ public final class AttributeBonus implements SkillBonus<AttributeBonus>, SkillBo
         TooltipHelper.getSkillBonusTooltip(
             attribute.getDescriptionId(), visibleAmount, modifier.getOperation());
     tooltip = playerMultiplier.getTooltip(tooltip, Target.PLAYER);
-    tooltip = playerCondition.getTooltip(tooltip, "you");
+    tooltip = playerCondition.getTooltip(tooltip, Target.PLAYER);
     return tooltip.withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
   }
 

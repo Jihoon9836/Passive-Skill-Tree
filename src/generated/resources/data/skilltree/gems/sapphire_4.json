@@ -30,11 +30,11 @@
       "gem_class": {
         "key": "weapon",
         "types": [
+          "sword",
+          "bow",
           "crossbow",
           "trident",
-          "heavy_weapon",
-          "sword",
-          "bow"
+          "heavy_weapon"
         ]
       }
     },
@@ -81,7 +81,7 @@
             "type": "skilltree:attribute",
             "amount": 0.04999999888241291,
             "attribute": "minecraft:generic.armor",
-            "id": "205a93a2-266d-4f45-8463-28b3f666f828",
+            "id": "a1635cbc-1ea2-4ae2-bb36-ddc37275c619",
             "name": "Sapphire",
             "operation": 1,
             "player_condition": {
@@ -109,7 +109,7 @@
             "type": "skilltree:attribute",
             "amount": 0.04999999888241291,
             "attribute": "minecraft:generic.knockback_resistance",
-            "id": "254972a8-5f43-4d7e-9003-4683001173ee",
+            "id": "b9a3584d-0170-408f-8524-639d20650fad",
             "name": "Sapphire",
             "operation": 0,
             "player_condition": {
@@ -153,7 +153,7 @@
             "type": "skilltree:attribute",
             "amount": 0.04999999888241291,
             "attribute": "minecraft:generic.armor_toughness",
-            "id": "ff43b4ad-4f3c-4ceb-a7e0-6c04937a41e0",
+            "id": "7cbb5b4c-d31e-44e3-afa5-f7e5525f51c4",
             "name": "Sapphire",
             "operation": 1,
             "player_condition": {

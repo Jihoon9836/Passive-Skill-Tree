@@ -46,7 +46,7 @@ public class ItemUsedEventListener implements SkillEventListener {
     Component itemTooltip = itemCondition.getTooltip();
     MutableComponent eventTooltip =
         Component.translatable(getDescriptionId(), bonusTooltip, itemTooltip);
-    eventTooltip = playerCondition.getTooltip(eventTooltip, "you");
+    eventTooltip = playerCondition.getTooltip(eventTooltip, SkillBonus.Target.PLAYER);
     eventTooltip = playerMultiplier.getTooltip(eventTooltip, SkillBonus.Target.PLAYER);
     return eventTooltip;
   }

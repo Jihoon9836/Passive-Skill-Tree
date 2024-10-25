@@ -37,6 +37,8 @@ public class SkillTreeMod {
     PSTGemBonuses.REGISTRY.register(eventBus);
     PSTEventListeners.REGISTRY.register(eventBus);
     PSTLootModifiers.REGISTRY.register(eventBus);
+    PSTEnchantments.REGISTRY.register(eventBus);
+    PSTNumericValueProviders.REGISTRY.register(eventBus);
     ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
     addCompatibilities();

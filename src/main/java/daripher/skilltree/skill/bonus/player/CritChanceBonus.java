@@ -97,8 +97,8 @@ public final class CritChanceBonus implements SkillBonus<CritChanceBonus> {
             getDescriptionId(), chance, AttributeModifier.Operation.MULTIPLY_BASE);
     tooltip = playerMultiplier.getTooltip(tooltip, Target.PLAYER);
     tooltip = targetMultiplier.getTooltip(tooltip, Target.ENEMY);
-    tooltip = playerCondition.getTooltip(tooltip, "you");
-    tooltip = targetCondition.getTooltip(tooltip, "target");
+    tooltip = playerCondition.getTooltip(tooltip, Target.PLAYER);
+    tooltip = targetCondition.getTooltip(tooltip, Target.ENEMY);
     return tooltip.withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
   }
 

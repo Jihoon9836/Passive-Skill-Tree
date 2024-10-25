@@ -108,8 +108,8 @@ public final class DamageAvoidanceBonus implements SkillBonus<DamageAvoidanceBon
             tooltip, chance, AttributeModifier.Operation.MULTIPLY_BASE);
     tooltip = playerMultiplier.getTooltip(tooltip, Target.PLAYER);
     tooltip = attackerMultiplier.getTooltip(tooltip, Target.ENEMY);
-    tooltip = playerCondition.getTooltip(tooltip, "you");
-    tooltip = attackerCondition.getTooltip(tooltip, "target");
+    tooltip = playerCondition.getTooltip(tooltip, Target.PLAYER);
+    tooltip = attackerCondition.getTooltip(tooltip, Target.ENEMY);
     return tooltip.withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
   }
 

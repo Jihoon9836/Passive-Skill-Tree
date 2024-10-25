@@ -57,8 +57,8 @@ public class DamageTakenEventListener implements SkillEventListener {
     Component damageDescription = damageCondition.getTooltip();
     MutableComponent eventTooltip =
         Component.translatable(getDescriptionId(), bonusTooltip, damageDescription);
-    eventTooltip = playerCondition.getTooltip(eventTooltip, "you");
-    eventTooltip = enemyCondition.getTooltip(eventTooltip, "target");
+    eventTooltip = playerCondition.getTooltip(eventTooltip, SkillBonus.Target.PLAYER);
+    eventTooltip = enemyCondition.getTooltip(eventTooltip, SkillBonus.Target.ENEMY);
     eventTooltip = playerMultiplier.getTooltip(eventTooltip, SkillBonus.Target.PLAYER);
     eventTooltip = enemyMultiplier.getTooltip(eventTooltip, SkillBonus.Target.ENEMY);
     return eventTooltip;

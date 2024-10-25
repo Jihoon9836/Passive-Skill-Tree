@@ -6,11 +6,13 @@ import daripher.skilltree.skill.bonus.condition.damage.DamageCondition;
 import daripher.skilltree.skill.bonus.condition.enchantment.EnchantmentCondition;
 import daripher.skilltree.skill.bonus.condition.item.ItemCondition;
 import daripher.skilltree.skill.bonus.condition.living.LivingCondition;
+import daripher.skilltree.skill.bonus.condition.living.numeric.NumericValueProvider;
 import daripher.skilltree.skill.bonus.event.SkillEventListener;
 import daripher.skilltree.skill.bonus.item.ItemBonus;
 import daripher.skilltree.skill.bonus.multiplier.LivingMultiplier;
 import java.util.Arrays;
 
+import daripher.skilltree.skill.bonus.multiplier.NumericValueMultiplier;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -119,6 +121,20 @@ public abstract class PSTTranslationProvider extends LanguageProvider {
     ResourceLocation id = PSTRegistries.LIVING_MULTIPLIERS.get().getKey(multiplier);
     assert id != null;
     String key = "skill_bonus_multiplier.%s.%s.%s".formatted(id.getNamespace(), id.getPath(), type);
+    add(key, value);
+  }
+
+  protected void add(NumericValueProvider.Serializer provider, String value) {
+    ResourceLocation id = PSTRegistries.NUMERIC_VALUE_PROVIDERS.get().getKey(provider);
+    assert id != null;
+    String key = "value_provider.%s.%s".formatted(id.getNamespace(), id.getPath());
+    add(key, value);
+  }
+
+  protected void add(NumericValueProvider.Serializer provider, String type, String value) {
+    ResourceLocation id = PSTRegistries.NUMERIC_VALUE_PROVIDERS.get().getKey(provider);
+    assert id != null;
+    String key = "value_provider.%s.%s.%s".formatted(id.getNamespace(), id.getPath(), type);
     add(key, value);
   }
 

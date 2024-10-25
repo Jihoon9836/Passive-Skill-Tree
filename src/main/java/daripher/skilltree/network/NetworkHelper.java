@@ -13,6 +13,7 @@ import daripher.skilltree.skill.bonus.condition.damage.DamageCondition;
 import daripher.skilltree.skill.bonus.condition.enchantment.EnchantmentCondition;
 import daripher.skilltree.skill.bonus.condition.item.ItemCondition;
 import daripher.skilltree.skill.bonus.condition.living.LivingCondition;
+import daripher.skilltree.skill.bonus.condition.living.numeric.NumericValueProvider;
 import daripher.skilltree.skill.bonus.event.SkillEventListener;
 import daripher.skilltree.skill.bonus.item.ItemBonus;
 import daripher.skilltree.skill.bonus.multiplier.LivingMultiplier;
@@ -433,6 +434,22 @@ public class NetworkHelper {
   public static GemBonusProvider readGemBonusProvider(FriendlyByteBuf buf) {
     ResourceLocation serializerId = new ResourceLocation(buf.readUtf());
     GemBonusProvider.Serializer serializer = PSTRegistries.GEM_BONUSES.get().getValue(serializerId);
+    Objects.requireNonNull(serializer);
+    return serializer.deserialize(buf);
+  }
+
+  public static void writeValueProvider(FriendlyByteBuf buf, NumericValueProvider<?> provider) {
+    NumericValueProvider.Serializer serializer = provider.getSerializer();
+    ResourceLocation serializerId = PSTRegistries.NUMERIC_VALUE_PROVIDERS.get().getKey(serializer);
+    Objects.requireNonNull(serializerId);
+    buf.writeUtf(serializerId.toString());
+    serializer.serialize(buf, provider);
+  }
+
+  public static NumericValueProvider<?> readValueProvider(FriendlyByteBuf buf) {
+    ResourceLocation serializerId = new ResourceLocation(buf.readUtf());
+    NumericValueProvider.Serializer serializer =
+        PSTRegistries.NUMERIC_VALUE_PROVIDERS.get().getValue(serializerId);
     Objects.requireNonNull(serializer);
     return serializer.deserialize(buf);
   }

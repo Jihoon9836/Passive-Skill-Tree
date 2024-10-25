@@ -9,6 +9,8 @@ import daripher.skilltree.network.NetworkHelper;
 import daripher.skilltree.skill.bonus.SkillBonus;
 import daripher.skilltree.skill.bonus.condition.living.LivingCondition;
 import daripher.skilltree.skill.bonus.condition.living.NoneLivingCondition;
+import daripher.skilltree.skill.bonus.multiplier.LivingMultiplier;
+import daripher.skilltree.skill.bonus.multiplier.NoneLivingMultiplier;
 import java.util.Objects;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
@@ -19,11 +21,11 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBonus> {
-  private @Nonnull LivingCondition playerCondition;
   private float multiplier;
+  private @Nonnull LivingCondition playerCondition = NoneLivingCondition.INSTANCE;
+  private @Nonnull LivingMultiplier playerMultiplier = NoneLivingMultiplier.INSTANCE;
 
-  public BlockBreakSpeedBonus(@Nonnull LivingCondition playerCondition, float multiplier) {
-    this.playerCondition = playerCondition;
+  public BlockBreakSpeedBonus(float multiplier) {
     this.multiplier = multiplier;
   }
 
@@ -34,7 +36,9 @@ public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBon
 
   @Override
   public BlockBreakSpeedBonus copy() {
-    return new BlockBreakSpeedBonus(playerCondition, multiplier);
+    return new BlockBreakSpeedBonus(multiplier)
+        .setPlayerCondition(playerCondition)
+        .setPlayerMultiplier(playerMultiplier);
   }
 
   @Override
@@ -46,7 +50,8 @@ public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBon
   @Override
   public boolean canMerge(SkillBonus<?> other) {
     if (!(other instanceof BlockBreakSpeedBonus otherBonus)) return false;
-    return Objects.equals(otherBonus.playerCondition, this.playerCondition);
+    if (!Objects.equals(otherBonus.playerCondition, this.playerCondition)) return false;
+    return Objects.equals(otherBonus.playerMultiplier, this.playerMultiplier);
   }
 
   @Override
@@ -54,7 +59,9 @@ public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBon
     if (!(other instanceof BlockBreakSpeedBonus otherBonus)) {
       throw new IllegalArgumentException();
     }
-    return new BlockBreakSpeedBonus(playerCondition, otherBonus.multiplier + this.multiplier);
+    return new BlockBreakSpeedBonus(otherBonus.multiplier + this.multiplier)
+        .setPlayerCondition(playerCondition)
+        .setPlayerMultiplier(playerMultiplier);
   }
 
   @Override
@@ -62,7 +69,8 @@ public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBon
     MutableComponent bonusTooltip =
         TooltipHelper.getSkillBonusTooltip(
             getDescriptionId(), multiplier, AttributeModifier.Operation.MULTIPLY_BASE);
-    bonusTooltip = playerCondition.getTooltip(bonusTooltip, "you");
+    bonusTooltip = playerCondition.getTooltip(bonusTooltip, Target.PLAYER);
+    bonusTooltip = playerMultiplier.getTooltip(bonusTooltip, Target.PLAYER);
     return bonusTooltip.withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
   }
 
@@ -87,11 +95,27 @@ public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBon
         .setResponder(condition -> selectPlayerCondition(editor, consumer, condition))
         .setMenuInitFunc(() -> addPlayerConditionWidgets(editor, consumer));
     editor.increaseHeight(19);
+    editor.addLabel(0, 0, "Player Multiplier", ChatFormatting.GOLD);
+    editor.increaseHeight(19);
+    editor
+        .addSelectionMenu(0, 0, 200, playerMultiplier)
+        .setResponder(multiplier -> selectPlayerMultiplier(editor, consumer, multiplier))
+        .setMenuInitFunc(() -> addPlayerMultiplierWidgets(editor, consumer));
+    editor.increaseHeight(19);
   }
 
   private void selectPlayerCondition(
       SkillTreeEditor editor, Consumer<BlockBreakSpeedBonus> consumer, LivingCondition condition) {
     setPlayerCondition(condition);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void selectPlayerMultiplier(
+      SkillTreeEditor editor,
+      Consumer<BlockBreakSpeedBonus> consumer,
+      LivingMultiplier multiplier) {
+    setPlayerMultiplier(multiplier);
     consumer.accept(this.copy());
     editor.rebuildWidgets();
   }
@@ -111,12 +135,29 @@ public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBon
         });
   }
 
-  public void setPlayerCondition(@Nonnull LivingCondition playerCondition) {
-    this.playerCondition = playerCondition;
+  private void addPlayerMultiplierWidgets(
+      SkillTreeEditor editor, Consumer<BlockBreakSpeedBonus> consumer) {
+    playerMultiplier.addEditorWidgets(
+        editor,
+        m -> {
+          setPlayerMultiplier(m);
+          consumer.accept(this.copy());
+        });
   }
 
-  public void setMultiplier(float multiplier) {
+  public BlockBreakSpeedBonus setPlayerCondition(@Nonnull LivingCondition playerCondition) {
+    this.playerCondition = playerCondition;
+    return this;
+  }
+
+  public BlockBreakSpeedBonus setPlayerMultiplier(@Nonnull LivingMultiplier playerMultiplier) {
+    this.playerMultiplier = playerMultiplier;
+    return this;
+  }
+
+  public BlockBreakSpeedBonus setMultiplier(float multiplier) {
     this.multiplier = multiplier;
+    return this;
   }
 
   @Nonnull
@@ -129,26 +170,31 @@ public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBon
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (obj == this) return true;
-    if (obj == null || obj.getClass() != this.getClass()) return false;
-    BlockBreakSpeedBonus that = (BlockBreakSpeedBonus) obj;
-    if (!Objects.equals(this.playerCondition, that.playerCondition)) return false;
-    return this.multiplier == that.multiplier;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    BlockBreakSpeedBonus that = (BlockBreakSpeedBonus) o;
+    return Float.compare(multiplier, that.multiplier) == 0
+        && Objects.equals(playerCondition, that.playerCondition)
+        && Objects.equals(playerMultiplier, that.playerMultiplier);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(playerCondition, multiplier);
+    return Objects.hash(multiplier, playerCondition, playerMultiplier);
   }
 
   public static class Serializer implements SkillBonus.Serializer {
     @Override
     public BlockBreakSpeedBonus deserialize(JsonObject json) throws JsonParseException {
-      LivingCondition condition =
-          SerializationHelper.deserializeLivingCondition(json, "player_condition");
       float multiplier = SerializationHelper.getElement(json, "multiplier").getAsFloat();
-      return new BlockBreakSpeedBonus(condition, multiplier);
+      LivingCondition playerCondition =
+          SerializationHelper.deserializeLivingCondition(json, "player_condition");
+      LivingMultiplier playerMultiplier =
+          SerializationHelper.deserializeLivingMultiplier(json, "player_multiplier");
+      return new BlockBreakSpeedBonus(multiplier)
+          .setPlayerCondition(playerCondition)
+          .setPlayerMultiplier(playerMultiplier);
     }
 
     @Override
@@ -156,17 +202,23 @@ public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBon
       if (!(bonus instanceof BlockBreakSpeedBonus aBonus)) {
         throw new IllegalArgumentException();
       }
+      json.addProperty("multiplier", aBonus.multiplier);
       SerializationHelper.serializeLivingCondition(
           json, aBonus.playerCondition, "player_condition");
-      json.addProperty("multiplier", aBonus.multiplier);
+      SerializationHelper.serializeLivingMultiplier(
+          json, aBonus.playerMultiplier, "player_multiplier");
     }
 
     @Override
     public BlockBreakSpeedBonus deserialize(CompoundTag tag) {
-      LivingCondition condition =
-          SerializationHelper.deserializeLivingCondition(tag, "player_condition");
       float multiplier = tag.getFloat("multiplier");
-      return new BlockBreakSpeedBonus(condition, multiplier);
+      LivingCondition playerCondition =
+          SerializationHelper.deserializeLivingCondition(tag, "player_condition");
+      LivingMultiplier playerMultiplier =
+          SerializationHelper.deserializeLivingMultiplier(tag, "player_multiplier");
+      return new BlockBreakSpeedBonus(multiplier)
+          .setPlayerCondition(playerCondition)
+          .setPlayerMultiplier(playerMultiplier);
     }
 
     @Override
@@ -176,13 +228,19 @@ public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBon
       }
       CompoundTag tag = new CompoundTag();
       SerializationHelper.serializeLivingCondition(tag, aBonus.playerCondition, "player_condition");
+      SerializationHelper.serializeLivingMultiplier(
+          tag, aBonus.playerMultiplier, "player_multiplier");
       tag.putFloat("multiplier", aBonus.multiplier);
       return tag;
     }
 
     @Override
     public BlockBreakSpeedBonus deserialize(FriendlyByteBuf buf) {
-      return new BlockBreakSpeedBonus(NetworkHelper.readLivingCondition(buf), buf.readFloat());
+      LivingCondition playerCondition = NetworkHelper.readLivingCondition(buf);
+      LivingMultiplier playerMultiplier = NetworkHelper.readLivingMultiplier(buf);
+      return new BlockBreakSpeedBonus(buf.readFloat())
+          .setPlayerCondition(playerCondition)
+          .setPlayerMultiplier(playerMultiplier);
     }
 
     @Override
@@ -191,12 +249,13 @@ public final class BlockBreakSpeedBonus implements SkillBonus<BlockBreakSpeedBon
         throw new IllegalArgumentException();
       }
       NetworkHelper.writeLivingCondition(buf, aBonus.playerCondition);
+      NetworkHelper.writeLivingMultiplier(buf, aBonus.playerMultiplier);
       buf.writeFloat(aBonus.multiplier);
     }
 
     @Override
     public SkillBonus<?> createDefaultInstance() {
-      return new BlockBreakSpeedBonus(NoneLivingCondition.INSTANCE, 0.1f);
+      return new BlockBreakSpeedBonus(0.1f);
     }
   }
 }

@@ -33,8 +33,9 @@ public class PSTDataGenerator {
     dataGenerator.addProvider(
         includeServer, new PSTLootTablesProvider(dataGenerator, gemTypesProvider));
     dataGenerator.addProvider(includeServer, new PSTRecipesProvider(dataGenerator));
+    dataGenerator.addProvider(includeServer, new PSTGlobalLootModifierProvider(dataGenerator));
     dataGenerator.addProvider(
-        includeServer, new PSTGlobalLootModifierProvider(dataGenerator));
+        includeServer, new PSTDamageTagsProvider(dataGenerator, lookupProvider, fileHelper));
 
     boolean includeClient = event.includeClient();
     dataGenerator.addProvider(includeClient, new PSTEnglishTranslationProvider(dataGenerator));

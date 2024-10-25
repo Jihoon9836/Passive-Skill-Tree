@@ -3,15 +3,21 @@ package daripher.skilltree.skill.bonus.condition.damage;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import daripher.skilltree.init.PSTDamageConditions;
+import daripher.skilltree.init.PSTTags;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.player.Player;
 
 public record MagicDamageCondition() implements DamageCondition {
   @Override
   public boolean met(DamageSource source) {
-    return source.is(DamageTypes.MAGIC);
+    return source.is(PSTTags.DamageTypes.IS_MAGIC);
   }
 
   @Override
@@ -23,6 +29,19 @@ public record MagicDamageCondition() implements DamageCondition {
   public boolean equals(Object o) {
     if (this == o) return true;
     return o != null && getClass() == o.getClass();
+  }
+
+  @Override
+  public DamageSource createDamageSource(Player player) {
+    Registry<DamageType> damageTypes =
+        player.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE);
+    Holder.Reference<DamageType> damageType = damageTypes.getHolderOrThrow(DamageTypes.MAGIC);
+    return new DamageSource(damageType, null, player);
+  }
+
+  @Override
+  public boolean canCreateDamageSource() {
+    return true;
   }
 
   @Override

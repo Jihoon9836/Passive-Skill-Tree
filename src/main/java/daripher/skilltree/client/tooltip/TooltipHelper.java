@@ -62,13 +62,13 @@ public class TooltipHelper {
         });
   }
 
-  public static Component getOptionalTooltip(String descriptionId, String subtype) {
+  public static MutableComponent getOptionalTooltip(String descriptionId, String subtype, Object... args) {
     String key = "%s.%s".formatted(descriptionId, subtype);
-    Component tooltip = Component.translatable(key);
+    MutableComponent tooltip = Component.translatable(key, args);
     if (!tooltip.getString().equals(key)) {
       return tooltip;
     }
-    return Component.translatable(descriptionId);
+    return Component.translatable(descriptionId, args);
   }
 
   public static void consumeTranslated(String descriptionId, Consumer<MutableComponent> consumer) {
@@ -93,7 +93,11 @@ public class TooltipHelper {
   }
 
   public static String formatNumber(double number) {
-    return ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(number);
+    String formatted = ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(number);
+    if (formatted.endsWith(".0")) {
+      formatted = formatted.substring(0, formatted.length() - 2);
+    }
+    return formatted;
   }
 
   public static MutableComponent getSkillBonusTooltip(

@@ -14,6 +14,7 @@ import daripher.skilltree.skill.bonus.condition.enchantment.NoneEnchantmentCondi
 import daripher.skilltree.skill.bonus.condition.item.*;
 import daripher.skilltree.skill.bonus.condition.living.LivingCondition;
 import daripher.skilltree.skill.bonus.condition.living.NoneLivingCondition;
+import daripher.skilltree.skill.bonus.condition.living.numeric.NumericValueProvider;
 import daripher.skilltree.skill.bonus.event.SkillEventListener;
 import daripher.skilltree.skill.bonus.item.ItemBonus;
 import daripher.skilltree.skill.bonus.multiplier.LivingMultiplier;
@@ -119,7 +120,8 @@ public class SerializationHelper {
     ResourceLocation serializerId = new ResourceLocation(multiplierJson.get("type").getAsString());
     LivingMultiplier.Serializer serializer =
         PSTRegistries.LIVING_MULTIPLIERS.get().getValue(serializerId);
-    return Objects.requireNonNull(serializer).deserialize(multiplierJson);
+    String errorMessage = "Unknown living multiplier: " + serializerId;
+    return deserializeObject(serializer, multiplierJson, errorMessage);
   }
 
   public static void serializeLivingMultiplier(
@@ -156,7 +158,11 @@ public class SerializationHelper {
 
   @Nonnull
   public static DamageCondition deserializeDamageCondition(JsonObject json) {
-    String name = "damage_condition";
+    return deserializeDamageCondition(json, "damage_condition");
+  }
+
+  @Nonnull
+  public static DamageCondition deserializeDamageCondition(JsonObject json, String name) {
     if (!json.has(name)) return NoneDamageCondition.INSTANCE;
     JsonObject conditionJson = json.getAsJsonObject(name);
     ResourceLocation serializerId = new ResourceLocation(conditionJson.get("type").getAsString());
@@ -167,12 +173,17 @@ public class SerializationHelper {
   }
 
   public static void serializeDamageCondition(JsonObject json, @Nonnull DamageCondition condition) {
+    serializeDamageCondition(json, condition, "damage_condition");
+  }
+
+  public static void serializeDamageCondition(
+      JsonObject json, @Nonnull DamageCondition condition, String name) {
     JsonObject conditionJson = new JsonObject();
     DamageCondition.Serializer serializer = condition.getSerializer();
     serializer.serialize(conditionJson, condition);
     ResourceLocation serializerId = PSTRegistries.DAMAGE_CONDITIONS.get().getKey(serializer);
     conditionJson.addProperty("type", Objects.requireNonNull(serializerId).toString());
-    json.add("damage_condition", conditionJson);
+    json.add(name, conditionJson);
   }
 
   public static @Nonnull ItemCondition deserializeItemCondition(JsonObject json) {
@@ -306,6 +317,25 @@ public class SerializationHelper {
     json.add("bonus_provider", bonusJson);
   }
 
+  public static NumericValueProvider<?> deserializeValueProvider(JsonObject json) {
+    JsonObject providerJson = json.getAsJsonObject("value_provider");
+    String type = providerJson.get("type").getAsString();
+    ResourceLocation serializerId = new ResourceLocation(type);
+    NumericValueProvider.Serializer serializer =
+        PSTRegistries.NUMERIC_VALUE_PROVIDERS.get().getValue(serializerId);
+    String errorMessage = "Unknown value provider: " + serializerId;
+    return deserializeObject(serializer, providerJson, errorMessage);
+  }
+
+  public static void serializeValueProvider(JsonObject json, NumericValueProvider<?> provider) {
+    ResourceLocation serializerId =
+        PSTRegistries.NUMERIC_VALUE_PROVIDERS.get().getKey(provider.getSerializer());
+    JsonObject bonusJson = new JsonObject();
+    provider.getSerializer().serialize(bonusJson, provider);
+    bonusJson.addProperty("type", Objects.requireNonNull(serializerId).toString());
+    json.add("value_provider", bonusJson);
+  }
+
   @Nullable
   public static Attribute deserializeAttribute(CompoundTag tag) {
     ResourceLocation attributeId = new ResourceLocation(tag.getString("attribute"));
@@ -385,7 +415,11 @@ public class SerializationHelper {
   }
 
   public static @Nonnull DamageCondition deserializeDamageCondition(CompoundTag tag) {
-    CompoundTag conditionTag = tag.getCompound("damage_condition");
+    return deserializeDamageCondition(tag, "damage_condition");
+  }
+
+  public static @Nonnull DamageCondition deserializeDamageCondition(CompoundTag tag, String name) {
+    CompoundTag conditionTag = tag.getCompound(name);
     ResourceLocation serializerId = new ResourceLocation(conditionTag.getString("type"));
     DamageCondition.Serializer serializer =
         PSTRegistries.DAMAGE_CONDITIONS.get().getValue(serializerId);
@@ -393,11 +427,16 @@ public class SerializationHelper {
   }
 
   public static void serializeDamageCondition(CompoundTag tag, @Nonnull DamageCondition condition) {
+    serializeDamageCondition(tag, condition, "damage_condition");
+  }
+
+  public static void serializeDamageCondition(
+      CompoundTag tag, @Nonnull DamageCondition condition, String name) {
     DamageCondition.Serializer serializer = condition.getSerializer();
     CompoundTag conditionTag = serializer.serialize(condition);
     ResourceLocation serializerId = PSTRegistries.DAMAGE_CONDITIONS.get().getKey(serializer);
     conditionTag.putString("type", Objects.requireNonNull(serializerId).toString());
-    tag.put("damage_condition", conditionTag);
+    tag.put(name, conditionTag);
   }
 
   public static @Nonnull ItemCondition deserializeItemCondition(CompoundTag tag) {
@@ -548,6 +587,23 @@ public class SerializationHelper {
     CompoundTag bonusTag = provider.getSerializer().serialize(provider);
     bonusTag.putString("type", Objects.requireNonNull(serializerId).toString());
     tag.put("bonus_provider", bonusTag);
+  }
+
+  public static NumericValueProvider<?> deserializeValueProvider(CompoundTag tag) {
+    CompoundTag providerTag = tag.getCompound("value_provider");
+    String type = providerTag.getString("type");
+    ResourceLocation serializerId = new ResourceLocation(type);
+    NumericValueProvider.Serializer serializer =
+        PSTRegistries.NUMERIC_VALUE_PROVIDERS.get().getValue(serializerId);
+    return Objects.requireNonNull(serializer).deserialize(providerTag);
+  }
+
+  public static void serializeValueProvider(CompoundTag tag, NumericValueProvider<?> provider) {
+    ResourceLocation serializerId =
+        PSTRegistries.NUMERIC_VALUE_PROVIDERS.get().getKey(provider.getSerializer());
+    CompoundTag providerTag = provider.getSerializer().serialize(provider);
+    providerTag.putString("type", Objects.requireNonNull(serializerId).toString());
+    tag.put("value_provider", providerTag);
   }
 
   private static <T> T deserializeObject(

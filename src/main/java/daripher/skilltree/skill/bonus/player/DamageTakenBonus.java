@@ -108,8 +108,8 @@ public final class DamageTakenBonus implements SkillBonus<DamageTakenBonus> {
     tooltip = TooltipHelper.getSkillBonusTooltip(tooltip, amount, operation);
     tooltip = playerMultiplier.getTooltip(tooltip, Target.PLAYER);
     tooltip = attackerMultiplier.getTooltip(tooltip, Target.ENEMY);
-    tooltip = playerCondition.getTooltip(tooltip, "you");
-    tooltip = attackerCondition.getTooltip(tooltip, "target");
+    tooltip = playerCondition.getTooltip(tooltip, Target.PLAYER);
+    tooltip = attackerCondition.getTooltip(tooltip, Target.ENEMY);
     return tooltip.withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
   }
 

@@ -3,6 +3,7 @@ package daripher.skilltree.skill.bonus.condition.living;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import daripher.skilltree.init.PSTLivingConditions;
+import daripher.skilltree.skill.bonus.SkillBonus;
 import daripher.skilltree.skill.bonus.condition.item.EquipmentCondition;
 import java.util.Objects;
 import net.minecraft.nbt.CompoundTag;
@@ -15,14 +16,14 @@ public record UnarmedCondition() implements LivingCondition {
   @Override
   public boolean met(LivingEntity living) {
     return !EquipmentCondition.isWeapon(living.getOffhandItem())
-        && EquipmentCondition.isWeapon(living.getMainHandItem());
+        && !EquipmentCondition.isWeapon(living.getMainHandItem());
   }
 
   @Override
-  public MutableComponent getTooltip(MutableComponent bonusTooltip, String target) {
+  public MutableComponent getTooltip(MutableComponent bonusTooltip, SkillBonus.Target target) {
     String key = getDescriptionId();
     MutableComponent targetDescription =
-        Component.translatable("%s.target.%s".formatted(key, target));
+        Component.translatable("%s.target.%s".formatted(key, target.getName()));
     return Component.translatable(key, bonusTooltip, targetDescription);
   }
 

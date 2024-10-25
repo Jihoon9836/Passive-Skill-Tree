@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import daripher.skilltree.init.PSTLivingConditions;
 import java.util.Objects;
+
+import daripher.skilltree.skill.bonus.SkillBonus;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -18,10 +20,10 @@ public record FishingCondition() implements LivingCondition {
   }
 
   @Override
-  public MutableComponent getTooltip(MutableComponent bonusTooltip, String target) {
+  public MutableComponent getTooltip(MutableComponent bonusTooltip, SkillBonus.Target target) {
     String key = getDescriptionId();
     MutableComponent targetDescription =
-        Component.translatable("%s.target.%s".formatted(key, target));
+        Component.translatable("%s.target.%s".formatted(key, target.getName()));
     return Component.translatable(key, bonusTooltip, targetDescription);
   }
 

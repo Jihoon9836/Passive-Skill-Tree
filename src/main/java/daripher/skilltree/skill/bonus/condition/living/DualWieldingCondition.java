@@ -7,6 +7,7 @@ import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.entity.player.PlayerHelper;
 import daripher.skilltree.init.PSTLivingConditions;
 import daripher.skilltree.network.NetworkHelper;
+import daripher.skilltree.skill.bonus.SkillBonus;
 import daripher.skilltree.skill.bonus.condition.item.EquipmentCondition;
 import daripher.skilltree.skill.bonus.condition.item.ItemCondition;
 import java.util.Objects;
@@ -31,9 +32,9 @@ public final class DualWieldingCondition implements LivingCondition {
   }
 
   @Override
-  public MutableComponent getTooltip(MutableComponent bonusTooltip, String target) {
+  public MutableComponent getTooltip(MutableComponent bonusTooltip, SkillBonus.Target target) {
     String key = getDescriptionId();
-    Component targetDescription = Component.translatable("%s.target.%s".formatted(key, target));
+    Component targetDescription = Component.translatable("%s.target.%s".formatted(key, target.getName()));
     Component itemDescription = weaponCondition.getTooltip();
     return Component.translatable(key, bonusTooltip, targetDescription, itemDescription);
   }

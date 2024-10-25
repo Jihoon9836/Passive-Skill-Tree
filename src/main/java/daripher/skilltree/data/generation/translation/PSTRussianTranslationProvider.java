@@ -22,8 +22,7 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.BLOCK_BREAK_SPEED.get(), "Скорость добычи блоков");
     add(PSTSkillBonuses.REPAIR_EFFICIENCY.get(), "Ремонтируем%s: %s");
     add(PSTSkillBonuses.REPAIR_EFFICIENCY.get(), "bonus", "Прочности восстановлено");
-    add(PSTSkillBonuses.FREE_ENCHANTMENT.get(), "Зачарование: %s");
-    add(PSTSkillBonuses.FREE_ENCHANTMENT.get(), "bonus", "Шанс бесплатного зачарование");
+    add(PSTSkillBonuses.FREE_ENCHANTMENT.get(), "Шанс зачаровать предмет бесплатно");
     add(PSTSkillBonuses.RECIPE_UNLOCK.get(), "Открывает рецепт: %s");
     add(PSTSkillBonuses.JUMP_HEIGHT.get(), "Высота прыжка");
     add(PSTSkillBonuses.INCOMING_HEALING.get(), "Получаемое лечение");
@@ -59,6 +58,7 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.LETHAL_POISON.get(), "Ваши яды летальны");
     add(PSTSkillBonuses.DAMAGE_TAKEN.get(), "Получаемый %s");
     add(PSTSkillBonuses.DAMAGE_AVOIDANCE.get(), "Шанс избежать %s");
+    add(PSTSkillBonuses.DAMAGE_CONVERSION.get(), "%s%% всего %s конвертируется в %s");
     // item bonuses
     add(PSTItemBonuses.SOCKETS.get(), "+%d Гнезда для Самоцветов");
     add(PSTItemBonuses.DURABILITY.get(), "Прочность");
@@ -77,26 +77,9 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(LootDuplicationBonus.LootType.FISHING.getDescriptionId(), "награды с рыбалки");
     add(LootDuplicationBonus.LootType.GEMS.getDescriptionId(), "самоцветы из руды");
     // living conditions
-    add(PSTLivingConditions.EFFECT_AMOUNT.get(), "target.you", "вас");
-    add(PSTLivingConditions.EFFECT_AMOUNT.get(), "target.target", "цели");
-    add(PSTLivingConditions.EFFECT_AMOUNT.get(), "min.1", "%s если на %s есть Эффекты");
-    add(PSTLivingConditions.EFFECT_AMOUNT.get(), "min", "%s если на %s минимум %d Эффектов");
-    add(PSTLivingConditions.EFFECT_AMOUNT.get(), "max", "%s если на %s максимум %d Эффектов");
-    add(PSTLivingConditions.EFFECT_AMOUNT.get(), "range", "%s если на %s от %d до %d Эффектов");
-    add(PSTLivingConditions.HEALTH_PERCENTAGE.get(), "target.you", "если у вас");
-    add(PSTLivingConditions.HEALTH_PERCENTAGE.get(), "target.target", "если у цели");
-    add(PSTLivingConditions.HEALTH_PERCENTAGE.get(), "min", "%s %s минимум %s%% здоровья");
-    add(PSTLivingConditions.HEALTH_PERCENTAGE.get(), "max", "%s %s максимум %s%% здоровья");
-    add(PSTLivingConditions.HEALTH_PERCENTAGE.get(), "range", "%s %s от %s%% до %s%% здоровья");
     add(PSTLivingConditions.HAS_ITEM_EQUIPPED.get(), "target.you", "вас");
     add(PSTLivingConditions.HAS_ITEM_EQUIPPED.get(), "target.target", "цели");
     add(PSTLivingConditions.HAS_ITEM_EQUIPPED.get(), "%s если на %s %s");
-    add(PSTLivingConditions.HAS_GEMS.get(), "target.you", "если у вас есть");
-    add(PSTLivingConditions.HAS_GEMS.get(), "target.target", "если у цели есть");
-    add(PSTLivingConditions.HAS_GEMS.get(), "min.1", "%s %s самоцветы в %s");
-    add(PSTLivingConditions.HAS_GEMS.get(), "min", "%s %s минимум %d самоцветов в %s");
-    add(PSTLivingConditions.HAS_GEMS.get(), "max", "%s %s максимум %d самоцветов в %s");
-    add(PSTLivingConditions.HAS_GEMS.get(), "range", "%s %s от %d до %d самоцветов в %s");
     add(PSTLivingConditions.HAS_EFFECT.get(), "target.you", "вас");
     add(PSTLivingConditions.HAS_EFFECT.get(), "target.target", "цель");
     add(PSTLivingConditions.HAS_EFFECT.get(), "%s если на %s действует %s");
@@ -104,16 +87,6 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTLivingConditions.BURNING.get(), "target.you", "вы горите");
     add(PSTLivingConditions.BURNING.get(), "target.target", "цель горит");
     add(PSTLivingConditions.BURNING.get(), "%s если %s");
-    add(PSTLivingConditions.ATTRIBUTE_VALUE.get(), "target.you", "у вас");
-    add(PSTLivingConditions.ATTRIBUTE_VALUE.get(), "target.target", "у цели");
-    add(PSTLivingConditions.ATTRIBUTE_VALUE.get(), "min", "%s если %s минимум %s %s");
-    add(PSTLivingConditions.ATTRIBUTE_VALUE.get(), "max", "%s если %s максимум %s %s");
-    add(PSTLivingConditions.ATTRIBUTE_VALUE.get(), "range", "%s если %s от %s%% до %s %s");
-    add(PSTLivingConditions.FOOD_LEVEL.get(), "target.you", "у вас");
-    add(PSTLivingConditions.FOOD_LEVEL.get(), "target.target", "у цели");
-    add(PSTLivingConditions.FOOD_LEVEL.get(), "min", "%s если %s минимум %s очков голода");
-    add(PSTLivingConditions.FOOD_LEVEL.get(), "max", "%s если %s максимум %s очков голода");
-    add(PSTLivingConditions.FOOD_LEVEL.get(), "range", "%s если %s от %s%% до %s очков голода");
     add(PSTLivingConditions.FISHING.get(), "target.you", "вы рыбачите");
     add(PSTLivingConditions.FISHING.get(), "target.target", "цель рыбачит");
     add(PSTLivingConditions.FISHING.get(), "%s если %s");
@@ -155,7 +128,9 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTDamageConditions.MAGIC.get(), "type.blocked", "магии");
     add(PSTDamageConditions.NONE.get(), "Урон");
     add(PSTDamageConditions.FALL.get(), "Урон от падения");
-    add(PSTDamageConditions.FALL.get(),"type", "от падения");
+    add(PSTDamageConditions.FALL.get(), "type", "от падения");
+    add(PSTDamageConditions.FIRE.get(), "Урон огнём");
+    add(PSTDamageConditions.FIRE.get(), "type", "огнём");
     // enchantment conditions
     add(PSTEnchantmentConditions.WEAPON.get(), "Зачарование оружия");
     add(PSTEnchantmentConditions.ARMOR.get(), "Зачарование брони");
@@ -164,187 +139,162 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTItemConditions.NONE.get(), "Предмет");
     add(PSTItemConditions.NONE.get(), "where", "Предмете");
     add(PSTItemConditions.NONE.get(), "type", "ый Предмет");
-    add(PSTItemConditions.NONE.get(), "plural.type", "ые Предметы");
+    add(PSTItemConditions.NONE.get(), "plural.adjective", "ые Предметы");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "weapon", "Оружие");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "weapon.where", "Оружии");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "weapon.type", "ое Оружие");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "weapon.plural.type", "ое Оружие");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "weapon.prepositional", "Оружии");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "weapon.adjective", "ое Оружие");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "weapon.plural.adjective", "ое Оружие");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "weapon.plural", "Оружие");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "ranged_weapon", "Оружие дальнего боя");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "ranged_weapon.where", "Оружии дальнего боя");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "ranged_weapon.type", "ое Оружие дальнего боя");
     add(
         PSTItemConditions.EQUIPMENT_TYPE.get(),
-        "ranged_weapon.plural.type",
+        "ranged_weapon.prepositional",
+        "Оружии дальнего боя");
+    add(
+        PSTItemConditions.EQUIPMENT_TYPE.get(),
+        "ranged_weapon.adjective",
+        "ое Оружие дальнего боя");
+    add(
+        PSTItemConditions.EQUIPMENT_TYPE.get(),
+        "ranged_weapon.plural.adjective",
         "ое Оружие дальнего боя");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "ranged_weapon.plural", "Оружие дальнего боя");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "bow", "Лук");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "bow.where", "Луке");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "bow.type", "ый Лук");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "bow.plural.type", "ые Луки");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "bow.prepositional", "Луке");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "bow.adjective", "ый Лук");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "bow.plural.adjective", "ые Луки");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "bow.plural", "Луки");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "crossbow", "Арбалет");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "crossbow.where", "Арбалете");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "crossbow.type", "ый Арбалет");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "crossbow.plural.type", "ые Арбалеты");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "crossbow.prepositional", "Арбалете");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "crossbow.adjective", "ый Арбалет");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "crossbow.plural.adjective", "ые Арбалеты");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "crossbow.plural", "Арбалеты");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "melee_weapon", "Оружие ближнего боя");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "melee_weapon.where", "Оружии ближнего боя");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "melee_weapon.type", "ое Оружие ближнего боя");
     add(
         PSTItemConditions.EQUIPMENT_TYPE.get(),
-        "melee_weapon.plural.type",
+        "melee_weapon.prepositional",
+        "Оружии ближнего боя");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "melee_weapon.adjective", "ое Оружие ближнего боя");
+    add(
+        PSTItemConditions.EQUIPMENT_TYPE.get(),
+        "melee_weapon.plural.adjective",
         "ое Оружие ближнего боя");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "melee_weapon.plural", "Оружие ближнего боя");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "sword", "Меч");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "sword.where", "Мече");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "sword.type", "ый Меч");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "sword.plural.type", "ые Мечи");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "sword.prepositional", "Мече");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "sword.adjective", "ый Меч");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "sword.plural.adjective", "ые Мечи");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "sword.plural", "Мечи");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "trident", "Трезубец");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "trident.where", "Трезубце");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "trident.type", "ый Трезубец");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "trident.plural.type", "ые Трезубцы");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "trident.prepositional", "Трезубце");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "trident.adjective", "ый Трезубец");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "trident.plural.adjective", "ые Трезубцы");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "trident.plural", "Трезубцы");
-    add(PSTTags.RINGS, "Кольцо");
-    add(PSTTags.RINGS, "where", "Кольцах");
-    add(PSTTags.RINGS, "type", "ое Кольцо");
-    add(PSTTags.RINGS, "plural.type", "ые Кольца");
-    add(PSTTags.RINGS, "plural", "Кольца");
-    add(PSTTags.NECKLACES, "Ожерелье");
-    add(PSTTags.NECKLACES, "type", "ое Ожерелье");
-    add(PSTTags.NECKLACES, "plural.type", "ые Ожерелья");
-    add(PSTTags.NECKLACES, "plural", "Ожерелья");
-    add(PSTTags.QUIVERS, "Колчан");
-    add(PSTTags.QUIVERS, "where", "Колчане");
-    add(PSTTags.QUIVERS, "type", "ый Колчан");
-    add(PSTTags.QUIVERS, "plural.type", "ые Колчаны");
-    add(PSTTags.QUIVERS, "plural", "Колчаны");
+    add(PSTTags.Items.RINGS, "Кольцо");
+    add(PSTTags.Items.RINGS, "where", "Кольцах");
+    add(PSTTags.Items.RINGS, "type", "ое Кольцо");
+    add(PSTTags.Items.RINGS, "plural.adjective", "ые Кольца");
+    add(PSTTags.Items.RINGS, "plural", "Кольца");
+    add(PSTTags.Items.NECKLACES, "Ожерелье");
+    add(PSTTags.Items.NECKLACES, "type", "ое Ожерелье");
+    add(PSTTags.Items.NECKLACES, "plural.adjective", "ые Ожерелья");
+    add(PSTTags.Items.NECKLACES, "plural", "Ожерелья");
+    add(PSTTags.Items.QUIVERS, "Колчан");
+    add(PSTTags.Items.QUIVERS, "where", "Колчане");
+    add(PSTTags.Items.QUIVERS, "type", "ый Колчан");
+    add(PSTTags.Items.QUIVERS, "plural.adjective", "ые Колчаны");
+    add(PSTTags.Items.QUIVERS, "plural", "Колчаны");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "armor", "Броня");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "armor.where", "Броне");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "armor.type", "ая Броня");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "armor.plural.type", "ая Броня");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "armor.prepositional", "Броне");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "armor.adjective", "ая Броня");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "armor.plural.adjective", "ая Броня");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "armor.plural", "Броня");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "helmet", "Шлем");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "helmet.where", "Шлеме");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "helmet.type", "ый Шлем");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "helmet.plural.type", "ые Шлемы");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "helmet.prepositional", "Шлеме");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "helmet.adjective", "ый Шлем");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "helmet.plural.adjective", "ые Шлемы");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "helmet.plural", "Шлемы");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "chestplate", "Нагрудник");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "chestplate.where", "Нагруднике");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "chestplate.type", "ый Нагрудник");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "chestplate.plural.type", "ые Нагрудники");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "chestplate.prepositional", "Нагруднике");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "chestplate.adjective", "ый Нагрудник");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "chestplate.plural.adjective", "ые Нагрудники");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "chestplate.plural", "Нагрудники");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "leggings", "Штаны");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "leggings.where", "Штанах");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "leggings.type", "ые Штаны");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "leggings.plural.type", "ые Штаны");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "leggings.prepositional", "Штанах");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "leggings.adjective", "ые Штаны");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "leggings.plural.adjective", "ые Штаны");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "leggings.plural", "Штаны");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "boots", "Ботинки");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "boots.where", "Ботинках");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "boots.type", "ые Ботинки");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "boots.plural.type", "ые Ботинки");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "boots.prepositional", "Ботинках");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "boots.adjective", "ые Ботинки");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "boots.plural.adjective", "ые Ботинки");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "boots.plural", "Ботинки");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shield", "Щит");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shield.where", "Щите");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shield.type", "ый Щит");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shield.plural.type", "ые Щиты");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shield.prepositional", "Щите");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shield.adjective", "ый Щит");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shield.plural.adjective", "ые Щиты");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shield.plural", "Щиты");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "any", "Экипировка");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "any.where", "Экипировке");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "any.type", "ая Экипировка");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "any.plural.type", "ая Экипировка");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "any.prepositional", "Экипировке");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "any.adjective", "ая Экипировка");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "any.plural.adjective", "ая Экипировка");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "any.plural", "Экипировка");
     add(PSTItemConditions.POTIONS.get(), "any", "Зелье");
-    add(PSTItemConditions.POTIONS.get(), "any.type", "ое Зелье");
-    add(PSTItemConditions.POTIONS.get(), "any.plural.type", "ые Зелья");
+    add(PSTItemConditions.POTIONS.get(), "any.adjective", "ое Зелье");
+    add(PSTItemConditions.POTIONS.get(), "any.plural.adjective", "ые Зелья");
     add(PSTItemConditions.POTIONS.get(), "any.plural", "Зелья");
     add(PSTItemConditions.POTIONS.get(), "beneficial", "Благотворное Зелье");
-    add(PSTItemConditions.POTIONS.get(), "beneficial.type", "ое Благотворное Зелье");
-    add(PSTItemConditions.POTIONS.get(), "beneficial.plural.type", "ые Благотворные Зелья");
+    add(PSTItemConditions.POTIONS.get(), "beneficial.adjective", "ое Благотворное Зелье");
+    add(PSTItemConditions.POTIONS.get(), "beneficial.plural.adjective", "ые Благотворные Зелья");
     add(PSTItemConditions.POTIONS.get(), "beneficial.plural", "Благотворные Зелья");
     add(PSTItemConditions.POTIONS.get(), "harmful", "Вредящее Зелье");
-    add(PSTItemConditions.POTIONS.get(), "harmful.type", "ое Вредящее Зелье");
-    add(PSTItemConditions.POTIONS.get(), "harmful.plural.type", "ые Вредящие Зелья");
+    add(PSTItemConditions.POTIONS.get(), "harmful.adjective", "ое Вредящее Зелье");
+    add(PSTItemConditions.POTIONS.get(), "harmful.plural.adjective", "ые Вредящие Зелья");
     add(PSTItemConditions.POTIONS.get(), "harmful.plural", "Вредящие Зелья");
     add(PSTItemConditions.POTIONS.get(), "neutral", "Нейтральное Зелье");
-    add(PSTItemConditions.POTIONS.get(), "neutral.type", "ое Нейтральное Зелье");
-    add(PSTItemConditions.POTIONS.get(), "neutral.plural.type", "ые Нейтральные Зелья");
+    add(PSTItemConditions.POTIONS.get(), "neutral.adjective", "ое Нейтральное Зелье");
+    add(PSTItemConditions.POTIONS.get(), "neutral.plural.adjective", "ые Нейтральные Зелья");
     add(PSTItemConditions.POTIONS.get(), "neutral.plural", "Нейтральные Зелья");
     add(PSTItemConditions.FOOD.get(), "Еда");
     add(PSTItemConditions.FOOD.get(), "type", "ая Еда");
-    add(PSTItemConditions.FOOD.get(), "plural.type", "ая Еда");
+    add(PSTItemConditions.FOOD.get(), "plural.adjective", "ая Еда");
     add(PSTItemConditions.FOOD.get(), "plural", "Еда");
-    add(PSTTags.JEWELRY, "Бижутерия");
-    add(PSTTags.JEWELRY, "where", "Бижутерии");
-    add(PSTTags.JEWELRY, "type", "ая Бижутерия");
-    add(PSTTags.JEWELRY, "plural.type", "ая Бижутерия");
-    add(PSTTags.JEWELRY, "plural", "Бижутерия");
+    add(PSTTags.Items.JEWELRY, "Бижутерия");
+    add(PSTTags.Items.JEWELRY, "where", "Бижутерии");
+    add(PSTTags.Items.JEWELRY, "type", "ая Бижутерия");
+    add(PSTTags.Items.JEWELRY, "plural.adjective", "ая Бижутерия");
+    add(PSTTags.Items.JEWELRY, "plural", "Бижутерия");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "tool", "Инструмент");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "tool.where", "Инструменте");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "tool.type", "ый Инструмент");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "tool.plural.type", "ые Инструменты");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "tool.prepositional", "Инструменте");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "tool.adjective", "ый Инструмент");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "tool.plural.adjective", "ые Инструменты");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "tool.plural", "Инструменты");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "axe", "Топор");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "axe.where", "Топоре");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "axe.type", "ый Топор");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "axe.plural.type", "ые Топоры");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "axe.prepositional", "Топоре");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "axe.adjective", "ый Топор");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "axe.plural.adjective", "ые Топоры");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "axe.plural", "Топоры");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "hoe", "Мотыга");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "hoe.where", "Мотыге");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "hoe.type", "ая Мотыга");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "hoe.plural.type", "ые Мотыги");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "hoe.prepositional", "Мотыге");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "hoe.adjective", "ая Мотыга");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "hoe.plural.adjective", "ые Мотыги");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "hoe.plural", "Мотыги");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "pickaxe", "Кирка");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "pickaxe.where", "Кирке");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "pickaxe.type", "ая Кирка");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "pickaxe.plural.type", "ые Кирки");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "pickaxe.prepositional", "Кирке");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "pickaxe.adjective", "ая Кирка");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "pickaxe.plural.adjective", "ые Кирки");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "pickaxe.plural", "Кирки");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shovel", "Лопата");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shovel.where", "Лопате");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shovel.type", "ая Лопата");
-    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shovel.plural.type", "ые Лопаты");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shovel.prepositional", "Лопате");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shovel.adjective", "ая Лопата");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shovel.plural.adjective", "ые Лопаты");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "shovel.plural", "Лопаты");
     add(PSTItemConditions.ENCHANTED.get(), "Зачарованн%s");
     // skill multipliers
-    add(PSTLivingMultipliers.EFFECT_AMOUNT.get(), "player", "%s за каждый эффект");
-    add(PSTLivingMultipliers.EFFECT_AMOUNT.get(), "enemy", "%s за каждый эффект врага");
-    add(PSTLivingMultipliers.ATTRIBUTE_VALUE.get(), "player", "%s за каждые %s %s");
-    add(PSTLivingMultipliers.ATTRIBUTE_VALUE.get(), "enemy", "%s за каждые %s %s врага");
-    add(PSTLivingMultipliers.ENCHANTS_AMOUNT.get(), "player", "%s за каждое зачарование на %s");
-    add(
-        PSTLivingMultipliers.ENCHANTS_AMOUNT.get(),
-        "enemy",
-        "%s за каждое зачарование на %s врага");
-    add(
-        PSTLivingMultipliers.ENCHANTS_LEVELS.get(),
-        "player",
-        "%s за каждый уровень зачарований на %s");
-    add(
-        PSTLivingMultipliers.ENCHANTS_LEVELS.get(),
-        "enemy",
-        "%s за каждый уровень зачарований на %s врага");
-    add(PSTLivingMultipliers.GEMS_AMOUNT.get(), "player", "%s за каждый Самоцвет в %s");
-    add(PSTLivingMultipliers.GEMS_AMOUNT.get(), "enemy", "%s за каждый Самоцвет в %s врага");
-    add(PSTLivingMultipliers.FOOD_LEVEL.get(), "player", "%s за каждую единицу Голода");
-    add(PSTLivingMultipliers.FOOD_LEVEL.get(), "enemy", "%s за каждую единицу Голода врага");
-    add(PSTLivingMultipliers.DISTANCE_TO_TARGET.get(), "player", "%s за каждый блок до врага");
-    add(
-        PSTLivingMultipliers.MISSING_HEALTH_POINTS.get(),
-        "player",
-        "%s за каждые %s недостающего здоровья");
-    add(
-        PSTLivingMultipliers.MISSING_HEALTH_POINTS.get(),
-        "enemy",
-        "%s за каждые %s недостающего здоровья врага");
-    add(
-        PSTLivingMultipliers.MISSING_HEALTH_PERCENTAGE.get(),
-        "player",
-        "%s за каждые %s недостающего здоровья");
-    add(
-        PSTLivingMultipliers.MISSING_HEALTH_PERCENTAGE.get(),
-        "enemy",
-        "%s за каждые %s недостающего здоровья врага");
+    add(PSTLivingMultipliers.NUMERIC_VALUE.get(), "plural", "%s per %s %s");
+    add(PSTLivingMultipliers.NUMERIC_VALUE.get(), "%s per %s");
+    // value providers
+
     // recipes
     add("recipe.skilltree.weapon_poisoning", "Отравление Оружия");
     add(
@@ -389,9 +339,6 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add("gem_bonus.random", "Результат непредсказуем");
     // weapon info
     add("weapon.poisoned", "Отравлено:");
-    // quiver info
-    add("quiver.capacity", "• Вмещает до %s стрел");
-    add("quiver.contents", "• Внутри: %s");
     // items
     add("item.cant_use.info", "Вы не можете это использовать");
     addGem("citrine", "цитрин");
@@ -419,6 +366,7 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTItems.ANCIENT_ALLOY_TOXIC.get(), "Токсичный древний сплав");
     add(PSTItems.ANCIENT_ALLOY_ENCHANTED.get(), "Зачарованный древний сплав");
     add(PSTItems.ANCIENT_ALLOY_SPATIAL.get(), "Пространственный древний сплав");
+    add(PSTItems.ANCIENT_ALLOY_DURABLE.get(), "Прочный древний сплав");
     addTooltip(PSTItems.WISDOM_SCROLL.get(), "Дарует одно очко пассивных умений");
     addTooltip(PSTItems.AMNESIA_SCROLL.get(), "Сбрасывает ваше древо пассивных умений");
     addWarning(PSTItems.AMNESIA_SCROLL.get(), "%d%% очков умений будут потеряны");
@@ -440,6 +388,8 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     addTooltip(
         PSTItems.ANCIENT_ALLOY_SPATIAL.get(),
         "Позволяет улучшать количество гнёзд на некоторых предметах");
+    addTooltip(
+        PSTItems.ANCIENT_ALLOY_DURABLE.get(), "Позволяет улучшать прочность некоторых предметов");
     add("ancient_material.tooltip", "Требует определенных знаний для использования");
     // slots
     addCurioSlot("ring", "Слот кольца");
@@ -509,6 +459,8 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add("affix.skilltree:jewelry/attribute/hidden.suffix", "Скрытности");
     add("affix.skilltree:jewelry/attribute/healthy", "Здоровое");
     add("affix.skilltree:jewelry/attribute/healthy.suffix", "Здоровья");
+    // enchantments
+    add(PSTEnchantments.DEEP_THOUGHTS.get(), "Глубокие раздумья");
   }
 
   protected void addMixture(String name, MobEffect... effects) {

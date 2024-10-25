@@ -84,6 +84,7 @@ public enum ApotheosisCompatibility {
     return Apotheosis.enableAdventure;
   }
 
+  //TODO: optimise
   private void addItemSockets(GetItemSocketsEvent event) {
     ItemStack stack = event.getStack();
     if (!ItemHelper.hasSockets(stack)) return;

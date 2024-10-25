@@ -1,4 +1,4 @@
-// 1.20.1	2024-09-26T20:44:03.5004932	Item Models: skilltree
+// 1.20.1	2024-10-20T02:34:51.7610888	Item Models: skilltree
 dcdc7c3496eee0556ca7020556201b091ab8684b assets/apotheosis/models/item/gems/citrine_0.json
 2d2caa24d5c066e97d9bec93eb47b9d276febe31 assets/apotheosis/models/item/gems/citrine_1.json
 f21343c673f274a2a973ba1043b721f04c769fb2 assets/apotheosis/models/item/gems/citrine_2.json
@@ -32,6 +32,7 @@ cc99bdd3b4d071721ef844643f0ac0ba8c262366 assets/apotheosis/models/item/gems/sapp
 d3c145794b33cd60f91971229eab5fa8f87d4cdd assets/apotheosis/models/item/gems/vacucite_3.json
 7f105626d8a7ca598d2b0804d3cf871e12ebf6c0 assets/skilltree/models/item/amnesia_scroll.json
 17aec031e2d31f00edeabc641068ba6eb077904b assets/skilltree/models/item/ancient_alloy_curative.json
+464536809fae42fd3086cbf8aa2067c86462264b assets/skilltree/models/item/ancient_alloy_durable.json
 75b9e4bcb3339624b2fcd0cc8c4a7465d090ca92 assets/skilltree/models/item/ancient_alloy_enchanted.json
 f59a1197bb2f58b21362f067b58952a5b1c6f954 assets/skilltree/models/item/ancient_alloy_gilded.json
 ec3197d2ab64ccffa73afb1e76be2b9d9aad9de0 assets/skilltree/models/item/ancient_alloy_lightweight.json

@@ -39,14 +39,14 @@ public class PSTItemTagsProvider extends ItemTagsProvider {
 
   @Override
   protected void addTags(HolderLookup.@NotNull Provider provider) {
-    add(PSTTags.GEMS, GemItem.class);
-    add(PSTTags.RINGS, RingItem.class);
-    add(PSTTags.NECKLACES, NecklaceItem.class);
-    add(PSTTags.NUGGETS_COPPER, PSTItems.COPPER_NUGGET.get());
-    tag(PSTTags.JEWELRY).addTags(PSTTags.RINGS, PSTTags.NECKLACES);
+    add(PSTTags.Items.GEMS, GemItem.class);
+    add(PSTTags.Items.RINGS, RingItem.class);
+    add(PSTTags.Items.NECKLACES, NecklaceItem.class);
+    add(PSTTags.Items.NUGGETS_COPPER, PSTItems.COPPER_NUGGET.get());
+    tag(PSTTags.Items.JEWELRY).addTags(PSTTags.Items.RINGS, PSTTags.Items.NECKLACES);
     tag(Tags.Items.TOOLS).addOptionalTag(KNIVES);
-    tag(PSTTags.MELEE_WEAPON).addTags(ItemTags.SWORDS, ItemTags.AXES, Tags.Items.TOOLS_TRIDENTS);
-    tag(PSTTags.RANGED_WEAPON).addTags(Tags.Items.TOOLS_BOWS, Tags.Items.TOOLS_CROSSBOWS);
+    tag(PSTTags.Items.MELEE_WEAPON).addTags(ItemTags.SWORDS, ItemTags.AXES, Tags.Items.TOOLS_TRIDENTS);
+    tag(PSTTags.Items.RANGED_WEAPON).addTags(Tags.Items.TOOLS_BOWS, Tags.Items.TOOLS_CROSSBOWS);
   }
 
   private void add(TagKey<Item> itemTag, Class<? extends Item> itemClass) {

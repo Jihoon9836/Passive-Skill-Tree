@@ -36,7 +36,7 @@ public class ItemHelper {
     if (blacklist.contains(itemId.toString())) return false;
     String namespace = itemId.getNamespace();
     if (blacklist.contains(namespace + ":*")) return false;
-    return EquipmentCondition.isEquipment(stack) || stack.is(PSTTags.JEWELRY);
+    return EquipmentCondition.isEquipment(stack) || stack.is(PSTTags.Items.JEWELRY);
   }
 
   public static int getFirstEmptySocket(ItemStack stack) {
@@ -95,8 +95,8 @@ public class ItemHelper {
     if (EquipmentCondition.isBoots(stack)) return Config.default_boots_sockets;
     if (EquipmentCondition.isWeapon(stack)) return Config.default_weapon_sockets;
     if (EquipmentCondition.isShield(stack)) return Config.default_shield_sockets;
-    if (stack.is(PSTTags.RINGS)) return Config.default_ring_sockets;
-    if (stack.is(PSTTags.NECKLACES)) return Config.default_necklace_sockets;
+    if (stack.is(PSTTags.Items.RINGS)) return Config.default_ring_sockets;
+    if (stack.is(PSTTags.Items.NECKLACES)) return Config.default_necklace_sockets;
     return 0;
   }
 

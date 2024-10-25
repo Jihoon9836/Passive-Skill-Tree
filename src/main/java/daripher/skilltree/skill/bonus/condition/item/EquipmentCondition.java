@@ -56,11 +56,11 @@ public class EquipmentCondition implements ItemCondition {
   }
 
   public static boolean isRangedWeapon(ItemStack stack) {
-    return isCrossbow(stack) || isBow(stack) || stack.is(PSTTags.RANGED_WEAPON);
+    return isCrossbow(stack) || isBow(stack) || stack.is(PSTTags.Items.RANGED_WEAPON);
   }
 
   public static boolean isMeleeWeapon(ItemStack stack) {
-    return isSword(stack) || isAxe(stack) || isTrident(stack) || stack.is(PSTTags.MELEE_WEAPON);
+    return isSword(stack) || isAxe(stack) || isTrident(stack) || stack.is(PSTTags.Items.MELEE_WEAPON);
   }
 
   public static boolean isLeggings(ItemStack stack) {

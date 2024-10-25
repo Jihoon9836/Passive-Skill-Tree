@@ -3,6 +3,7 @@ package daripher.skilltree.skill.bonus.condition.living;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import daripher.skilltree.init.PSTLivingConditions;
+import daripher.skilltree.skill.bonus.SkillBonus;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.MutableComponent;
@@ -17,7 +18,7 @@ public enum NoneLivingCondition implements LivingCondition {
   }
 
   @Override
-  public MutableComponent getTooltip(MutableComponent bonusTooltip, String target) {
+  public MutableComponent getTooltip(MutableComponent bonusTooltip, SkillBonus.Target target) {
     return bonusTooltip;
   }
 

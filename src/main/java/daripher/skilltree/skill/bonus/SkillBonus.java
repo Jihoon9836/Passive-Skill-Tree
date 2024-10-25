@@ -62,7 +62,11 @@ public interface SkillBonus<T extends SkillBonus<T>> extends Comparable<SkillBon
 
   enum Target {
     PLAYER,
-    ENEMY
+    ENEMY;
+
+    public String getName() {
+      return name().toLowerCase();
+    }
   }
 
   interface Serializer extends daripher.skilltree.data.serializers.Serializer<SkillBonus<?>> {

@@ -7,6 +7,7 @@ import daripher.skilltree.data.serializers.SerializationHelper;
 import daripher.skilltree.entity.player.PlayerHelper;
 import daripher.skilltree.init.PSTLivingConditions;
 import daripher.skilltree.network.NetworkHelper;
+import daripher.skilltree.skill.bonus.SkillBonus;
 import daripher.skilltree.skill.bonus.condition.item.ItemCondition;
 import daripher.skilltree.skill.bonus.condition.item.NoneItemCondition;
 import java.util.Objects;
@@ -32,9 +33,9 @@ public final class HasItemEquippedCondition implements LivingCondition {
   }
 
   @Override
-  public MutableComponent getTooltip(MutableComponent bonusTooltip, String target) {
+  public MutableComponent getTooltip(MutableComponent bonusTooltip, SkillBonus.Target target) {
     String key = getDescriptionId();
-    Component targetDescription = Component.translatable("%s.target.%s".formatted(key, target));
+    Component targetDescription = Component.translatable("%s.target.%s".formatted(key, target.getName()));
     Component itemDescription = itemCondition.getTooltip();
     return Component.translatable(key, bonusTooltip, targetDescription, itemDescription);
   }

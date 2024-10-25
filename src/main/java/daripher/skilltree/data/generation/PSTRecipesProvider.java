@@ -2,12 +2,15 @@ package daripher.skilltree.data.generation;
 
 import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.init.PSTAttributes;
+import daripher.skilltree.init.PSTEnchantments;
 import daripher.skilltree.init.PSTItems;
 import daripher.skilltree.init.PSTTags;
 import daripher.skilltree.recipe.builder.ItemUpgradeRecipeBuilder;
+import daripher.skilltree.recipe.builder.StackResultShapedRecipeBuilder;
 import daripher.skilltree.skill.bonus.condition.damage.MagicDamageCondition;
 import daripher.skilltree.skill.bonus.condition.item.EquipmentCondition;
 import daripher.skilltree.skill.bonus.condition.item.ItemTagCondition;
+import daripher.skilltree.skill.bonus.item.ItemDurabilityBonus;
 import daripher.skilltree.skill.bonus.item.ItemSkillBonus;
 import daripher.skilltree.skill.bonus.item.ItemSocketsBonus;
 import daripher.skilltree.skill.bonus.player.*;
@@ -19,9 +22,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -36,10 +41,10 @@ public class PSTRecipesProvider extends RecipeProvider {
   protected void buildRecipes(@NotNull Consumer<FinishedRecipe> consumer) {
     // rings
     ring(PSTItems.GOLDEN_RING, Tags.Items.NUGGETS_GOLD, consumer);
-    ring(PSTItems.COPPER_RING, PSTTags.NUGGETS_COPPER, consumer);
+    ring(PSTItems.COPPER_RING, PSTTags.Items.NUGGETS_COPPER, consumer);
     ring(PSTItems.IRON_RING, Tags.Items.NUGGETS_IRON, consumer);
     // resources
-    packing(Items.COPPER_INGOT, PSTTags.NUGGETS_COPPER, consumer);
+    packing(Items.COPPER_INGOT, PSTTags.Items.NUGGETS_COPPER, consumer);
     unpacking(PSTItems.COPPER_NUGGET, Tags.Items.INGOTS_COPPER, consumer);
     // necklaces
     necklace(PSTItems.ASSASSIN_NECKLACE, Items.BONE, consumer);
@@ -49,6 +54,16 @@ public class PSTRecipesProvider extends RecipeProvider {
     necklace(PSTItems.SCHOLAR_NECKLACE, Items.ENDER_PEARL, consumer);
     necklace(PSTItems.ARSONIST_NECKLACE, Items.FIRE_CHARGE, consumer);
     necklace(PSTItems.FISHERMAN_NECKLACE, Items.TROPICAL_FISH, consumer);
+    // books
+    StackResultShapedRecipeBuilder.create(
+            EnchantedBookItem.createForEnchantment(
+                new EnchantmentInstance(PSTEnchantments.DEEP_THOUGHTS.get(), 1)))
+        .define('o', Items.ENDER_PEARL)
+        .define('#', Items.BOOK)
+        .pattern("ooo")
+        .pattern("o#o")
+        .pattern("ooo")
+        .save(consumer, new ResourceLocation(SkillTreeMod.MOD_ID, "enchanted_book_deep_thoughts"));
     // upgrades
     ItemUpgradeRecipeBuilder.create()
         .baseCondition(new EquipmentCondition(EquipmentCondition.Type.WEAPON))
@@ -107,13 +122,6 @@ public class PSTRecipesProvider extends RecipeProvider {
         .upgradeChances(1f)
         .save(consumer, getRecipeId("upgrades/weapons_sockets"));
     ItemUpgradeRecipeBuilder.create()
-        .baseCondition(new ItemTagCondition(PSTTags.JEWELRY.location()))
-        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_SPATIAL.get()))
-        .itemBonus(new ItemSocketsBonus(1))
-        .maxUpgrades(1)
-        .upgradeChances(1f)
-        .save(consumer, getRecipeId("upgrades/jewelry_sockets"));
-    ItemUpgradeRecipeBuilder.create()
         .baseCondition(new EquipmentCondition(EquipmentCondition.Type.CHESTPLATE))
         .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_SPATIAL.get()))
         .itemBonus(new ItemSocketsBonus(1))
@@ -143,20 +151,8 @@ public class PSTRecipesProvider extends RecipeProvider {
             new ItemSkillBonus(
                 new AttributeBonus(
                     Attributes.LUCK, "Upgrade", 1f, AttributeModifier.Operation.ADDITION)))
-        .maxUpgrades(10)
         .upgradeChances(0.9f, 0.8f, 0.7f, 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f)
         .save(consumer, getRecipeId("upgrades/weapons_luck"));
-    ItemUpgradeRecipeBuilder.create()
-        .baseCondition(new ItemTagCondition(PSTTags.JEWELRY.location()))
-        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_CURATIVE.get()))
-        .itemBonus(
-            new ItemSkillBonus(
-                new AttributeBonus(
-                    Attributes.MAX_HEALTH,
-                    "Upgrade",
-                    0.01f,
-                    AttributeModifier.Operation.MULTIPLY_BASE)))
-        .save(consumer, getRecipeId("upgrades/jewelry_max_health"));
     ItemUpgradeRecipeBuilder.create()
         .baseCondition(new EquipmentCondition(EquipmentCondition.Type.SHIELD))
         .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_SPATIAL.get()))
@@ -165,15 +161,10 @@ public class PSTRecipesProvider extends RecipeProvider {
         .upgradeChances(1f)
         .save(consumer, getRecipeId("upgrades/shields_sockets"));
     ItemUpgradeRecipeBuilder.create()
-        .baseCondition(new ItemTagCondition(PSTTags.JEWELRY.location()))
-        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_GILDED.get()))
-        .itemBonus(
-            new ItemSkillBonus(
-                new AttributeBonus(
-                    Attributes.LUCK, "Upgrade", 0.01f, AttributeModifier.Operation.MULTIPLY_BASE)))
-        .maxUpgrades(10)
-        .upgradeChances(0.9f, 0.8f, 0.7f, 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f)
-        .save(consumer, getRecipeId("upgrades/jewelry_luck"));
+        .baseCondition(new EquipmentCondition(EquipmentCondition.Type.ANY))
+        .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_DURABLE.get()))
+        .itemBonus(new ItemDurabilityBonus(0.1f, AttributeModifier.Operation.MULTIPLY_BASE))
+        .save(consumer, getRecipeId("upgrades/equipment_durability"));
   }
 
   protected void necklace(

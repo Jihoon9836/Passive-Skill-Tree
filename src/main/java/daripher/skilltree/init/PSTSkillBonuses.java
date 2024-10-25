@@ -67,6 +67,8 @@ public class PSTSkillBonuses {
       REGISTRY.register("damage_taken", DamageTakenBonus.Serializer::new);
   public static final RegistryObject<SkillBonus.Serializer> DAMAGE_AVOIDANCE =
       REGISTRY.register("damage_avoidance", DamageAvoidanceBonus.Serializer::new);
+  public static final RegistryObject<SkillBonus.Serializer> DAMAGE_CONVERSION =
+      REGISTRY.register("damage_conversion", DamageConversionBonus.Serializer::new);
 
   @SuppressWarnings("rawtypes")
   public static List<SkillBonus> bonusList() {

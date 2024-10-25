@@ -27,6 +27,7 @@ public class PSTGlobalLootModifierProvider extends GlobalLootModifierProvider {
     upgradeMaterial("entities/spider", PSTItems.ANCIENT_ALLOY_TOXIC);
     upgradeMaterial("entities/wither_skeleton", PSTItems.ANCIENT_ALLOY_ENCHANTED);
     upgradeMaterial("entities/enderman", PSTItems.ANCIENT_ALLOY_SPATIAL);
+    upgradeMaterial("entities/pillager", PSTItems.ANCIENT_ALLOY_DURABLE);
   }
 
   private void upgradeMaterial(String lootTablePath, RegistryObject<Item> item) {
