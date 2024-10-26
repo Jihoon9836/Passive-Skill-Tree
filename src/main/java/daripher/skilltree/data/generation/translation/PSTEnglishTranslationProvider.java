@@ -140,6 +140,9 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(PSTDamageConditions.FALL.get(), "type", "Fall");
     add(PSTDamageConditions.FIRE.get(), "Fire Damage");
     add(PSTDamageConditions.FIRE.get(), "type", "Fire");
+    // death messages
+    deathMessage("poison", "%1$s died from poison");
+    deathMessage("poison.player", "%1$s was poisoned by %2$s");
     // enchantment conditions
     add(PSTEnchantmentConditions.WEAPON.get(), "Weapon Enchantments");
     add(PSTEnchantmentConditions.ARMOR.get(), "Armor Enchantments");
@@ -342,7 +345,7 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
 
     // recipes
     add("recipe.skilltree.weapon_poisoning", "Weapon Poisoning");
-    add("recipe.skilltree.weapon_poisoning.info", "(Combine a melee weapon and a harmful potion on a crafting bench to poison a weapon)");
+    add("recipe.skilltree.weapon_poisoning.info", "(Combine a melee weapon and a harmful potion on a crafting bench to poison.json a weapon)");
     add("recipe.skilltree.potion_mixing", "Potion Mixing");
     add("recipe.skilltree.potion_mixing.info", "(Combine two different potions on a crafting bench to create a mixture)");
     add("upgrade_recipe.chance", "Chance: %s%%");
@@ -417,7 +420,7 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     addTooltip(PSTItems.ANCIENT_ALLOY_GILDED.get(), "Allows improving loot-related attributes of certain items");
     addTooltip(PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT.get(), "Allows improving speed attributes of certain items");
     addTooltip(PSTItems.ANCIENT_ALLOY_CURATIVE.get(), "Allows improving healing attributes of certain items");
-    addTooltip(PSTItems.ANCIENT_ALLOY_TOXIC.get(), "Allows improving poison attributes of certain items");
+    addTooltip(PSTItems.ANCIENT_ALLOY_TOXIC.get(), "Allows improving poison.json attributes of certain items");
     addTooltip(PSTItems.ANCIENT_ALLOY_ENCHANTED.get(), "Allows improving magic attributes of certain items");
     addTooltip(PSTItems.ANCIENT_ALLOY_SPATIAL.get(), "Allows improving socket number of certain items");
     addTooltip(PSTItems.ANCIENT_ALLOY_DURABLE.get(), "Allows improving durability of certain items");

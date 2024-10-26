@@ -6,87 +6,16 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
-            "type": "skilltree:attribute",
-            "amount": 5.0,
-            "attribute": "minecraft:generic.luck",
-            "id": "125e72a0-5cfb-40d8-8a25-3c758a3c298d",
-            "name": "Citrine",
-            "operation": 0,
-            "player_condition": {
-              "type": "skilltree:none"
-            },
-            "player_multiplier": {
-              "type": "skilltree:none"
-            }
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "chestplate"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
-            "type": "skilltree:jump_height",
-            "multiplier": 0.099999994,
-            "player_condition": {
-              "type": "skilltree:none"
-            }
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "boots"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
             "type": "skilltree:loot_duplication",
             "chance": 0.099999994,
-            "loot_type": "mobs",
-            "multiplier": 1.0
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:tag",
-        "tag_id": "forge:curios/jewelry"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
-            "type": "skilltree:attribute",
-            "amount": 0.2500000037252903,
-            "attribute": "minecraft:generic.luck",
-            "id": "48d7937e-37f9-44e0-8e96-c7acfe4ba9e1",
-            "name": "Citrine",
-            "operation": 1,
-            "player_condition": {
-              "type": "skilltree:none"
-            },
-            "player_multiplier": {
-              "type": "skilltree:none"
-            }
+            "loot_type": "gems",
+            "multiplier": 2.0
           }
         }
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "shield"
+        "equipment_type": "helmet"
       }
     },
     {
@@ -126,16 +55,87 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
-            "type": "skilltree:loot_duplication",
-            "chance": 0.099999994,
-            "loot_type": "gems",
-            "multiplier": 2.0
+            "type": "skilltree:attribute",
+            "amount": 5.0,
+            "attribute": "minecraft:generic.luck",
+            "id": "75ee014f-a887-4076-8aad-9872c3b6eeb5",
+            "name": "Citrine",
+            "operation": 0,
+            "player_condition": {
+              "type": "skilltree:none"
+            },
+            "player_multiplier": {
+              "type": "skilltree:none"
+            }
           }
         }
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "helmet"
+        "equipment_type": "chestplate"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:loot_duplication",
+            "chance": 0.099999994,
+            "loot_type": "mobs",
+            "multiplier": 1.0
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:tag",
+        "tag_id": "forge:curios/jewelry"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:jump_height",
+            "multiplier": 0.099999994,
+            "player_condition": {
+              "type": "skilltree:none"
+            }
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "boots"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:attribute",
+            "amount": 0.2500000037252903,
+            "attribute": "minecraft:generic.luck",
+            "id": "3a08368c-9749-4ca8-9a94-0052b0ed0d93",
+            "name": "Citrine",
+            "operation": 1,
+            "player_condition": {
+              "type": "skilltree:none"
+            },
+            "player_multiplier": {
+              "type": "skilltree:none"
+            }
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "shield"
       }
     }
   ],

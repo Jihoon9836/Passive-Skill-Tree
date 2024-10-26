@@ -10,9 +10,6 @@ import daripher.skilltree.skill.bonus.condition.living.numeric.NumericValueProvi
 import daripher.skilltree.skill.bonus.event.SkillEventListener;
 import daripher.skilltree.skill.bonus.item.ItemBonus;
 import daripher.skilltree.skill.bonus.multiplier.LivingMultiplier;
-import java.util.Arrays;
-
-import daripher.skilltree.skill.bonus.multiplier.NumericValueMultiplier;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -20,6 +17,8 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.LanguageProvider;
+
+import java.util.Arrays;
 
 public abstract class PSTTranslationProvider extends LanguageProvider {
   public PSTTranslationProvider(DataGenerator dataGenerator, String modId, String locale) {
@@ -37,6 +36,7 @@ public abstract class PSTTranslationProvider extends LanguageProvider {
   protected void add(Attribute attribute, String name) {
     add(attribute.getDescriptionId(), name);
   }
+
   protected void addInfo(Attribute attribute, String name) {
     add(attribute.getDescriptionId() + ".info", "(%s)".formatted(name));
   }
@@ -61,10 +61,7 @@ public abstract class PSTTranslationProvider extends LanguageProvider {
 
   protected void addMixture(String name, String potionType, MobEffect... effects) {
     StringBuilder potionName = new StringBuilder("item.minecraft." + potionType + ".mixture");
-    Arrays.stream(effects)
-        .map(MobEffect::getDescriptionId)
-        .map(id -> id.replaceAll("effect.", ""))
-        .forEach(id -> potionName.append(".").append(id));
+    Arrays.stream(effects).map(MobEffect::getDescriptionId).map(id -> id.replaceAll("effect.", "")).forEach(id -> potionName.append(".").append(id));
     add(potionName.toString(), name);
   }
 
@@ -197,5 +194,9 @@ public abstract class PSTTranslationProvider extends LanguageProvider {
       add("item.skilltree.gem.skilltree." + type + "_" + i, qualities[i] + " " + name);
       add("item.apotheosis.gem.skilltree:" + type + "_" + i, name);
     }
+  }
+
+  protected void deathMessage(String damageType, String deathMessage) {
+    add("death.attack." + damageType, deathMessage);
   }
 }

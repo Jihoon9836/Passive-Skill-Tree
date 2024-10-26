@@ -1,6 +1,7 @@
 package daripher.skilltree.data.generation;
 
 import daripher.skilltree.SkillTreeMod;
+import daripher.skilltree.init.PSTDamageTypes;
 import daripher.skilltree.init.PSTTags;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
@@ -24,7 +25,7 @@ public class PSTDamageTagsProvider extends DamageTypeTagsProvider {
 
   @Override
   protected void addTags(HolderLookup.@NotNull Provider provider) {
-    add(PSTTags.DamageTypes.IS_MAGIC, DamageTypes.MAGIC, DamageTypes.INDIRECT_MAGIC);
+    add(PSTTags.DamageTypes.IS_MAGIC, DamageTypes.MAGIC, DamageTypes.INDIRECT_MAGIC, PSTDamageTypes.POISON);
   }
 
   @SafeVarargs

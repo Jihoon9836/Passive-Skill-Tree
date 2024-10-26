@@ -34,7 +34,7 @@ public final class ItemSkillBonus implements ItemBonus<ItemSkillBonus> {
     if (!(other instanceof ItemSkillBonus otherBonus)) {
       throw new IllegalArgumentException();
     }
-    return new ItemSkillBonus(otherBonus.bonus.merge(this.bonus));
+    return new ItemSkillBonus(otherBonus.bonus.copy().merge(this.bonus));
   }
 
   @Override

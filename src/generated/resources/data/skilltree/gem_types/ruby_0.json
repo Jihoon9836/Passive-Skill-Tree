@@ -6,34 +6,12 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
-            "type": "skilltree:incoming_healing",
-            "multiplier": 0.01,
-            "player_condition": {
-              "type": "skilltree:none"
-            },
-            "player_multiplier": {
-              "type": "skilltree:none"
-            }
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "chestplate"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
             "type": "skilltree:attribute",
-            "amount": 0.10000000149011612,
-            "attribute": "skilltree:regeneration",
-            "id": "2f0aad67-560a-4ea9-ae24-c509c53c009f",
+            "amount": 0.009999999776482582,
+            "attribute": "minecraft:generic.max_health",
+            "id": "d4a028d3-c57f-49cd-ae96-9f83977f49c2",
             "name": "Ruby",
-            "operation": 0,
+            "operation": 1,
             "player_condition": {
               "type": "skilltree:none"
             },
@@ -45,65 +23,7 @@
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "boots"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
-            "type": "skilltree:incoming_healing",
-            "multiplier": 0.005,
-            "player_condition": {
-              "type": "skilltree:none"
-            },
-            "player_multiplier": {
-              "type": "skilltree:none"
-            }
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:tag",
-        "tag_id": "forge:curios/jewelry"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
-            "type": "skilltree:healing",
-            "amount": 0.1,
-            "chance": 1.0,
-            "event_listener": {
-              "type": "skilltree:block",
-              "damage_condition": {
-                "type": "skilltree:none"
-              },
-              "enemy_condition": {
-                "type": "skilltree:none"
-              },
-              "enemy_multiplier": {
-                "type": "skilltree:none"
-              },
-              "player_condition": {
-                "type": "skilltree:none"
-              },
-              "player_multiplier": {
-                "type": "skilltree:none"
-              },
-              "target": "player"
-            }
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "shield"
+        "equipment_type": "helmet"
       }
     },
     {
@@ -148,12 +68,8 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
-            "type": "skilltree:attribute",
-            "amount": 0.009999999776482582,
-            "attribute": "minecraft:generic.max_health",
-            "id": "4dc9119c-f41d-48d8-aa82-d575837ce211",
-            "name": "Ruby",
-            "operation": 1,
+            "type": "skilltree:incoming_healing",
+            "multiplier": 0.01,
             "player_condition": {
               "type": "skilltree:none"
             },
@@ -165,7 +81,91 @@
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "helmet"
+        "equipment_type": "chestplate"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:incoming_healing",
+            "multiplier": 0.005,
+            "player_condition": {
+              "type": "skilltree:none"
+            },
+            "player_multiplier": {
+              "type": "skilltree:none"
+            }
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:tag",
+        "tag_id": "forge:curios/jewelry"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:attribute",
+            "amount": 0.10000000149011612,
+            "attribute": "skilltree:regeneration",
+            "id": "234d044a-0dbc-4c06-887f-e128741f8b54",
+            "name": "Ruby",
+            "operation": 0,
+            "player_condition": {
+              "type": "skilltree:none"
+            },
+            "player_multiplier": {
+              "type": "skilltree:none"
+            }
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "boots"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:healing",
+            "amount": 0.1,
+            "chance": 1.0,
+            "event_listener": {
+              "type": "skilltree:block",
+              "damage_condition": {
+                "type": "skilltree:none"
+              },
+              "enemy_condition": {
+                "type": "skilltree:none"
+              },
+              "enemy_multiplier": {
+                "type": "skilltree:none"
+              },
+              "player_condition": {
+                "type": "skilltree:none"
+              },
+              "player_multiplier": {
+                "type": "skilltree:none"
+              },
+              "target": "player"
+            }
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "shield"
       }
     }
   ],

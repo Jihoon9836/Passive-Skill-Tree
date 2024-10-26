@@ -71,7 +71,7 @@ public final class MobEffectBonus implements EventListenerBonus<MobEffectBonus> 
   @Override
   public boolean canMerge(SkillBonus<?> other) {
     if (!(other instanceof MobEffectBonus otherBonus)) return false;
-    if (!Objects.equals(otherBonus.effect, this.effect)) return false;
+    if (!Objects.equals(otherBonus.effect.getEffect(), this.effect.getEffect())) return false;
     return Objects.equals(otherBonus.eventListener, this.eventListener);
   }
 

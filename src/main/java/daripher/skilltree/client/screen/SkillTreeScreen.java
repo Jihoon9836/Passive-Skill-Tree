@@ -323,7 +323,7 @@ public class SkillTreeScreen extends Screen {
     Optional<SkillBonus<?>> same = bonuses.stream().filter(b::canMerge).findAny();
     if (same.isPresent()) {
       bonuses.remove(same.get());
-      bonuses.add(same.get().merge(b));
+      bonuses.add(same.get().copy().merge(b));
     } else {
       bonuses.add(b);
     }
