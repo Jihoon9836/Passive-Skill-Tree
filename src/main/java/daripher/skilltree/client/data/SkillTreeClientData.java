@@ -192,7 +192,7 @@ public class SkillTreeClientData {
     }
   }
 
-  private static void printMessage(String text, ChatFormatting... styles) {
+  public static void printMessage(String text, ChatFormatting... styles) {
     LocalPlayer player = Minecraft.getInstance().player;
     if (player != null) {
       MutableComponent component = Component.literal(text);
