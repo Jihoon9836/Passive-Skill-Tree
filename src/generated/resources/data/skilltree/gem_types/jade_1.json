@@ -6,41 +6,10 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
-            "type": "skilltree:damage_avoidance",
-            "attacker_condition": {
-              "type": "skilltree:none"
-            },
-            "attacker_multiplier": {
-              "type": "skilltree:none"
-            },
-            "chance": 0.02,
-            "damage_condition": {
-              "type": "skilltree:projectile"
-            },
-            "player_condition": {
-              "type": "skilltree:none"
-            },
-            "player_multiplier": {
-              "type": "skilltree:none"
-            }
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "helmet"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
             "type": "skilltree:attribute",
             "amount": 0.019999999552965164,
             "attribute": "minecraft:generic.attack_speed",
-            "id": "3e9bf376-a80b-431f-b2ac-15fa03ccae7b",
+            "id": "20a2589c-07a0-4359-9cdb-5f27a9a1a9ea",
             "name": "Jade",
             "operation": 1,
             "player_condition": {
@@ -72,7 +41,7 @@
             },
             "chance": 0.02,
             "damage_condition": {
-              "type": "skilltree:none"
+              "type": "skilltree:melee"
             },
             "player_condition": {
               "type": "skilltree:none"
@@ -85,7 +54,38 @@
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "chestplate"
+        "equipment_type": "shield"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:damage_avoidance",
+            "attacker_condition": {
+              "type": "skilltree:none"
+            },
+            "attacker_multiplier": {
+              "type": "skilltree:none"
+            },
+            "chance": 0.02,
+            "damage_condition": {
+              "type": "skilltree:projectile"
+            },
+            "player_condition": {
+              "type": "skilltree:none"
+            },
+            "player_multiplier": {
+              "type": "skilltree:none"
+            }
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "helmet"
       }
     },
     {
@@ -151,7 +151,7 @@
             },
             "chance": 0.02,
             "damage_condition": {
-              "type": "skilltree:melee"
+              "type": "skilltree:none"
             },
             "player_condition": {
               "type": "skilltree:none"
@@ -164,7 +164,7 @@
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "shield"
+        "equipment_type": "chestplate"
       }
     }
   ],

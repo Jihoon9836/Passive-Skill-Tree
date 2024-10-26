@@ -19,7 +19,6 @@
   "attribute.name.skilltree.exp_per_minute": "Опыт в минуту",
   "attribute.name.skilltree.intelligence": "Интеллект",
   "attribute.name.skilltree.intelligence.info": "(+1% Урона магией за очко интеллекта)",
-  "attribute.name.skilltree.poison_damage": "Урон ядом",
   "attribute.name.skilltree.regeneration": "Регенерация здоровья",
   "attribute.name.skilltree.strength": "Сила",
   "attribute.name.skilltree.strength.info": "(+1% Урона в ближнем бою за очко силы)",

@@ -140,6 +140,8 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(PSTDamageConditions.FALL.get(), "type", "Fall");
     add(PSTDamageConditions.FIRE.get(), "Fire Damage");
     add(PSTDamageConditions.FIRE.get(), "type", "Fire");
+    add(PSTDamageConditions.POISON.get(), "Poison Damage");
+    add(PSTDamageConditions.POISON.get(), "type", "Poison");
     // death messages
     deathMessage("poison", "%1$s died from poison");
     deathMessage("poison.player", "%1$s was poisoned by %2$s");
@@ -433,7 +435,6 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     // attributes
     add(PSTAttributes.REGENERATION.get(), "Life Regeneration");
     add(PSTAttributes.EXP_PER_MINUTE.get(), "Experience Per Minute");
-    add(PSTAttributes.POISON_DAMAGE.get(), "Poison Damage");
     add(PSTAttributes.DEXTERITY.get(), "Dexterity");
     addInfo(PSTAttributes.DEXTERITY.get(), "Gain 1% Projectile Damage per Dexterity point");
     add(PSTAttributes.STRENGTH.get(), "Strength");

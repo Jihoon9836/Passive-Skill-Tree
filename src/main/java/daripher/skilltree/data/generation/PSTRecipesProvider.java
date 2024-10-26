@@ -1,21 +1,18 @@
 package daripher.skilltree.data.generation;
 
 import daripher.skilltree.SkillTreeMod;
-import daripher.skilltree.init.PSTAttributes;
 import daripher.skilltree.init.PSTEnchantments;
 import daripher.skilltree.init.PSTItems;
 import daripher.skilltree.init.PSTTags;
 import daripher.skilltree.recipe.builder.ItemUpgradeRecipeBuilder;
 import daripher.skilltree.recipe.builder.StackResultShapedRecipeBuilder;
 import daripher.skilltree.skill.bonus.condition.damage.MagicDamageCondition;
+import daripher.skilltree.skill.bonus.condition.damage.PoisonDamageCondition;
 import daripher.skilltree.skill.bonus.condition.item.EquipmentCondition;
-import daripher.skilltree.skill.bonus.condition.item.ItemTagCondition;
 import daripher.skilltree.skill.bonus.item.ItemDurabilityBonus;
 import daripher.skilltree.skill.bonus.item.ItemSkillBonus;
 import daripher.skilltree.skill.bonus.item.ItemSocketsBonus;
 import daripher.skilltree.skill.bonus.player.*;
-import java.util.Objects;
-import java.util.function.Consumer;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -31,6 +28,9 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+import java.util.function.Consumer;
 
 public class PSTRecipesProvider extends RecipeProvider {
   public PSTRecipesProvider(DataGenerator dataGenerator) {
@@ -92,12 +92,7 @@ public class PSTRecipesProvider extends RecipeProvider {
         .baseCondition(new EquipmentCondition(EquipmentCondition.Type.WEAPON))
         .additionalItem(Ingredient.of(PSTItems.ANCIENT_ALLOY_TOXIC.get()))
         .itemBonus(
-            new ItemSkillBonus(
-                new AttributeBonus(
-                    PSTAttributes.POISON_DAMAGE.get(),
-                    "Upgrade",
-                    0.02f,
-                    AttributeModifier.Operation.MULTIPLY_BASE)))
+            new ItemSkillBonus(new DamageBonus(0.02f, AttributeModifier.Operation.MULTIPLY_BASE).setDamageCondition(new PoisonDamageCondition())))
         .save(consumer, getRecipeId("upgrades/weapons_poison_damage"));
     ItemUpgradeRecipeBuilder.create()
         .baseCondition(new EquipmentCondition(EquipmentCondition.Type.WEAPON))

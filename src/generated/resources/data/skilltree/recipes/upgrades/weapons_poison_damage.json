@@ -6,16 +6,22 @@
   "item_bonus": {
     "type": "skilltree:skill_bonus",
     "skill_bonus": {
-      "type": "skilltree:attribute",
-      "amount": 0.019999999552965164,
-      "attribute": "skilltree:poison_damage",
-      "id": "6247b6d7-89b8-4a86-b325-fc357a0c1dde",
-      "name": "Upgrade",
+      "type": "skilltree:damage",
+      "amount": 0.02,
+      "damage_condition": {
+        "type": "skilltree:poison"
+      },
+      "enemy_multiplier": {
+        "type": "skilltree:none"
+      },
       "operation": 1,
       "player_condition": {
         "type": "skilltree:none"
       },
       "player_multiplier": {
+        "type": "skilltree:none"
+      },
+      "target_condition": {
         "type": "skilltree:none"
       }
     }

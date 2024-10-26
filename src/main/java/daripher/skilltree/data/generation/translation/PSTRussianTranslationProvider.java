@@ -399,7 +399,6 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     // attributes
     add(PSTAttributes.REGENERATION.get(), "Регенерация здоровья");
     add(PSTAttributes.EXP_PER_MINUTE.get(), "Опыт в минуту");
-    add(PSTAttributes.POISON_DAMAGE.get(), "Урон ядом");
     add(PSTAttributes.DEXTERITY.get(), "Ловкость");
     addInfo(PSTAttributes.DEXTERITY.get(), "+1% Урона снарядами за очко ловкости");
     add(PSTAttributes.STRENGTH.get(), "Сила");

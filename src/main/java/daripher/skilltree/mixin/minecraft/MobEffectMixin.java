@@ -1,6 +1,5 @@
 package daripher.skilltree.mixin.minecraft;
 
-import daripher.skilltree.init.PSTAttributes;
 import daripher.skilltree.init.PSTDamageTypes;
 import daripher.skilltree.skill.bonus.SkillBonusHandler;
 import daripher.skilltree.skill.bonus.player.LethalPoisonBonus;
@@ -13,7 +12,6 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.extensions.IForgeMobEffect;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +31,7 @@ public abstract class MobEffectMixin implements IForgeMobEffect {
 
   private static void handlePoisonDamage(LivingEntity livingEntity) {
     LivingEntity attacker = livingEntity.getKillCredit();
-    float damage = getPoisonDamage(attacker);
+    float damage = 1f;
     boolean isLowHealth = livingEntity.getHealth() <= damage;
     boolean isPoisonLethal = isPoisonLethal(attacker);
     if (isLowHealth && !isPoisonLethal) return;
@@ -51,16 +49,5 @@ public abstract class MobEffectMixin implements IForgeMobEffect {
 
   private static boolean isPoisonLethal(LivingEntity attacker) {
     return attacker instanceof Player player && !SkillBonusHandler.getSkillBonuses(player, LethalPoisonBonus.class).isEmpty();
-  }
-
-  private static float getPoisonDamage(LivingEntity attacker) {
-    float damage = 1f;
-    if (attacker != null) {
-      Attribute poisonDamage = PSTAttributes.POISON_DAMAGE.get();
-      if (attacker.getAttributes().hasAttribute(poisonDamage)) {
-        damage = (float) attacker.getAttributeValue(poisonDamage);
-      }
-    }
-    return damage;
   }
 }

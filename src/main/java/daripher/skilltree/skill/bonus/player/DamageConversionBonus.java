@@ -343,7 +343,6 @@ public final class DamageConversionBonus implements SkillBonus<DamageConversionB
           json, aBonus.targetMultiplier, "enemy_multiplier");
       SerializationHelper.serializeLivingCondition(
           json, aBonus.playerCondition, "player_condition");
-      SerializationHelper.serializeDamageCondition(json, aBonus.originalDamageCondition);
       SerializationHelper.serializeLivingCondition(
           json, aBonus.targetCondition, "target_condition");
     }
@@ -363,7 +362,6 @@ public final class DamageConversionBonus implements SkillBonus<DamageConversionB
           SerializationHelper.deserializeLivingMultiplier(tag, "enemy_multiplier");
       bonus.playerCondition =
           SerializationHelper.deserializeLivingCondition(tag, "player_condition");
-      bonus.originalDamageCondition = SerializationHelper.deserializeDamageCondition(tag);
       bonus.targetCondition =
           SerializationHelper.deserializeLivingCondition(tag, "target_condition");
       return bonus;
@@ -385,7 +383,6 @@ public final class DamageConversionBonus implements SkillBonus<DamageConversionB
       SerializationHelper.serializeLivingMultiplier(
           tag, aBonus.targetMultiplier, "enemy_multiplier");
       SerializationHelper.serializeLivingCondition(tag, aBonus.playerCondition, "player_condition");
-      SerializationHelper.serializeDamageCondition(tag, aBonus.originalDamageCondition);
       SerializationHelper.serializeLivingCondition(tag, aBonus.targetCondition, "target_condition");
       return tag;
     }

@@ -68,6 +68,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 import top.theillusivec4.curios.api.event.CurioEquipEvent;
@@ -87,7 +88,8 @@ public class SkillBonusHandler {
     Player player = event.getEntity();
     float multiplier = 1f;
     for (BlockBreakSpeedBonus bonus : getSkillBonuses(player, BlockBreakSpeedBonus.class)) {
-      if (bonus.getPlayerCondition().met(player)) {
+      if (bonus.getPlayerCondition()
+          .met(player)) {
         multiplier += bonus.getMultiplier();
       }
     }
@@ -110,7 +112,10 @@ public class SkillBonusHandler {
     if (efficiency == 1) return;
     if (!stack.isDamageableItem() || !stack.isDamaged()) return;
     ItemStack material = event.getRight();
-    if (!stack.getItem().isValidRepairItem(stack, material)) return;
+    if (!stack.getItem()
+        .isValidRepairItem(stack, material)) {
+      return;
+    }
     ItemStack result = stack.copy();
     int durabilityPerMaterial = (int) (result.getMaxDamage() * 12 * (1 + efficiency) / 100);
     int durabilityRestored = durabilityPerMaterial;
@@ -123,7 +128,9 @@ public class SkillBonusHandler {
       materialsUsed++;
     }
     if (event.getName() != null && !StringUtils.isBlank(event.getName())) {
-      if (!event.getName().equals(stack.getHoverName().getString())) {
+      if (!event.getName()
+          .equals(stack.getHoverName()
+              .getString())) {
         cost++;
         result.setHoverName(Component.literal(event.getName()));
       }
@@ -140,7 +147,8 @@ public class SkillBonusHandler {
   private static float getRepairEfficiency(Player player, ItemStack stack) {
     float efficiency = 1f;
     for (RepairEfficiencyBonus bonus : getSkillBonuses(player, RepairEfficiencyBonus.class)) {
-      if (bonus.getItemCondition().met(stack)) {
+      if (bonus.getItemCondition()
+          .met(stack)) {
         efficiency += bonus.getMultiplier();
       }
     }
@@ -157,24 +165,47 @@ public class SkillBonusHandler {
 
   @SubscribeEvent(priority = EventPriority.HIGH)
   public static void applyFlatDamageBonus(LivingHurtEvent event) {
-    if (!(event.getSource().getEntity() instanceof Player player)) return;
-    player.getPersistentData().putInt("LastAttackTarget", event.getEntity().getId());
-    float bonus = getDamageBonus(player, event.getSource(), event.getEntity(), AttributeModifier.Operation.ADDITION);
+    Player attacker = getPlayerAttacker(event);
+    if (attacker == null) return;
+    LivingEntity target = event.getEntity();
+    setLastTarget(attacker, target);
+    float bonus = getDamageBonus(attacker, event.getSource(), target, AttributeModifier.Operation.ADDITION);
     event.setAmount(event.getAmount() + bonus);
+  }
+
+  private static void setLastTarget(Player attacker, LivingEntity target) {
+    CompoundTag dataTag = attacker.getPersistentData();
+    dataTag.putInt("LastAttackTarget", target.getId());
   }
 
   @SubscribeEvent
   public static void applyBaseDamageMultipliers(LivingHurtEvent event) {
-    if (!(event.getSource().getEntity() instanceof Player player)) return;
-    float bonus = getDamageBonus(player, event.getSource(), event.getEntity(), AttributeModifier.Operation.MULTIPLY_BASE);
+    Player attacker = getPlayerAttacker(event);
+    if (attacker == null) return;
+    float bonus = getDamageBonus(attacker, event.getSource(), event.getEntity(), AttributeModifier.Operation.MULTIPLY_BASE);
     event.setAmount(event.getAmount() * (1 + bonus));
   }
 
   @SubscribeEvent(priority = EventPriority.LOW)
   public static void applyTotalDamageMultipliers(LivingHurtEvent event) {
-    if (!(event.getSource().getEntity() instanceof Player player)) return;
-    float bonus = getDamageBonus(player, event.getSource(), event.getEntity(), AttributeModifier.Operation.MULTIPLY_TOTAL);
+    Player attacker = getPlayerAttacker(event);
+    if (attacker == null) return;
+    float bonus = getDamageBonus(attacker, event.getSource(), event.getEntity(), AttributeModifier.Operation.MULTIPLY_TOTAL);
     event.setAmount(event.getAmount() * (1 + bonus));
+  }
+
+  @Nullable
+  private static Player getPlayerAttacker(LivingHurtEvent event) {
+    Player attacker = null;
+    if (event.getSource()
+        .getEntity() instanceof Player player) {
+      attacker = player;
+    }
+    else if (event.getSource()
+        .getDirectEntity() instanceof Player player) {
+      attacker = player;
+    }
+    return attacker;
   }
 
   private static float getDamageBonus(Player player, DamageSource damageSource, LivingEntity target, AttributeModifier.Operation operation) {
@@ -189,9 +220,14 @@ public class SkillBonusHandler {
   public static void applyCritBonuses(CriticalHitEvent event) {
     if (!(event.getEntity() instanceof ServerPlayer player)) return;
     if (!(event.getTarget() instanceof LivingEntity target)) return;
-    DamageSource damageSource = player.level().damageSources().playerAttack(player);
+    DamageSource damageSource = player.level()
+        .damageSources()
+        .playerAttack(player);
     float critChance = getCritChance(player, damageSource, event.getEntity());
-    if (player.getRandom().nextFloat() >= critChance) return;
+    if (player.getRandom()
+        .nextFloat() >= critChance) {
+      return;
+    }
     float critMultiplier = event.getDamageModifier();
     critMultiplier += getCritDamageMultiplier(player, damageSource, target);
     if (!event.isVanillaCritical()) {
@@ -204,10 +240,19 @@ public class SkillBonusHandler {
   @SubscribeEvent(priority = EventPriority.LOW)
   public static void applyCritBonuses(LivingHurtEvent event) {
     // direct damage, ignoring
-    if (event.getSource().getDirectEntity() instanceof Player) return;
-    if (!(event.getSource().getEntity() instanceof ServerPlayer player)) return;
+    if (event.getSource()
+        .getDirectEntity() instanceof Player) {
+      return;
+    }
+    if (!(event.getSource()
+        .getEntity() instanceof ServerPlayer player)) {
+      return;
+    }
     float critChance = getCritChance(player, event.getSource(), event.getEntity());
-    if (player.getRandom().nextFloat() >= critChance) return;
+    if (player.getRandom()
+        .nextFloat() >= critChance) {
+      return;
+    }
     float critMultiplier = 1.5f;
     critMultiplier += getCritDamageMultiplier(player, event.getSource(), event.getEntity());
     event.setAmount(event.getAmount() * critMultiplier);
@@ -242,7 +287,8 @@ public class SkillBonusHandler {
       else {
         socketTooltip = socketTooltip.withStyle(ChatFormatting.YELLOW);
       }
-      event.getToolTip().add(1, socketTooltip);
+      event.getToolTip()
+          .add(1, socketTooltip);
     }
   }
 
@@ -254,10 +300,12 @@ public class SkillBonusHandler {
     // handled in the above method instead
     if (itemBonus instanceof ItemSocketsBonus) return;
     MutableComponent tooltip = itemBonus.getTooltip();
-    MutableComponent finalTooltip = tooltip.withStyle(tooltip.getStyle().withColor(UPGRADE_STYLE));
+    MutableComponent finalTooltip = tooltip.withStyle(tooltip.getStyle()
+        .withColor(UPGRADE_STYLE));
     // removes duplicate tooltip in attribute modifiers description
     if (itemBonus instanceof ItemSkillBonus bonus && bonus.getBonus() instanceof AttributeBonus) {
-      components.removeIf(component -> component.getString().equals(finalTooltip.getString()));
+      components.removeIf(component -> component.getString()
+          .equals(finalTooltip.getString()));
     }
     components.add(finalTooltip);
   }
@@ -285,7 +333,8 @@ public class SkillBonusHandler {
     for (FoodHealingBonus bonus : ItemHelper.getItemBonuses(stack, FoodHealingBonus.class)) {
       healing += bonus.getAmount();
     }
-    event.getEntity().heal(healing);
+    event.getEntity()
+        .heal(healing);
   }
 
   @SubscribeEvent
@@ -302,14 +351,20 @@ public class SkillBonusHandler {
   public static void applyLootDuplicationChanceBonus(LivingDropsEvent event) {
     // shouldn't multiply player's loot
     if (event.getEntity() instanceof Player) return;
-    if (!(event.getSource().getEntity() instanceof Player player)) return;
+    if (!(event.getSource()
+        .getEntity() instanceof Player player)) {
+      return;
+    }
     float multiplier = getLootMultiplier(player, LootDuplicationBonus.LootType.MOBS);
     while (multiplier > 1) {
-      event.getDrops().addAll(getDrops(event));
+      event.getDrops()
+          .addAll(getDrops(event));
       multiplier--;
     }
-    if (player.getRandom().nextFloat() < multiplier) {
-      event.getDrops().addAll(getDrops(event));
+    if (player.getRandom()
+        .nextFloat() < multiplier) {
+      event.getDrops()
+          .addAll(getDrops(event));
     }
   }
 
@@ -324,7 +379,10 @@ public class SkillBonusHandler {
 
   @SubscribeEvent
   public static void applyExperienceFromOreBonus(BlockEvent.BreakEvent event) {
-    if (!event.getState().is(Tags.Blocks.ORES)) return;
+    if (!event.getState()
+        .is(Tags.Blocks.ORES)) {
+      return;
+    }
     float multiplier = 1f;
     multiplier += getExperienceMultiplier(event.getPlayer(), GainedExperienceBonus.ExperienceSource.ORE);
     event.setExpToDrop((int) (event.getExpToDrop() * multiplier));
@@ -335,10 +393,12 @@ public class SkillBonusHandler {
     Player player = event.getEntity();
     float multiplier = getExperienceMultiplier(player, GainedExperienceBonus.ExperienceSource.FISHING);
     if (multiplier == 0) return;
-    int exp = (int) ((player.getRandom().nextInt(6) + 1) * multiplier);
+    int exp = (int) ((player.getRandom()
+        .nextInt(6) + 1) * multiplier);
     if (exp == 0) return;
     ExperienceOrb expOrb = new ExperienceOrb(player.level(), player.getX(), player.getY() + 0.5D, player.getZ() + 0.5D, exp);
-    player.level().addFreshEntity(expOrb);
+    player.level()
+        .addFreshEntity(expOrb);
   }
 
   private static float getExperienceMultiplier(Player player, GainedExperienceBonus.ExperienceSource source) {
@@ -353,7 +413,8 @@ public class SkillBonusHandler {
 
   @SubscribeEvent
   public static void applyEventListenerEffect(LivingHurtEvent event) {
-    Entity sourceEntity = event.getSource().getEntity();
+    Entity sourceEntity = event.getSource()
+        .getEntity();
     if (sourceEntity instanceof Player player) {
       for (EventListenerBonus<?> bonus : getSkillBonuses(player, EventListenerBonus.class)) {
         if (!(bonus.getEventListener() instanceof AttackEventListener listener)) continue;
@@ -396,7 +457,10 @@ public class SkillBonusHandler {
 
   @SubscribeEvent
   public static void applyEventListenerEffect(LivingDeathEvent event) {
-    if (!(event.getSource().getEntity() instanceof Player player)) return;
+    if (!(event.getSource()
+        .getEntity() instanceof Player player)) {
+      return;
+    }
     for (EventListenerBonus<?> bonus : getSkillBonuses(player, EventListenerBonus.class)) {
       if (!(bonus.getEventListener() instanceof KillEventListener listener)) continue;
       SkillBonus<? extends EventListenerBonus<?>> copy = bonus.copy();
@@ -407,8 +471,14 @@ public class SkillBonusHandler {
 
   @SubscribeEvent
   public static void applyArrowRetrievalBonus(LivingHurtEvent event) {
-    if (!(event.getSource().getDirectEntity() instanceof AbstractArrow arrow)) return;
-    if (!(event.getSource().getEntity() instanceof Player player)) return;
+    if (!(event.getSource()
+        .getDirectEntity() instanceof AbstractArrow arrow)) {
+      return;
+    }
+    if (!(event.getSource()
+        .getEntity() instanceof Player player)) {
+      return;
+    }
     AbstractArrowAccessor arrowAccessor = (AbstractArrowAccessor) arrow;
     ItemStack arrowStack = arrowAccessor.invokeGetPickupItem();
     if (arrowStack == null) return;
@@ -416,7 +486,10 @@ public class SkillBonusHandler {
     for (ArrowRetrievalBonus bonus : getSkillBonuses(player, ArrowRetrievalBonus.class)) {
       retrievalChance += bonus.getChance();
     }
-    if (player.getRandom().nextFloat() >= retrievalChance) return;
+    if (player.getRandom()
+        .nextFloat() >= retrievalChance) {
+      return;
+    }
     LivingEntity target = event.getEntity();
     CompoundTag targetData = target.getPersistentData();
     ListTag stuckArrowsTag = targetData.getList("StuckArrows", new CompoundTag().getId());
@@ -427,7 +500,8 @@ public class SkillBonusHandler {
   @SubscribeEvent
   public static void retrieveArrows(LivingDeathEvent event) {
     LivingEntity entity = event.getEntity();
-    ListTag arrowsTag = entity.getPersistentData().getList("StuckArrows", new CompoundTag().getId());
+    ListTag arrowsTag = entity.getPersistentData()
+        .getList("StuckArrows", new CompoundTag().getId());
     if (arrowsTag.isEmpty()) return;
     for (Tag tag : arrowsTag) {
       ItemStack arrowStack = ItemStack.of((CompoundTag) tag);
@@ -467,7 +541,9 @@ public class SkillBonusHandler {
   @SubscribeEvent
   public static void applyCantUseItemBonus(AttackEntityEvent event) {
     for (CantUseItemBonus bonus : getSkillBonuses(event.getEntity(), CantUseItemBonus.class)) {
-      if (bonus.getItemCondition().met(event.getEntity().getMainHandItem())) {
+      if (bonus.getItemCondition()
+          .met(event.getEntity()
+              .getMainHandItem())) {
         event.setCanceled(true);
         return;
       }
@@ -477,7 +553,8 @@ public class SkillBonusHandler {
   @SubscribeEvent
   public static void applyCantUseItemBonus(PlayerInteractEvent event) {
     for (CantUseItemBonus bonus : getSkillBonuses(event.getEntity(), CantUseItemBonus.class)) {
-      if (bonus.getItemCondition().met(event.getItemStack())) {
+      if (bonus.getItemCondition()
+          .met(event.getItemStack())) {
         event.setCancellationResult(InteractionResult.FAIL);
         if (event.isCancelable()) {
           event.setCanceled(true);
@@ -491,7 +568,8 @@ public class SkillBonusHandler {
   public static void applyCantUseItemBonus(CurioEquipEvent event) {
     if (!(event.getEntity() instanceof Player player)) return;
     for (CantUseItemBonus bonus : getSkillBonuses(player, CantUseItemBonus.class)) {
-      if (bonus.getItemCondition().met(event.getStack())) {
+      if (bonus.getItemCondition()
+          .met(event.getStack())) {
         event.setResult(Event.Result.DENY);
         return;
       }
@@ -504,9 +582,12 @@ public class SkillBonusHandler {
     Player player = Minecraft.getInstance().player;
     if (player == null) return;
     for (CantUseItemBonus bonus : getSkillBonuses(player, CantUseItemBonus.class)) {
-      if (bonus.getItemCondition().met(event.getItemStack())) {
-        Component tooltip = Component.translatable("item.cant_use.info").withStyle(ChatFormatting.RED);
-        event.getTooltipElements().add(Either.left(tooltip));
+      if (bonus.getItemCondition()
+          .met(event.getItemStack())) {
+        Component tooltip = Component.translatable("item.cant_use.info")
+            .withStyle(ChatFormatting.RED);
+        event.getTooltipElements()
+            .add(Either.left(tooltip));
         return;
       }
     }
@@ -514,8 +595,14 @@ public class SkillBonusHandler {
 
   @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
   public static void inflictPoisonForcefully(MobEffectEvent.Applicable event) {
-    if (event.getEffectInstance().getEffect() != MobEffects.POISON) return;
-    if (!(event.getEntity().getKillCredit() instanceof Player player)) return;
+    if (event.getEffectInstance()
+        .getEffect() != MobEffects.POISON) {
+      return;
+    }
+    if (!(event.getEntity()
+        .getKillCredit() instanceof Player player)) {
+      return;
+    }
     if (getSkillBonuses(player, CanPoisonAnyoneBonus.class).isEmpty()) return;
     event.setResult(Event.Result.ALLOW);
   }
@@ -525,17 +612,23 @@ public class SkillBonusHandler {
     ItemStack weapon = event.getItemStack();
     if (!ItemHelper.hasPoisons(weapon)) return;
     List<Component> tooltips = event.getToolTip();
-    tooltips.add(Component.translatable("weapon.poisoned").withStyle(ChatFormatting.DARK_PURPLE));
+    tooltips.add(Component.translatable("weapon.poisoned")
+        .withStyle(ChatFormatting.DARK_PURPLE));
     for (MobEffectInstance poison : ItemHelper.getPoisons(weapon)) {
       Component tooltip = TooltipHelper.getEffectTooltipWithTime(poison);
-      tooltips.add(Component.literal(" ").append(tooltip));
+      tooltips.add(Component.literal(" ")
+          .append(tooltip));
     }
   }
 
   @SubscribeEvent
   public static void applyPoisonedWeaponEffects(LivingHurtEvent event) {
-    if (!(event.getSource().getDirectEntity() instanceof Player player)) return;
-    event.getEntity().setLastHurtByPlayer(player);
+    if (!(event.getSource()
+        .getDirectEntity() instanceof Player player)) {
+      return;
+    }
+    event.getEntity()
+        .setLastHurtByPlayer(player);
     ItemStack weapon = player.getMainHandItem();
     if (!ItemHelper.hasPoisons(weapon)) return;
     List<MobEffectInstance> poisons = ItemHelper.getPoisons(weapon);
@@ -581,9 +674,12 @@ public class SkillBonusHandler {
     if (!(event.getEntity() instanceof Player player)) return;
     DamageSource damageSource = event.getSource();
     if (!(damageSource.getEntity() instanceof LivingEntity attacker)) return;
-    float avoidance =
-        getSkillBonuses(player, DamageAvoidanceBonus.class).stream().map(b -> b.getAvoidanceChance(damageSource, player, attacker)).reduce(Float::sum).orElse(0f);
-    if (player.getRandom().nextFloat() < avoidance) {
+    float avoidance = getSkillBonuses(player, DamageAvoidanceBonus.class).stream()
+        .map(b -> b.getAvoidanceChance(damageSource, player, attacker))
+        .reduce(Float::sum)
+        .orElse(0f);
+    if (player.getRandom()
+        .nextFloat() < avoidance) {
       event.setCanceled(true);
     }
   }
@@ -592,7 +688,10 @@ public class SkillBonusHandler {
   public static void applyDamageConversionBonuses(LivingHurtEvent event) {
     DamageSource originalDamageSource = event.getSource();
     if (!(originalDamageSource.getEntity() instanceof Player player)) return;
-    if (getDamageConversionBonuses(player, originalDamageSource).findAny().isEmpty()) return;
+    if (getDamageConversionBonuses(player, originalDamageSource).findAny()
+        .isEmpty()) {
+      return;
+    }
     LivingEntity target = event.getEntity();
     float originalDamageAmount = event.getAmount();
     getDamageConversionMap(event, player, originalDamageSource).forEach((damageCondition, amount) -> {
@@ -604,7 +703,9 @@ public class SkillBonusHandler {
   }
 
   private static float getConvertedDamagePercentage(Player player, DamageSource originalDamageSource, LivingEntity target) {
-    return getDamageConversionBonuses(player, originalDamageSource).map(b -> b.getConversionRate(originalDamageSource, player, target)).reduce(Float::sum).orElse(0f);
+    return getDamageConversionBonuses(player, originalDamageSource).map(b -> b.getConversionRate(originalDamageSource, player, target))
+        .reduce(Float::sum)
+        .orElse(0f);
   }
 
   @NotNull
@@ -620,7 +721,11 @@ public class SkillBonusHandler {
 
   @NotNull
   private static Stream<DamageConversionBonus> getDamageConversionBonuses(Player player, DamageSource damageSource) {
-    return getSkillBonuses(player, DamageConversionBonus.class).stream().filter(b -> b.getOriginalDamageCondition().met(damageSource)).filter(b -> !b.getResultDamageCondition().met(damageSource));
+    return getSkillBonuses(player, DamageConversionBonus.class).stream()
+        .filter(b -> b.getOriginalDamageCondition()
+            .met(damageSource))
+        .filter(b -> !b.getResultDamageCondition()
+            .met(damageSource));
   }
 
   public static void forcefullyInflictDamage(DamageSource source, float amount, Entity entity) {
@@ -634,7 +739,10 @@ public class SkillBonusHandler {
 
   private static float getDamageTaken(Player player, LivingEntity attacker, DamageSource damageSource, AttributeModifier.Operation operation) {
     List<DamageTakenBonus> damageTakenBonuses = getSkillBonuses(player, DamageTakenBonus.class);
-    return damageTakenBonuses.stream().map(b -> b.getDamageBonus(operation, damageSource, player, attacker)).reduce(Float::sum).orElse(0f);
+    return damageTakenBonuses.stream()
+        .map(b -> b.getDamageBonus(operation, damageSource, player, attacker))
+        .reduce(Float::sum)
+        .orElse(0f);
   }
 
   public static float getLootMultiplier(Player player, LootDuplicationBonus.LootType lootType) {
@@ -646,7 +754,8 @@ public class SkillBonusHandler {
         multiplier += entry.getKey();
         chance--;
       }
-      if (player.getRandom().nextFloat() < chance) {
+      if (player.getRandom()
+          .nextFloat() < chance) {
         multiplier += entry.getKey();
       }
     }
@@ -714,11 +823,16 @@ public class SkillBonusHandler {
     List<T> mergedBonuses = new ArrayList<>();
     for (T bonus : bonuses) {
       SkillBonus skillBonus = (SkillBonus) bonus;
-      Optional<SkillBonus> mergeTarget = mergedBonuses.stream().map(SkillBonus.class::cast).filter(skillBonus::canMerge).findAny();
+      Optional<SkillBonus> mergeTarget = mergedBonuses.stream()
+          .map(SkillBonus.class::cast)
+          .filter(skillBonus::canMerge)
+          .findAny();
       if (mergeTarget.isPresent()) {
         //noinspection SuspiciousMethodCalls
         mergedBonuses.remove(mergeTarget.get());
-        mergedBonuses.add((T) mergeTarget.get().copy().merge(skillBonus));
+        mergedBonuses.add((T) mergeTarget.get()
+            .copy()
+            .merge(skillBonus));
       }
       else {
         mergedBonuses.add((T) skillBonus);
@@ -741,15 +855,19 @@ public class SkillBonusHandler {
     List<SkillBonus<?>> list = new ArrayList<>();
     list.add(new AttributeBonus(Attributes.MAX_HEALTH, new AttributeModifier(UUID.fromString("d446a7b4-9bba-480c-8f83-1e77c6d6d8b2"), "Vitality",
         0.01f, AttributeModifier.Operation.MULTIPLY_BASE)).setMultiplier(new NumericValueMultiplier(new AttributeValueProvider(PSTAttributes.VITALITY.get()), 1)));
-    list.add(new DamageBonus(0.01f, AttributeModifier.Operation.MULTIPLY_BASE).setPlayerMultiplier(new NumericValueMultiplier(new AttributeValueProvider(PSTAttributes.INTELLIGENCE.get()), 1)).setDamageCondition(new MagicDamageCondition()));
-    list.add(new DamageBonus(0.01f, AttributeModifier.Operation.MULTIPLY_BASE).setPlayerMultiplier(new NumericValueMultiplier(new AttributeValueProvider(PSTAttributes.STRENGTH.get()), 1)).setDamageCondition(new MeleeDamageCondition()));
-    list.add(new DamageBonus(0.01f, AttributeModifier.Operation.MULTIPLY_BASE).setPlayerMultiplier(new NumericValueMultiplier(new AttributeValueProvider(PSTAttributes.DEXTERITY.get()), 1)).setDamageCondition(new ProjectileDamageCondition()));
+    list.add(new DamageBonus(0.01f, AttributeModifier.Operation.MULTIPLY_BASE).setPlayerMultiplier(new NumericValueMultiplier(new AttributeValueProvider(PSTAttributes.INTELLIGENCE.get()), 1))
+        .setDamageCondition(new MagicDamageCondition()));
+    list.add(new DamageBonus(0.01f, AttributeModifier.Operation.MULTIPLY_BASE).setPlayerMultiplier(new NumericValueMultiplier(new AttributeValueProvider(PSTAttributes.STRENGTH.get()), 1))
+        .setDamageCondition(new MeleeDamageCondition()));
+    list.add(new DamageBonus(0.01f, AttributeModifier.Operation.MULTIPLY_BASE).setPlayerMultiplier(new NumericValueMultiplier(new AttributeValueProvider(PSTAttributes.DEXTERITY.get()), 1))
+        .setDamageCondition(new ProjectileDamageCondition()));
     return list;
   }
 
   private static <T> List<T> getPlayerBonuses(Player player, Class<T> type) {
     List<T> list = new ArrayList<>();
-    for (PassiveSkill skill : PlayerSkillsProvider.get(player).getPlayerSkills()) {
+    for (PassiveSkill skill : PlayerSkillsProvider.get(player)
+        .getPlayerSkills()) {
       List<SkillBonus<?>> bonuses = skill.getBonuses();
       for (SkillBonus<?> skillBonus : bonuses) {
         if (type.isInstance(skillBonus)) {
@@ -764,9 +882,11 @@ public class SkillBonusHandler {
     List<T> bonuses = new ArrayList<>();
     for (MobEffectInstance e : player.getActiveEffects()) {
       if (e.getEffect() instanceof SkillBonusEffect skillEffect) {
-        SkillBonus<?> bonus = skillEffect.getBonus().copy();
+        SkillBonus<?> bonus = skillEffect.getBonus()
+            .copy();
         if (type.isInstance(bonus)) {
-          bonus = bonus.copy().multiply(e.getAmplifier());
+          bonus = bonus.copy()
+              .multiply(e.getAmplifier());
           bonuses.add(type.cast(bonus));
         }
       }
@@ -775,7 +895,10 @@ public class SkillBonusHandler {
   }
 
   private static <T> List<T> getEquipmentBonuses(Player player, Class<T> type) {
-    return PlayerHelper.getAllEquipment(player).map(s -> getItemBonuses(s, type)).flatMap(List::stream).toList();
+    return PlayerHelper.getAllEquipment(player)
+        .map(s -> getItemBonuses(s, type))
+        .flatMap(List::stream)
+        .toList();
   }
 
   private static <T> List<T> getItemBonuses(ItemStack stack, Class<T> type) {
