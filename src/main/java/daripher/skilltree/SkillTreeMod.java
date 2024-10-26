@@ -3,7 +3,7 @@ package daripher.skilltree;
 import daripher.skilltree.compat.apotheosis.ApotheosisCompatibility;
 import daripher.skilltree.compat.attributeslib.AttributesLibCompatibility;
 import daripher.skilltree.config.ClientConfig;
-import daripher.skilltree.config.Config;
+import daripher.skilltree.config.ServerConfig;
 import daripher.skilltree.init.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
@@ -39,7 +39,7 @@ public class SkillTreeMod {
     PSTLootModifiers.REGISTRY.register(eventBus);
     PSTEnchantments.REGISTRY.register(eventBus);
     PSTNumericValueProviders.REGISTRY.register(eventBus);
-    ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+    ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);
     ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
     addCompatibilities();
   }

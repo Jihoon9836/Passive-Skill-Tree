@@ -21,22 +21,6 @@ import net.minecraftforge.fml.loading.FMLPaths;
 public class SkillTreeClientData {
   private static final Map<ResourceLocation, PassiveSkill> EDITOR_PASSIVE_SKILLS = new HashMap<>();
   private static final Map<ResourceLocation, PassiveSkillTree> EDITOR_TREES = new HashMap<>();
-  public static int[] skill_points_costs;
-  public static int first_skill_cost;
-  public static int last_skill_cost;
-  public static int max_skill_points;
-  public static boolean enable_exp_exchange;
-  public static boolean use_skill_cost_array;
-
-  public static int getSkillPointCost(int level) {
-    if (use_skill_cost_array) {
-      if (level >= skill_points_costs.length) {
-        return skill_points_costs[skill_points_costs.length - 1];
-      }
-      return skill_points_costs[level];
-    }
-    return first_skill_cost + (last_skill_cost - first_skill_cost) * level / max_skill_points;
-  }
 
   public static PassiveSkill getEditorSkill(ResourceLocation id) {
     return EDITOR_PASSIVE_SKILLS.get(id);

@@ -13,7 +13,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber(modid = SkillTreeMod.MOD_ID, bus = Bus.MOD)
-public class Config {
+public class ServerConfig {
   public static final ForgeConfigSpec SPEC;
   private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
   private static final ConfigValue<Integer> MAX_SKILL_POINTS;
@@ -102,7 +102,7 @@ public class Config {
         BUILDER.defineListAllowEmpty(
             List.of("IDs of items that shouldn't have sockets"),
             ArrayList::new,
-            Config::validateItemName);
+            ServerConfig::validateItemName);
     BUILDER.comment("You can force items from other mods into equipmentType categories here");
     BUILDER.pop();
 

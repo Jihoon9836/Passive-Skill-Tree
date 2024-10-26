@@ -2,7 +2,7 @@ package daripher.skilltree.item;
 
 import daripher.skilltree.capability.skill.IPlayerSkills;
 import daripher.skilltree.capability.skill.PlayerSkillsProvider;
-import daripher.skilltree.config.Config;
+import daripher.skilltree.config.ServerConfig;
 import daripher.skilltree.network.NetworkDispatcher;
 import daripher.skilltree.network.message.SyncPlayerSkillsMessage;
 import java.util.List;
@@ -49,7 +49,7 @@ public class AmnesiaScrollItem extends Item {
           0.4F,
           0.2F + player.getRandom().nextFloat() * 0.2F);
       skills.resetTree((ServerPlayer) player);
-      skills.setSkillPoints((int) (skills.getSkillPoints() * (1 - Config.amnesia_scroll_penalty)));
+      skills.setSkillPoints((int) (skills.getSkillPoints() * (1 - ServerConfig.amnesia_scroll_penalty)));
       player.sendSystemMessage(
           Component.translatable("skilltree.message.reset_command")
               .withStyle(ChatFormatting.YELLOW));
@@ -68,7 +68,7 @@ public class AmnesiaScrollItem extends Item {
       @NotNull TooltipFlag tooltipFlag) {
     components.add(
         Component.translatable(getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GOLD));
-    double penalty = Config.amnesia_scroll_penalty;
+    double penalty = ServerConfig.amnesia_scroll_penalty;
     if (penalty > 0) {
       int textPenalty = (int) (penalty * 100);
       components.add(

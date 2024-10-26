@@ -1,7 +1,7 @@
 package daripher.skilltree.attribute.event;
 
 import daripher.skilltree.SkillTreeMod;
-import daripher.skilltree.config.Config;
+import daripher.skilltree.config.ServerConfig;
 import daripher.skilltree.init.PSTAttributes;
 import daripher.skilltree.skill.bonus.condition.item.EquipmentCondition;
 import net.minecraft.world.entity.ExperienceOrb;
@@ -45,7 +45,7 @@ public class AttributeEvents {
 
   @SubscribeEvent
   public static void applyGrindstoneExpPenalty(GrindstoneEvent.OnTakeItem event) {
-    event.setXp((int) (event.getXp() * Config.grindstone_exp_multiplier));
+    event.setXp((int) (event.getXp() * ServerConfig.grindstone_exp_multiplier));
   }
 
   @SubscribeEvent

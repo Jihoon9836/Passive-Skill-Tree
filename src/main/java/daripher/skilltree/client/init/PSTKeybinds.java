@@ -1,6 +1,7 @@
 package daripher.skilltree.client.init;
 
 import daripher.skilltree.SkillTreeMod;
+import daripher.skilltree.client.data.SkillTreeClientData;
 import daripher.skilltree.client.screen.SkillTreeScreen;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -15,9 +16,7 @@ import org.lwjgl.glfw.GLFW;
 
 @EventBusSubscriber(modid = SkillTreeMod.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
 public class PSTKeybinds {
-  private static final KeyMapping SKILL_TREE_KEY =
-      new KeyMapping(
-          "key.display_skill_tree", GLFW.GLFW_KEY_O, "key.categories." + SkillTreeMod.MOD_ID);
+  private static final KeyMapping SKILL_TREE_KEY = new KeyMapping("key.display_skill_tree", GLFW.GLFW_KEY_O, "key.categories." + SkillTreeMod.MOD_ID);
 
   @SubscribeEvent
   public static void registerKeybinds(RegisterKeyMappingsEvent event) {
@@ -29,10 +28,18 @@ public class PSTKeybinds {
     @SubscribeEvent
     public static void keyPressed(InputEvent.Key event) {
       Minecraft minecraft = Minecraft.getInstance();
-      if (minecraft.player == null || minecraft.screen != null) return;
+      if (minecraft.player == null || minecraft.screen != null) {
+        return;
+      }
       if (event.getKey() == SKILL_TREE_KEY.getKey().getValue()) {
-        minecraft.setScreen(
-            new SkillTreeScreen(new ResourceLocation(SkillTreeMod.MOD_ID, "main_tree")));
+        ResourceLocation treeId = new ResourceLocation(SkillTreeMod.MOD_ID, "main_tree");
+        try {
+          SkillTreeClientData.getOrCreateEditorTree(treeId);
+        } catch (Exception e) {
+          return;
+        }
+        SkillTreeScreen screen = new SkillTreeScreen(treeId);
+        minecraft.setScreen(screen);
       }
     }
   }

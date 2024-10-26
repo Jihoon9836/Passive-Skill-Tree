@@ -1,6 +1,6 @@
 package daripher.skilltree.potion;
 
-import daripher.skilltree.config.Config;
+import daripher.skilltree.config.ServerConfig;
 import daripher.skilltree.item.ItemHelper;
 import daripher.skilltree.skill.bonus.item.PotionAmplificationBonus;
 import daripher.skilltree.skill.bonus.item.PotionDurationBonus;
@@ -67,8 +67,8 @@ public class PotionHelper {
   private static List<MobEffectInstance> applyMixtureMultipliers(List<MobEffectInstance> effects) {
     effects.replaceAll(
         effect -> {
-          int duration = (int) (effect.getDuration() * Config.mixture_effects_duration);
-          int amplifier = (int) (effect.getAmplifier() * Config.mixture_effects_strength);
+          int duration = (int) (effect.getDuration() * ServerConfig.mixture_effects_duration);
+          int amplifier = (int) (effect.getAmplifier() * ServerConfig.mixture_effects_strength);
           return new MobEffectInstance(effect.getEffect(), duration, amplifier);
         });
     return effects;

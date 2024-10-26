@@ -1,7 +1,7 @@
 package daripher.skilltree.item.gem.loot;
 
 import daripher.skilltree.SkillTreeMod;
-import daripher.skilltree.config.Config;
+import daripher.skilltree.config.ServerConfig;
 import daripher.skilltree.skill.bonus.SkillBonusHandler;
 import daripher.skilltree.skill.bonus.player.LootDuplicationBonus;
 import java.util.List;
@@ -80,9 +80,9 @@ public class GemLootHandler {
   private static boolean canDropGem(BlockEvent.BreakEvent event, Player player) {
     if (player.isCreative()) return false;
     if (player.level().isClientSide) return false;
-    if (Config.gem_drop_chance == 0) return false;
+    if (ServerConfig.gem_drop_chance == 0) return false;
     if (!player.level().getBlockState(event.getPos()).is(Tags.Blocks.ORES)) return false;
-    if (player.getRandom().nextFloat() >= Config.gem_drop_chance) return false;
+    if (player.getRandom().nextFloat() >= ServerConfig.gem_drop_chance) return false;
     if (!ForgeHooks.isCorrectToolForDrops(event.getState(), player)) return false;
     return player.getMainHandItem().getEnchantmentLevel(Enchantments.SILK_TOUCH) == 0;
   }

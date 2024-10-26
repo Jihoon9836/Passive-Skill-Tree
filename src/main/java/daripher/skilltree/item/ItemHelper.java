@@ -2,7 +2,7 @@ package daripher.skilltree.item;
 
 import com.google.common.collect.ImmutableList;
 import daripher.skilltree.SkillTreeMod;
-import daripher.skilltree.config.Config;
+import daripher.skilltree.config.ServerConfig;
 import daripher.skilltree.init.PSTRegistries;
 import daripher.skilltree.init.PSTTags;
 import daripher.skilltree.item.gem.GemItem;
@@ -29,7 +29,7 @@ public class ItemHelper {
   }
 
   public static boolean hasSockets(ItemStack stack) {
-    List<? extends String> blacklist = Config.socket_blacklist;
+    List<? extends String> blacklist = ServerConfig.socket_blacklist;
     if (blacklist.contains("*:*")) return false;
     ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());
     if (itemId == null) return false;
@@ -89,14 +89,14 @@ public class ItemHelper {
   }
 
   public static int getDefaultSockets(ItemStack stack) {
-    if (EquipmentCondition.isHelmet(stack)) return Config.default_helmet_sockets;
-    if (EquipmentCondition.isChestplate(stack)) return Config.default_chestplate_sockets;
-    if (EquipmentCondition.isLeggings(stack)) return Config.default_leggings_sockets;
-    if (EquipmentCondition.isBoots(stack)) return Config.default_boots_sockets;
-    if (EquipmentCondition.isWeapon(stack)) return Config.default_weapon_sockets;
-    if (EquipmentCondition.isShield(stack)) return Config.default_shield_sockets;
-    if (stack.is(PSTTags.Items.RINGS)) return Config.default_ring_sockets;
-    if (stack.is(PSTTags.Items.NECKLACES)) return Config.default_necklace_sockets;
+    if (EquipmentCondition.isHelmet(stack)) return ServerConfig.default_helmet_sockets;
+    if (EquipmentCondition.isChestplate(stack)) return ServerConfig.default_chestplate_sockets;
+    if (EquipmentCondition.isLeggings(stack)) return ServerConfig.default_leggings_sockets;
+    if (EquipmentCondition.isBoots(stack)) return ServerConfig.default_boots_sockets;
+    if (EquipmentCondition.isWeapon(stack)) return ServerConfig.default_weapon_sockets;
+    if (EquipmentCondition.isShield(stack)) return ServerConfig.default_shield_sockets;
+    if (stack.is(PSTTags.Items.RINGS)) return ServerConfig.default_ring_sockets;
+    if (stack.is(PSTTags.Items.NECKLACES)) return ServerConfig.default_necklace_sockets;
     return 0;
   }
 

@@ -1,8 +1,6 @@
 package daripher.skilltree.network;
 
 import daripher.skilltree.SkillTreeMod;
-import daripher.skilltree.client.data.SkillTreeClientData;
-import daripher.skilltree.config.Config;
 import daripher.skilltree.init.PSTRegistries;
 import daripher.skilltree.item.gem.GemType;
 import daripher.skilltree.item.gem.bonus.GemBonusProvider;
@@ -487,31 +485,5 @@ public class NetworkHelper {
     }
     ResourceLocation id = new ResourceLocation(buf.readUtf());
     return new GemType(id, bonusProviders);
-  }
-
-  public static void writeSkillTreeConfig(FriendlyByteBuf buf) {
-    buf.writeBoolean(Config.use_skill_points_array);
-    if (Config.use_skill_points_array) {
-      buf.writeInt(Config.skill_points_costs.size());
-      Config.skill_points_costs.forEach(buf::writeInt);
-    }
-    buf.writeInt(Config.max_skill_points);
-    buf.writeInt(Config.first_skill_cost);
-    buf.writeInt(Config.last_skill_cost);
-    buf.writeBoolean(Config.enable_exp_exchange);
-  }
-
-  public static void loadSkillTreeConfig(FriendlyByteBuf buf) {
-    SkillTreeClientData.use_skill_cost_array = buf.readBoolean();
-    if (SkillTreeClientData.use_skill_cost_array) {
-      SkillTreeClientData.skill_points_costs = new int[buf.readInt()];
-      for (int i = 0; i < SkillTreeClientData.skill_points_costs.length; i++) {
-        SkillTreeClientData.skill_points_costs[i] = buf.readInt();
-      }
-    }
-    SkillTreeClientData.max_skill_points = buf.readInt();
-    SkillTreeClientData.first_skill_cost = buf.readInt();
-    SkillTreeClientData.last_skill_cost = buf.readInt();
-    SkillTreeClientData.enable_exp_exchange = buf.readBoolean();
   }
 }

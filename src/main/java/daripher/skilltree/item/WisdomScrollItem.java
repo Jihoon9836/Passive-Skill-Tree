@@ -2,7 +2,7 @@ package daripher.skilltree.item;
 
 import daripher.skilltree.capability.skill.IPlayerSkills;
 import daripher.skilltree.capability.skill.PlayerSkillsProvider;
-import daripher.skilltree.config.Config;
+import daripher.skilltree.config.ServerConfig;
 import daripher.skilltree.network.NetworkDispatcher;
 import daripher.skilltree.network.message.SyncPlayerSkillsMessage;
 import java.util.List;
@@ -32,7 +32,7 @@ public class WisdomScrollItem extends Item {
     IPlayerSkills skillsCapability = PlayerSkillsProvider.get(player);
     int totalSkillPoints =
         skillsCapability.getPlayerSkills().size() + skillsCapability.getSkillPoints();
-    if (totalSkillPoints >= Config.max_skill_points) {
+    if (totalSkillPoints >= ServerConfig.max_skill_points) {
       return InteractionResultHolder.fail(itemInHand);
     }
     if (!player.getAbilities().instabuild) {
@@ -57,7 +57,7 @@ public class WisdomScrollItem extends Item {
       NetworkDispatcher.network_channel.send(
           PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
           new SyncPlayerSkillsMessage(player));
-      if (Config.show_chat_messages) {
+      if (ServerConfig.show_chat_messages) {
         player.sendSystemMessage(
             Component.translatable("skilltree.message.point_command")
                 .withStyle(ChatFormatting.YELLOW));

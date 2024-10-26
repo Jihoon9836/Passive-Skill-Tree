@@ -10,7 +10,6 @@ import net.minecraftforge.network.NetworkEvent;
 
 public class SyncServerDataMessage {
   public static SyncServerDataMessage decode(FriendlyByteBuf buf) {
-    NetworkHelper.loadSkillTreeConfig(buf);
     SkillsReloader.loadFromByteBuf(buf);
     SkillTreesReloader.loadFromByteBuf(buf);
     GemTypesReloader.loadFromByteBuf(buf);
@@ -23,7 +22,6 @@ public class SyncServerDataMessage {
   }
 
   public void encode(FriendlyByteBuf buf) {
-    NetworkHelper.writeSkillTreeConfig(buf);
     NetworkHelper.writePassiveSkills(buf, SkillsReloader.getSkills().values());
     NetworkHelper.writePassiveSkillTrees(buf, SkillTreesReloader.getSkillTrees().values());
     NetworkHelper.writeGemTypes(buf, GemTypesReloader.getGemTypes().values());

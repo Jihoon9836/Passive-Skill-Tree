@@ -94,14 +94,14 @@ public final class InflictDamageBonus implements EventListenerBonus<InflictDamag
 
   @Override
   public MutableComponent getTooltip() {
+    String targetDescription = eventListener.getTarget().getName();
+    String key = getDescriptionId() + "." + targetDescription;
     String damageDescription = TooltipHelper.formatNumber(damage);
-    String targetDescription = eventListener.getTarget().name().toLowerCase();
-    String bonusDescription = getDescriptionId() + "." + targetDescription;
     Component damageTypeDescription = damageType.getTooltip();
     if (chance < 1) {
-      bonusDescription += ".chance";
+      key += ".chance";
     }
-    MutableComponent tooltip = Component.translatable(bonusDescription, damageDescription, damageTypeDescription);
+    MutableComponent tooltip = Component.translatable(key, damageDescription, damageTypeDescription);
     if (chance < 1) {
       tooltip = TooltipHelper.getSkillBonusTooltip(tooltip, chance, AttributeModifier.Operation.MULTIPLY_BASE);
     }

@@ -4,11 +4,11 @@ import com.google.common.collect.Streams;
 import com.mojang.blaze3d.systems.RenderSystem;
 import daripher.skilltree.capability.skill.IPlayerSkills;
 import daripher.skilltree.capability.skill.PlayerSkillsProvider;
-import daripher.skilltree.client.data.SkillTreeClientData;
 import daripher.skilltree.client.widget.*;
 import daripher.skilltree.client.widget.skill.SkillButton;
 import daripher.skilltree.client.widget.skill.SkillConnection;
 import daripher.skilltree.config.ClientConfig;
+import daripher.skilltree.config.ServerConfig;
 import daripher.skilltree.data.reloader.SkillTreesReloader;
 import daripher.skilltree.data.reloader.SkillsReloader;
 import daripher.skilltree.network.NetworkDispatcher;
@@ -17,11 +17,6 @@ import daripher.skilltree.network.message.LearnSkillMessage;
 import daripher.skilltree.skill.PassiveSkill;
 import daripher.skilltree.skill.PassiveSkillTree;
 import daripher.skilltree.skill.bonus.SkillBonus;
-import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
@@ -37,6 +32,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class SkillTreeScreen extends Screen {
   public static final int BACKGROUND_SIZE = 2048;
@@ -86,7 +87,7 @@ public class SkillTreeScreen extends Screen {
     progressBar.showProgressInNumbers = showProgressInNumbers;
     addRenderableWidget(progressBar);
     addTopWidgets();
-    if (!SkillTreeClientData.enable_exp_exchange) {
+    if (!ServerConfig.enable_exp_exchange) {
       progressBar.visible = false;
       buyButton.visible = false;
     }
@@ -130,7 +131,7 @@ public class SkillTreeScreen extends Screen {
     buyButton.setPressFunc(b -> buySkillPoint());
     addRenderableWidget(buyButton);
     pointsInfo = new Label(width / 2 + 8, buttonsY, buttonWidth, 14, Component.empty());
-    if (!SkillTreeClientData.enable_exp_exchange) {
+    if (!ServerConfig.enable_exp_exchange) {
       pointsInfo.setX(width / 2 - buttonWidth / 2);
     }
     addRenderableWidget(pointsInfo);
@@ -406,7 +407,7 @@ public class SkillTreeScreen extends Screen {
       startingPoints.forEach(SkillButton::setCanLearn);
       return;
     }
-    if (learnedSkills.size() + newlyLearnedSkills.size() >= SkillTreeClientData.max_skill_points)
+    if (learnedSkills.size() + newlyLearnedSkills.size() >= ServerConfig.max_skill_points)
       return;
     skillConnections.forEach(
         connection -> {
@@ -457,20 +458,20 @@ public class SkillTreeScreen extends Screen {
   private void buySkillPoint() {
     int currentLevel = getCurrentLevel();
     if (!canBuySkillPoint(currentLevel)) return;
-    int cost = SkillTreeClientData.getSkillPointCost(currentLevel);
+    int cost = ServerConfig.getSkillPointCost(currentLevel);
     NetworkDispatcher.network_channel.sendToServer(new GainSkillPointMessage());
     getPlayer().giveExperiencePoints(-cost);
   }
 
   private boolean canBuySkillPoint(int currentLevel) {
-    if (!SkillTreeClientData.enable_exp_exchange) return false;
+    if (!ServerConfig.enable_exp_exchange) return false;
     if (isMaxLevel(currentLevel)) return false;
-    int cost = SkillTreeClientData.getSkillPointCost(currentLevel);
+    int cost = ServerConfig.getSkillPointCost(currentLevel);
     return getPlayer().totalExperience >= cost;
   }
 
   private boolean isMaxLevel(int currentLevel) {
-    return currentLevel >= SkillTreeClientData.max_skill_points;
+    return currentLevel >= ServerConfig.max_skill_points;
   }
 
   private int getCurrentLevel() {
@@ -524,7 +525,7 @@ public class SkillTreeScreen extends Screen {
     int currentLevel = getCurrentLevel();
     buyButton.active = false;
     if (isMaxLevel(currentLevel)) return;
-    int pointCost = SkillTreeClientData.getSkillPointCost(currentLevel);
+    int pointCost = ServerConfig.getSkillPointCost(currentLevel);
     buyButton.active = getPlayer().totalExperience >= pointCost;
   }
 
