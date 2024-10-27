@@ -6,12 +6,34 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
-            "type": "skilltree:attribute",
-            "amount": 0.04999999888241291,
-            "attribute": "minecraft:generic.attack_speed",
-            "id": "12720964-1ecb-4485-b117-060682a91b6e",
-            "name": "Jade",
-            "operation": 1,
+            "type": "skilltree:gained_experience",
+            "experience_source": "mobs",
+            "multiplier": 0.25
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:tag",
+        "tag_id": "forge:curios/jewelry"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:damage_avoidance",
+            "attacker_condition": {
+              "type": "skilltree:none"
+            },
+            "attacker_multiplier": {
+              "type": "skilltree:none"
+            },
+            "chance": 0.5,
+            "damage_condition": {
+              "type": "skilltree:fall"
+            },
             "player_condition": {
               "type": "skilltree:none"
             },
@@ -23,7 +45,7 @@
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "weapon"
+        "equipment_type": "boots"
       }
     },
     {
@@ -94,34 +116,12 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
-            "type": "skilltree:gained_experience",
-            "experience_source": "mobs",
-            "multiplier": 0.25
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:tag",
-        "tag_id": "forge:curios/jewelry"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
-            "type": "skilltree:damage_avoidance",
-            "attacker_condition": {
-              "type": "skilltree:none"
-            },
-            "attacker_multiplier": {
-              "type": "skilltree:none"
-            },
-            "chance": 0.5,
-            "damage_condition": {
-              "type": "skilltree:fall"
-            },
+            "type": "skilltree:attribute",
+            "amount": 0.04999999888241291,
+            "attribute": "minecraft:generic.attack_speed",
+            "id": "af71ee7a-b4fb-49c5-bacd-b101ba296ab8",
+            "name": "Jade",
+            "operation": 1,
             "player_condition": {
               "type": "skilltree:none"
             },
@@ -133,7 +133,7 @@
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "boots"
+        "equipment_type": "weapon"
       }
     },
     {

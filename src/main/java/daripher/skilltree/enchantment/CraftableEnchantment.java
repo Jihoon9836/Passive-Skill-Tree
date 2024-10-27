@@ -7,11 +7,10 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import org.jetbrains.annotations.NotNull;
 
 public class CraftableEnchantment extends Enchantment {
-  private static final EquipmentSlot[] APPLICABLE_SLOTS = {EquipmentSlot.HEAD};
   private final int maxLevel;
 
-  public CraftableEnchantment(int maxLevel) {
-    super(Rarity.VERY_RARE, EnchantmentCategory.ARMOR_HEAD, APPLICABLE_SLOTS);
+  public CraftableEnchantment(int maxLevel, EnchantmentCategory category, EquipmentSlot[] applicableSlots) {
+    super(Rarity.VERY_RARE, category, applicableSlots);
     this.maxLevel = maxLevel;
   }
 

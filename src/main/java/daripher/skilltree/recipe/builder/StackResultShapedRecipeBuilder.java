@@ -6,14 +6,9 @@ import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import daripher.skilltree.init.PSTRecipeSerializers;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Consumer;
-import javax.annotation.Nullable;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.data.recipes.*;
+import net.minecraft.data.recipes.CraftingRecipeBuilder;
+import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -24,12 +19,20 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Consumer;
+
 public class StackResultShapedRecipeBuilder extends CraftingRecipeBuilder {
   private final ItemStack result;
   private final int count;
   private final List<String> rows = Lists.newArrayList();
   private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
-  @Nullable private String group;
+  @Nullable
+  private String group;
 
   public StackResultShapedRecipeBuilder(ItemStack pResult, int pCount) {
     this.result = pResult;
@@ -55,10 +58,11 @@ public class StackResultShapedRecipeBuilder extends CraftingRecipeBuilder {
   public StackResultShapedRecipeBuilder define(Character pSymbol, Ingredient pIngredient) {
     if (this.key.containsKey(pSymbol)) {
       throw new IllegalArgumentException("Symbol '" + pSymbol + "' is already defined!");
-    } else if (pSymbol == ' ') {
-      throw new IllegalArgumentException(
-          "Symbol ' ' (whitespace) is reserved and cannot be defined");
-    } else {
+    }
+    else if (pSymbol == ' ') {
+      throw new IllegalArgumentException("Symbol ' ' (whitespace) is reserved and cannot be defined");
+    }
+    else {
       this.key.put(pSymbol, pIngredient);
       return this;
     }
@@ -67,7 +71,8 @@ public class StackResultShapedRecipeBuilder extends CraftingRecipeBuilder {
   public StackResultShapedRecipeBuilder pattern(String pPattern) {
     if (!this.rows.isEmpty() && pPattern.length() != ((String) this.rows.get(0)).length()) {
       throw new IllegalArgumentException("Pattern must be the same width on every line!");
-    } else {
+    }
+    else {
       this.rows.add(pPattern);
       return this;
     }
@@ -84,20 +89,15 @@ public class StackResultShapedRecipeBuilder extends CraftingRecipeBuilder {
 
   public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ResourceLocation pRecipeId) {
     this.ensureValid(pRecipeId);
-    pFinishedRecipeConsumer.accept(
-        new StackResultShapedRecipeBuilder.Result(
-            pRecipeId,
-            this.result,
-            this.count,
-            this.group == null ? "" : this.group,
-            this.rows,
-            this.key));
+    pFinishedRecipeConsumer.accept(new StackResultShapedRecipeBuilder.Result(pRecipeId, this.result, this.count, this.group == null ? "" :
+        this.group, this.rows, this.key));
   }
 
   private void ensureValid(ResourceLocation pId) {
     if (this.rows.isEmpty()) {
       throw new IllegalStateException("No pattern is defined for shaped recipe " + pId + "!");
-    } else {
+    }
+    else {
       Set<Character> $$1 = Sets.newHashSet(this.key.keySet());
       $$1.remove(' ');
 
@@ -105,8 +105,7 @@ public class StackResultShapedRecipeBuilder extends CraftingRecipeBuilder {
         for (int $$3 = 0; $$3 < $$2.length(); ++$$3) {
           char $$4 = $$2.charAt($$3);
           if (!this.key.containsKey($$4) && $$4 != ' ') {
-            throw new IllegalStateException(
-                "Pattern in recipe " + pId + " uses undefined symbol '" + $$4 + "'");
+            throw new IllegalStateException("Pattern in recipe " + pId + " uses undefined symbol '" + $$4 + "'");
           }
 
           $$1.remove($$4);
@@ -114,13 +113,11 @@ public class StackResultShapedRecipeBuilder extends CraftingRecipeBuilder {
       }
 
       if (!$$1.isEmpty()) {
-        throw new IllegalStateException(
-            "Ingredients are defined but not used in pattern for recipe " + pId);
-      } else if (this.rows.size() == 1 && ((String) this.rows.get(0)).length() == 1) {
-        throw new IllegalStateException(
-            "Shaped recipe "
-                + pId
-                + " only takes in a single item - should it be a shapeless recipe instead?");
+        throw new IllegalStateException("Ingredients are defined but not used in pattern for recipe " + pId);
+      }
+      else if (this.rows.size() == 1 && this.rows.get(0)
+          .length() == 1) {
+        throw new IllegalStateException("Shaped recipe " + pId + " only takes in a single item - should it be a shapeless recipe instead?");
       }
     }
   }
@@ -134,13 +131,7 @@ public class StackResultShapedRecipeBuilder extends CraftingRecipeBuilder {
     private final Map<Character, Ingredient> key;
     private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
 
-    public Result(
-        ResourceLocation pId,
-        ItemStack pResult,
-        int pCount,
-        String pGroup,
-        List<String> pPattern,
-        Map<Character, Ingredient> pKey) {
+    public Result(ResourceLocation pId, ItemStack pResult, int pCount, String pGroup, List<String> pPattern, Map<Character, Ingredient> pKey) {
       this.id = pId;
       this.result = pResult;
       this.count = pCount;
@@ -164,9 +155,8 @@ public class StackResultShapedRecipeBuilder extends CraftingRecipeBuilder {
       JsonObject $$3 = new JsonObject();
 
       for (Map.Entry<Character, Ingredient> characterIngredientEntry : this.key.entrySet()) {
-        $$3.add(
-            String.valueOf(characterIngredientEntry.getKey()),
-            characterIngredientEntry.getValue().toJson());
+        $$3.add(String.valueOf(characterIngredientEntry.getKey()), characterIngredientEntry.getValue()
+            .toJson());
       }
 
       pJson.add("key", $$3);
@@ -178,7 +168,8 @@ public class StackResultShapedRecipeBuilder extends CraftingRecipeBuilder {
         $$5.addProperty("count", this.count);
       }
       if (this.result.getTag() != null) {
-        $$5.addProperty("nbt", this.result.getTag().toString());
+        $$5.addProperty("nbt", this.result.getTag()
+            .toString());
       }
       pJson.add("result", $$5);
       pJson.addProperty("show_notification", false);
@@ -201,7 +192,7 @@ public class StackResultShapedRecipeBuilder extends CraftingRecipeBuilder {
     @Nullable
     @Override
     public ResourceLocation getAdvancementId() {
-      return getId().withPrefix("recipes/upgrades/");
+      return getId().withPrefix("recipes/");
     }
   }
 }

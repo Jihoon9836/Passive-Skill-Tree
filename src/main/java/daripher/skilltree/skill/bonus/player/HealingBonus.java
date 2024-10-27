@@ -171,7 +171,7 @@ public final class HealingBonus implements EventListenerBonus<HealingBonus> {
     this.chance = chance;
   }
 
-  public void setAmount(int amount) {
+  public void setAmount(float amount) {
     this.amount = amount;
   }
 

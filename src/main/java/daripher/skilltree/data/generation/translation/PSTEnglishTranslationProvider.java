@@ -67,6 +67,8 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.DAMAGE_TAKEN.get(), "%s taken");
     add(PSTSkillBonuses.DAMAGE_AVOIDANCE.get(), "Chance to avoid %s");
     add(PSTSkillBonuses.DAMAGE_CONVERSION.get(), "%s%% of %s is being converted to %s");
+    add(PSTSkillBonuses.GRANT_ITEM.get(), "Grants %s when learned");
+    add(PSTSkillBonuses.GRANT_ITEM.get(), "amount", "Grants %sx %s when learned");
     // item bonuses
     add(PSTItemBonuses.SOCKETS.get(), "+%d Gem Sockets");
     add(PSTItemBonuses.DURABILITY.get(), "Durability");
@@ -347,7 +349,7 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
 
     // recipes
     add("recipe.skilltree.weapon_poisoning", "Weapon Poisoning");
-    add("recipe.skilltree.weapon_poisoning.info", "(Combine a melee weapon and a harmful potion on a crafting bench to poison.json a weapon)");
+    add("recipe.skilltree.weapon_poisoning.info", "(Combine a melee weapon and a harmful potion on a crafting bench to poison a weapon)");
     add("recipe.skilltree.potion_mixing", "Potion Mixing");
     add("recipe.skilltree.potion_mixing.info", "(Combine two different potions on a crafting bench to create a mixture)");
     add("upgrade_recipe.chance", "Chance: %s%%");
@@ -422,7 +424,7 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     addTooltip(PSTItems.ANCIENT_ALLOY_GILDED.get(), "Allows improving loot-related attributes of certain items");
     addTooltip(PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT.get(), "Allows improving speed attributes of certain items");
     addTooltip(PSTItems.ANCIENT_ALLOY_CURATIVE.get(), "Allows improving healing attributes of certain items");
-    addTooltip(PSTItems.ANCIENT_ALLOY_TOXIC.get(), "Allows improving poison.json attributes of certain items");
+    addTooltip(PSTItems.ANCIENT_ALLOY_TOXIC.get(), "Allows improving poison attributes of certain items");
     addTooltip(PSTItems.ANCIENT_ALLOY_ENCHANTED.get(), "Allows improving magic attributes of certain items");
     addTooltip(PSTItems.ANCIENT_ALLOY_SPATIAL.get(), "Allows improving socket number of certain items");
     addTooltip(PSTItems.ANCIENT_ALLOY_DURABLE.get(), "Allows improving durability of certain items");
@@ -490,6 +492,8 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add("affix.skilltree:jewelry/attribute/healthy.suffix", "of Health");
     // enchantments
     add(PSTEnchantments.DEEP_THOUGHTS.get(), "Deep Thoughts");
+    add(PSTEnchantments.MAGIC_FLOW.get(), "Magic Flow");
+    add(PSTEnchantments.RAPID_RECOVERY.get(), "Magic Barrier");
   }
 
   protected void addMixture(String name, MobEffect... effects) {

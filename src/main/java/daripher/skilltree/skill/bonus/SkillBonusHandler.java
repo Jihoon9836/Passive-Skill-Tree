@@ -5,9 +5,11 @@ import daripher.skilltree.SkillTreeMod;
 import daripher.skilltree.capability.skill.PlayerSkillsProvider;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.effect.SkillBonusEffect;
+import daripher.skilltree.enchantment.SkillBonusEnchantment;
 import daripher.skilltree.entity.EquippedEntity;
 import daripher.skilltree.entity.player.PlayerHelper;
 import daripher.skilltree.init.PSTAttributes;
+import daripher.skilltree.init.PSTDamageTypes;
 import daripher.skilltree.item.ItemBonusProvider;
 import daripher.skilltree.item.ItemHelper;
 import daripher.skilltree.mixin.AbstractArrowAccessor;
@@ -194,8 +196,7 @@ public class SkillBonusHandler {
     event.setAmount(event.getAmount() * (1 + bonus));
   }
 
-  @Nullable
-  private static Player getPlayerAttacker(LivingHurtEvent event) {
+  private static @Nullable Player getPlayerAttacker(LivingHurtEvent event) {
     Player attacker = null;
     if (event.getSource()
         .getEntity() instanceof Player player) {
@@ -623,16 +624,18 @@ public class SkillBonusHandler {
 
   @SubscribeEvent
   public static void applyPoisonedWeaponEffects(LivingHurtEvent event) {
-    if (!(event.getSource()
-        .getDirectEntity() instanceof Player player)) {
+    if (event.getSource()
+        .is(PSTDamageTypes.POISON)) {
       return;
     }
-    event.getEntity()
-        .setLastHurtByPlayer(player);
-    ItemStack weapon = player.getMainHandItem();
+    Player attacker = getPlayerAttacker(event);
+    if (attacker == null) return;
+    LivingEntity target = event.getEntity();
+    target.setLastHurtByPlayer(attacker);
+    ItemStack weapon = attacker.getMainHandItem();
     if (!ItemHelper.hasPoisons(weapon)) return;
     List<MobEffectInstance> poisons = ItemHelper.getPoisons(weapon);
-    poisons.forEach(event.getEntity()::addEffect);
+    poisons.forEach(target::addEffect);
   }
 
   @SubscribeEvent
@@ -916,6 +919,15 @@ public class SkillBonusHandler {
         }
       }
     }
+    stack.getAllEnchantments()
+        .forEach(((enchantment, level) -> {
+          if (enchantment instanceof SkillBonusEnchantment anEnchentment) {
+            SkillBonus<?> bonus = anEnchentment.getBonus(level);
+            if (type.isInstance(bonus)) {
+              bonuses.add(type.cast(bonus));
+            }
+          }
+        }));
     return bonuses;
   }
 }
