@@ -493,7 +493,7 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     // enchantments
     add(PSTEnchantments.DEEP_THOUGHTS.get(), "Deep Thoughts");
     add(PSTEnchantments.MAGIC_FLOW.get(), "Magic Flow");
-    add(PSTEnchantments.RAPID_RECOVERY.get(), "Magic Barrier");
+    add(PSTEnchantments.RAPID_RECOVERY.get(), "Rapid Recovery");
   }
 
   protected void addMixture(String name, MobEffect... effects) {

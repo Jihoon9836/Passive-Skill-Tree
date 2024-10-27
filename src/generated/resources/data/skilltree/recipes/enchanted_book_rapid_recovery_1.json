@@ -1,0 +1,15 @@
+{
+  "type": "skilltree:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "skilltree:ancient_alloy_curative"
+    },
+    {
+      "item": "minecraft:book"
+    }
+  ],
+  "result": {
+    "item": "minecraft:enchanted_book",
+    "nbt": "{StoredEnchantments:[{id:\"skilltree:rapid_recovery\",lvl:1s}]}"
+  }
+}

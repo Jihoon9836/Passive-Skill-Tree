@@ -47,6 +47,8 @@
   "effect.skilltree.damage_bonus": "Damage",
   "effect.skilltree.life_regeneration_bonus": "Life Regeneration",
   "enchantment.skilltree.deep_thoughts": "Deep Thoughts",
+  "enchantment.skilltree.magic_flow": "Magic Flow",
+  "enchantment.skilltree.rapid_recovery": "Rapid Recovery",
   "enchantment_condition.skilltree.armor": "Armor Enchantments",
   "enchantment_condition.skilltree.none": "Enchantments",
   "enchantment_condition.skilltree.weapon": "Weapon Enchantments",

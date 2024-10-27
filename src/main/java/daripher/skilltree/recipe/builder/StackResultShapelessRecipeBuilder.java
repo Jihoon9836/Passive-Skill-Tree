@@ -77,16 +77,8 @@ public class StackResultShapelessRecipeBuilder extends CraftingRecipeBuilder {
   }
 
   public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ResourceLocation pRecipeId) {
-    this.ensureValid(pRecipeId);
     pFinishedRecipeConsumer.accept(new StackResultShapelessRecipeBuilder.Result(pRecipeId, this.result, this.count, this.group == null ? "" :
         this.group, this.ingredients, this.advancement));
-  }
-
-  private void ensureValid(ResourceLocation pId) {
-    if (this.advancement.getCriteria()
-        .isEmpty()) {
-      throw new IllegalStateException("No way of obtaining recipe " + pId);
-    }
   }
 
   public static class Result implements FinishedRecipe {

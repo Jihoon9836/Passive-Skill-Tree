@@ -8,33 +8,14 @@
           "skill_bonus": {
             "type": "skilltree:loot_duplication",
             "chance": 0.049999997,
-            "loot_type": "mobs",
-            "multiplier": 1.0
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:tag",
-        "tag_id": "forge:curios/jewelry"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
-            "type": "skilltree:jump_height",
-            "multiplier": 0.049999997,
-            "player_condition": {
-              "type": "skilltree:none"
-            }
+            "loot_type": "gems",
+            "multiplier": 2.0
           }
         }
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "boots"
+        "equipment_type": "helmet"
       }
     },
     {
@@ -46,7 +27,7 @@
             "type": "skilltree:attribute",
             "amount": 0.12500000186264515,
             "attribute": "minecraft:generic.luck",
-            "id": "c3adaf29-e037-4d7d-8019-f584477896d5",
+            "id": "f93b5d7b-e0ac-43df-99fd-e07eda6d0363",
             "name": "Citrine",
             "operation": 1,
             "player_condition": {
@@ -71,14 +52,14 @@
           "skill_bonus": {
             "type": "skilltree:loot_duplication",
             "chance": 0.049999997,
-            "loot_type": "gems",
-            "multiplier": 2.0
+            "loot_type": "mobs",
+            "multiplier": 1.0
           }
         }
       },
       "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "helmet"
+        "type": "skilltree:tag",
+        "tag_id": "forge:curios/jewelry"
       }
     },
     {
@@ -118,10 +99,29 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
+            "type": "skilltree:jump_height",
+            "multiplier": 0.049999997,
+            "player_condition": {
+              "type": "skilltree:none"
+            }
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "boots"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
             "type": "skilltree:attribute",
             "amount": 2.5,
             "attribute": "minecraft:generic.luck",
-            "id": "72ccf1d6-cfb6-4c21-8311-3e5ba315dfe3",
+            "id": "326a7555-ad21-4723-b4b5-b964cf5fbcfa",
             "name": "Citrine",
             "operation": 0,
             "player_condition": {

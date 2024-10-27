@@ -69,7 +69,8 @@ public class StackResultShapedRecipeBuilder extends CraftingRecipeBuilder {
   }
 
   public StackResultShapedRecipeBuilder pattern(String pPattern) {
-    if (!this.rows.isEmpty() && pPattern.length() != ((String) this.rows.get(0)).length()) {
+    if (!this.rows.isEmpty() && pPattern.length() != this.rows.get(0)
+        .length()) {
       throw new IllegalArgumentException("Pattern must be the same width on every line!");
     }
     else {
