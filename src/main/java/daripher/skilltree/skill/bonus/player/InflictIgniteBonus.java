@@ -21,18 +21,18 @@ import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-public final class IgniteBonus implements EventListenerBonus<IgniteBonus> {
+public final class InflictIgniteBonus implements EventListenerBonus<InflictIgniteBonus> {
   private float chance;
   private int duration;
   private SkillEventListener eventListener;
 
-  public IgniteBonus(float chance, int duration, SkillEventListener eventListener) {
+  public InflictIgniteBonus(float chance, int duration, SkillEventListener eventListener) {
     this.chance = chance;
     this.duration = duration;
     this.eventListener = eventListener;
   }
 
-  public IgniteBonus(float chance, int duration) {
+  public InflictIgniteBonus(float chance, int duration) {
     this(chance, duration, new AttackEventListener());
   }
 
@@ -45,33 +45,33 @@ public final class IgniteBonus implements EventListenerBonus<IgniteBonus> {
 
   @Override
   public SkillBonus.Serializer getSerializer() {
-    return PSTSkillBonuses.IGNITE.get();
+    return PSTSkillBonuses.INFLICT_IGNITE.get();
   }
 
   @Override
-  public IgniteBonus copy() {
-    return new IgniteBonus(chance, duration, eventListener);
+  public InflictIgniteBonus copy() {
+    return new InflictIgniteBonus(chance, duration, eventListener);
   }
 
   @Override
-  public IgniteBonus multiply(double multiplier) {
+  public InflictIgniteBonus multiply(double multiplier) {
     chance *= (float) multiplier;
     return this;
   }
 
   @Override
   public boolean canMerge(SkillBonus<?> other) {
-    if (!(other instanceof IgniteBonus otherBonus)) return false;
+    if (!(other instanceof InflictIgniteBonus otherBonus)) return false;
     if (otherBonus.duration != this.duration) return false;
     return Objects.equals(otherBonus.eventListener, this.eventListener);
   }
 
   @Override
-  public SkillBonus<EventListenerBonus<IgniteBonus>> merge(SkillBonus<?> other) {
-    if (!(other instanceof IgniteBonus otherBonus)) {
+  public SkillBonus<EventListenerBonus<InflictIgniteBonus>> merge(SkillBonus<?> other) {
+    if (!(other instanceof InflictIgniteBonus otherBonus)) {
       throw new IllegalArgumentException();
     }
-    return new IgniteBonus(otherBonus.chance + this.chance, duration, eventListener);
+    return new InflictIgniteBonus(otherBonus.chance + this.chance, duration, eventListener);
   }
 
   @Override
@@ -104,7 +104,7 @@ public final class IgniteBonus implements EventListenerBonus<IgniteBonus> {
 
   @Override
   public void addEditorWidgets(
-      SkillTreeEditor editor, int row, Consumer<EventListenerBonus<IgniteBonus>> consumer) {
+      SkillTreeEditor editor, int row, Consumer<EventListenerBonus<InflictIgniteBonus>> consumer) {
     editor.addLabel(0, 0, "Chance", ChatFormatting.GOLD);
     editor.addLabel(110, 0, "Duration", ChatFormatting.GOLD);
     editor.increaseHeight(19);
@@ -125,7 +125,7 @@ public final class IgniteBonus implements EventListenerBonus<IgniteBonus> {
   }
 
   private void addEventListenerWidgets(
-      SkillTreeEditor editor, Consumer<EventListenerBonus<IgniteBonus>> consumer) {
+      SkillTreeEditor editor, Consumer<EventListenerBonus<InflictIgniteBonus>> consumer) {
     eventListener.addEditorWidgets(
         editor,
         eventListener -> {
@@ -136,19 +136,19 @@ public final class IgniteBonus implements EventListenerBonus<IgniteBonus> {
 
   private void selectEventListener(
       SkillTreeEditor editor,
-      Consumer<EventListenerBonus<IgniteBonus>> consumer,
+      Consumer<EventListenerBonus<InflictIgniteBonus>> consumer,
       SkillEventListener eventListener) {
     setEventListener(eventListener);
     consumer.accept(this.copy());
     editor.rebuildWidgets();
   }
 
-  private void selectDuration(Consumer<EventListenerBonus<IgniteBonus>> consumer, Double value) {
+  private void selectDuration(Consumer<EventListenerBonus<InflictIgniteBonus>> consumer, Double value) {
     setDuration(value.intValue());
     consumer.accept(this.copy());
   }
 
-  private void selectChance(Consumer<EventListenerBonus<IgniteBonus>> consumer, Double value) {
+  private void selectChance(Consumer<EventListenerBonus<InflictIgniteBonus>> consumer, Double value) {
     setChance(value.floatValue());
     consumer.accept(this.copy());
   }
@@ -167,17 +167,17 @@ public final class IgniteBonus implements EventListenerBonus<IgniteBonus> {
 
   public static class Serializer implements SkillBonus.Serializer {
     @Override
-    public IgniteBonus deserialize(JsonObject json) throws JsonParseException {
+    public InflictIgniteBonus deserialize(JsonObject json) throws JsonParseException {
       float chance = SerializationHelper.getElement(json, "chance").getAsFloat();
       int duration = SerializationHelper.getElement(json, "duration").getAsInt();
-      IgniteBonus bonus = new IgniteBonus(chance, duration);
+      InflictIgniteBonus bonus = new InflictIgniteBonus(chance, duration);
       bonus.eventListener = SerializationHelper.deserializeEventListener(json);
       return bonus;
     }
 
     @Override
     public void serialize(JsonObject json, SkillBonus<?> bonus) {
-      if (!(bonus instanceof IgniteBonus aBonus)) {
+      if (!(bonus instanceof InflictIgniteBonus aBonus)) {
         throw new IllegalArgumentException();
       }
       json.addProperty("chance", aBonus.chance);
@@ -186,17 +186,17 @@ public final class IgniteBonus implements EventListenerBonus<IgniteBonus> {
     }
 
     @Override
-    public IgniteBonus deserialize(CompoundTag tag) {
+    public InflictIgniteBonus deserialize(CompoundTag tag) {
       float chance = tag.getFloat("chance");
       int duration = tag.getInt("duration");
-      IgniteBonus bonus = new IgniteBonus(chance, duration);
+      InflictIgniteBonus bonus = new InflictIgniteBonus(chance, duration);
       bonus.eventListener = SerializationHelper.deserializeEventListener(tag);
       return bonus;
     }
 
     @Override
     public CompoundTag serialize(SkillBonus<?> bonus) {
-      if (!(bonus instanceof IgniteBonus aBonus)) {
+      if (!(bonus instanceof InflictIgniteBonus aBonus)) {
         throw new IllegalArgumentException();
       }
       CompoundTag tag = new CompoundTag();
@@ -207,17 +207,17 @@ public final class IgniteBonus implements EventListenerBonus<IgniteBonus> {
     }
 
     @Override
-    public IgniteBonus deserialize(FriendlyByteBuf buf) {
+    public InflictIgniteBonus deserialize(FriendlyByteBuf buf) {
       float amount = buf.readFloat();
       int duration = buf.readInt();
-      IgniteBonus bonus = new IgniteBonus(amount, duration);
+      InflictIgniteBonus bonus = new InflictIgniteBonus(amount, duration);
       bonus.eventListener = NetworkHelper.readEventListener(buf);
       return bonus;
     }
 
     @Override
     public void serialize(FriendlyByteBuf buf, SkillBonus<?> bonus) {
-      if (!(bonus instanceof IgniteBonus aBonus)) {
+      if (!(bonus instanceof InflictIgniteBonus aBonus)) {
         throw new IllegalArgumentException();
       }
       buf.writeFloat(aBonus.chance);
@@ -227,7 +227,7 @@ public final class IgniteBonus implements EventListenerBonus<IgniteBonus> {
 
     @Override
     public SkillBonus<?> createDefaultInstance() {
-      return new IgniteBonus(0.05f, 5);
+      return new InflictIgniteBonus(0.05f, 5);
     }
   }
 }

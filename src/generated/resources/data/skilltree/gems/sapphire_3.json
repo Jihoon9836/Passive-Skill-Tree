@@ -30,11 +30,11 @@
       "gem_class": {
         "key": "weapon",
         "types": [
-          "crossbow",
-          "trident",
-          "heavy_weapon",
+          "bow",
           "sword",
-          "bow"
+          "heavy_weapon",
+          "trident",
+          "crossbow"
         ]
       }
     },
@@ -81,7 +81,7 @@
             "type": "skilltree:attribute",
             "amount": 0.04,
             "attribute": "minecraft:generic.armor",
-            "id": "9a18a170-94fc-4b91-9300-8aa7262bb8ab",
+            "id": "54d91c35-367a-4176-83de-201fff2d712d",
             "name": "Sapphire",
             "operation": 1,
             "player_condition": {
@@ -109,7 +109,7 @@
             "type": "skilltree:attribute",
             "amount": 0.04,
             "attribute": "minecraft:generic.knockback_resistance",
-            "id": "8166d09e-10f0-4382-8516-9f1a382c4139",
+            "id": "87829219-be4c-458b-8428-d88f87816c7b",
             "name": "Sapphire",
             "operation": 0,
             "player_condition": {
@@ -153,7 +153,7 @@
             "type": "skilltree:attribute",
             "amount": 0.04,
             "attribute": "minecraft:generic.armor_toughness",
-            "id": "e2d2ee03-1d83-48dd-b827-15342b5d4c1d",
+            "id": "5532f091-316b-43e1-8473-3582b6698b11",
             "name": "Sapphire",
             "operation": 1,
             "player_condition": {
@@ -168,8 +168,8 @@
       "gem_class": {
         "key": "jewelry",
         "types": [
-          "curios:necklace",
-          "curios:ring"
+          "curios:ring",
+          "curios:necklace"
         ]
       }
     }

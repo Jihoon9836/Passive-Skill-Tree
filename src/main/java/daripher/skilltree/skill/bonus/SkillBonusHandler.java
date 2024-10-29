@@ -13,6 +13,7 @@ import daripher.skilltree.init.PSTDamageTypes;
 import daripher.skilltree.item.ItemBonusProvider;
 import daripher.skilltree.item.ItemHelper;
 import daripher.skilltree.mixin.AbstractArrowAccessor;
+import daripher.skilltree.mixin.MobEffectInstanceAccessor;
 import daripher.skilltree.recipe.upgrade.ItemUpgradeRecipe;
 import daripher.skilltree.skill.PassiveSkill;
 import daripher.skilltree.skill.bonus.condition.damage.DamageCondition;
@@ -703,6 +704,20 @@ public class SkillBonusHandler {
     });
     float convertedDamage = getConvertedDamagePercentage(player, originalDamageSource, target);
     event.setAmount(originalDamageAmount * (1 - convertedDamage));
+  }
+
+  @SubscribeEvent
+  public static void applyEffectDurationBonuses(MobEffectEvent.Added event) {
+    if (!(event.getEntity() instanceof Player player)) return;
+    float durationMultiplier = 1;
+    durationMultiplier += getSkillBonuses(player, EffectDurationBonus.class).stream()
+        .map(b -> b.getDuration(player))
+        .reduce(Float::sum)
+        .orElse(0f);
+    if (durationMultiplier == 1) return;
+    MobEffectInstance effectInstance = event.getEffectInstance();
+    int newDuration = (int) (effectInstance.getDuration() * durationMultiplier);
+    ((MobEffectInstanceAccessor) effectInstance).setDuration(newDuration);
   }
 
   private static float getConvertedDamagePercentage(Player player, DamageSource originalDamageSource, LivingEntity target) {

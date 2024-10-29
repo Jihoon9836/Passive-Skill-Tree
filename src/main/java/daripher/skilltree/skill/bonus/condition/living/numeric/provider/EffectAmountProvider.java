@@ -5,6 +5,7 @@ import com.google.gson.JsonParseException;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.init.PSTNumericValueProviders;
 import daripher.skilltree.skill.bonus.SkillBonus;
+import daripher.skilltree.skill.bonus.condition.effect.EffectType;
 import daripher.skilltree.skill.bonus.condition.living.numeric.NumericValueCondition;
 import daripher.skilltree.skill.bonus.condition.living.numeric.NumericValueProvider;
 import net.minecraft.ChatFormatting;
@@ -41,7 +42,7 @@ public class EffectAmountProvider implements NumericValueProvider<EffectAmountPr
   @Override
   public MutableComponent getMultiplierTooltip(SkillBonus.Target target, float divisor, Component bonusTooltip) {
     String key = "%s.multiplier.%s".formatted(getDescriptionId(), target.getName());
-    String effectTypeKey = getDescriptionId() + "." + effectType.getName();
+    String effectTypeKey = effectType.getDescriptionId();
     if (divisor != 1) {
       effectTypeKey += ".plural";
       key += ".plural";
@@ -57,9 +58,11 @@ public class EffectAmountProvider implements NumericValueProvider<EffectAmountPr
   public MutableComponent getConditionTooltip(SkillBonus.Target target, NumericValueCondition.Logic logic, Component bonusTooltip,
                                               float requiredValue) {
     String key = "%s.condition.%s".formatted(getDescriptionId(), target.getName());
-    String effectTypeKey = getDescriptionId() + "." + effectType.getName();
-    if (requiredValue != 1) {
-      effectTypeKey += ".plural";
+    String effectTypeKey = effectType.getDescriptionId();
+    if (!(requiredValue == 0 && logic == NumericValueCondition.Logic.MORE)) {
+      if (requiredValue != 1) {
+        effectTypeKey += ".plural";
+      }
     }
     Component effectDescription = Component.translatable(effectTypeKey);
     if (requiredValue == 0 && logic == NumericValueCondition.Logic.EQUAL) {
@@ -143,18 +146,6 @@ public class EffectAmountProvider implements NumericValueProvider<EffectAmountPr
     @Override
     public NumericValueProvider<?> createDefaultInstance() {
       return new EffectAmountProvider(EffectType.ANY);
-    }
-  }
-
-  public enum EffectType {
-    NEUTRAL, HARMFUL, BENEFICIAL, ANY;
-
-    String getName() {
-      return name().toLowerCase();
-    }
-
-    static EffectType fromName(String name) {
-      return EffectType.valueOf(name.toUpperCase());
     }
   }
 }

@@ -40,19 +40,19 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "double", "double");
     add(PSTSkillBonuses.LOOT_DUPLICATION.get(), "triple", "triple");
     add(PSTSkillBonuses.GAINED_EXPERIENCE.get(), "Experience from %s");
-    add(PSTSkillBonuses.IGNITE.get(), "player", "You catch fire for %s");
-    add(PSTSkillBonuses.IGNITE.get(), "player.chance", "Chance to catch fire for %s");
-    add(PSTSkillBonuses.IGNITE.get(), "enemy", "Set enemies on fire for %s");
-    add(PSTSkillBonuses.IGNITE.get(), "enemy.chance", "Chance to set enemies on fire for %s");
+    add(PSTSkillBonuses.INFLICT_IGNITE.get(), "player", "You catch fire for %s");
+    add(PSTSkillBonuses.INFLICT_IGNITE.get(), "player.chance", "Chance to catch fire for %s");
+    add(PSTSkillBonuses.INFLICT_IGNITE.get(), "enemy", "Set enemies on fire for %s");
+    add(PSTSkillBonuses.INFLICT_IGNITE.get(), "enemy.chance", "Chance to set enemies on fire for %s");
     add(PSTSkillBonuses.ARROW_RETRIEVAL.get(), "Arrow retrieval chance");
     add(PSTSkillBonuses.HEALTH_RESERVATION.get(), "Health Reservation");
     add(PSTSkillBonuses.ALL_ATTRIBUTES.get(), "All Attributes");
-    add(PSTSkillBonuses.MOB_EFFECT.get(), "player", "Gain %s%s");
-    add(PSTSkillBonuses.MOB_EFFECT.get(), "player.chance", "Chance to gain %s%s");
-    add(PSTSkillBonuses.MOB_EFFECT.get(), "enemy", "Inflict %s%s");
-    add(PSTSkillBonuses.MOB_EFFECT.get(), "enemy.chance", "Chance to inflict %s%s");
-    add(PSTSkillBonuses.MOB_EFFECT.get(), "seconds", " for %s seconds");
-    add(PSTSkillBonuses.MOB_EFFECT.get(), "minutes", " for %s minutes");
+    add(PSTSkillBonuses.INFLICT_EFFECT.get(), "player", "Gain %s%s");
+    add(PSTSkillBonuses.INFLICT_EFFECT.get(), "player.chance", "Chance to gain %s%s");
+    add(PSTSkillBonuses.INFLICT_EFFECT.get(), "enemy", "Inflict %s%s");
+    add(PSTSkillBonuses.INFLICT_EFFECT.get(), "enemy.chance", "Chance to inflict %s%s");
+    add(PSTSkillBonuses.INFLICT_EFFECT.get(), "seconds", " for %s seconds");
+    add(PSTSkillBonuses.INFLICT_EFFECT.get(), "minutes", " for %s minutes");
     add(PSTSkillBonuses.CANT_USE_ITEM.get(), "Can not use %s");
     add(PSTSkillBonuses.HEALING.get(), "player", "Recover %s life");
     add(PSTSkillBonuses.HEALING.get(), "player.chance", "Chance to recover %s life");
@@ -69,6 +69,7 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.DAMAGE_CONVERSION.get(), "%s%% of %s is being converted to %s");
     add(PSTSkillBonuses.GRANT_ITEM.get(), "Grants %s when learned");
     add(PSTSkillBonuses.GRANT_ITEM.get(), "amount", "Grants %sx %s when learned");
+    add(PSTSkillBonuses.EFFECT_DURATION.get(), "Duration of %s on you");
     // item bonuses
     add(PSTItemBonuses.SOCKETS.get(), "+%d Gem Sockets");
     add(PSTItemBonuses.DURABILITY.get(), "Durability");
@@ -219,14 +220,14 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
 
     add(PSTNumericValueProviders.DISTANCE_TO_TARGET.get(), "condition.player", "if distance to target is %s");
 
-    add(PSTNumericValueProviders.EFFECT_AMOUNT.get(), "beneficial", "beneficial effect");
-    add(PSTNumericValueProviders.EFFECT_AMOUNT.get(), "beneficial.plural", "beneficial effects");
-    add(PSTNumericValueProviders.EFFECT_AMOUNT.get(), "harmful", "harmful effect");
-    add(PSTNumericValueProviders.EFFECT_AMOUNT.get(), "harmful.plural", "harmful effects");
-    add(PSTNumericValueProviders.EFFECT_AMOUNT.get(), "neutral", "neutral effect");
-    add(PSTNumericValueProviders.EFFECT_AMOUNT.get(), "neutral.plural", "neutral effects");
-    add(PSTNumericValueProviders.EFFECT_AMOUNT.get(), "any", "effect");
-    add(PSTNumericValueProviders.EFFECT_AMOUNT.get(), "any.plural", "effects");
+    add("effect_type.beneficial", "beneficial effect");
+    add("effect_type.beneficial.plural", "beneficial effects");
+    add("effect_type.harmful", "harmful effect");
+    add("effect_type.harmful.plural", "harmful effects");
+    add("effect_type.neutral", "neutral effect");
+    add("effect_type.neutral.plural", "neutral effects");
+    add("effect_type.any", "effect");
+    add("effect_type.any.plural", "effects");
 
     add(PSTNumericValueProviders.EFFECT_AMOUNT.get(), "multiplier.player.plural", "%s per %s %s on you");
     add(PSTNumericValueProviders.EFFECT_AMOUNT.get(), "multiplier.player", "%s per %s on you");
@@ -438,13 +439,13 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(PSTAttributes.REGENERATION.get(), "Life Regeneration");
     add(PSTAttributes.EXP_PER_MINUTE.get(), "Experience Per Minute");
     add(PSTAttributes.DEXTERITY.get(), "Dexterity");
-    addInfo(PSTAttributes.DEXTERITY.get(), "Gain 1% Projectile Damage per Dexterity point");
+    addInfo(PSTAttributes.DEXTERITY.get(), "By default, 1 Dexterity grants +1% Projectile Damage");
     add(PSTAttributes.STRENGTH.get(), "Strength");
-    addInfo(PSTAttributes.STRENGTH.get(), "Gain 1% Melee Damage per Strength point");
+    addInfo(PSTAttributes.STRENGTH.get(), "By default, 1 Strength grants +1% Melee Damage");
     add(PSTAttributes.INTELLIGENCE.get(), "Intelligence");
-    addInfo(PSTAttributes.INTELLIGENCE.get(), "Gain 1% Magic Damage per Intelligence point");
+    addInfo(PSTAttributes.INTELLIGENCE.get(), "By default, 1 Intelligence grants +1% Magic Damage");
     add(PSTAttributes.VITALITY.get(), "Vitality");
-    addInfo(PSTAttributes.VITALITY.get(), "Gain 1% Max Health per Vitality point");
+    addInfo(PSTAttributes.VITALITY.get(), "By default, 1 Vitality grants +1% Max Health");
     // effects
     add(PSTEffects.CRIT_DAMAGE_BONUS.get(), "Critical Damage");
     add(PSTEffects.DAMAGE_BONUS.get(), "Damage");

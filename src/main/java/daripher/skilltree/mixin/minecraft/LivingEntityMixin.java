@@ -3,8 +3,6 @@ package daripher.skilltree.mixin.minecraft;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import daripher.skilltree.entity.EquippedEntity;
 import daripher.skilltree.skill.bonus.SkillBonusHandler;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,6 +13,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin implements EquippedEntity {
@@ -38,7 +39,8 @@ public abstract class LivingEntityMixin implements EquippedEntity {
 
   @Override
   public boolean hasItemEquipped(ItemStack stack) {
-    return equippedItems.stream().anyMatch(equipped -> ItemStack.matches(stack, equipped));
+    return equippedItems.stream()
+        .anyMatch(equipped -> ItemStack.matches(stack, equipped));
   }
 
   public abstract @Shadow ItemStack getItemBySlot(EquipmentSlot slot);

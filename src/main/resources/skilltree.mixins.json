@@ -26,7 +26,8 @@
     "CampfireBlockEntityAccessor",
     "ShapedRecipeAccessor",
     "ShapelessRecipeAccessor",
-    "SmithingMenuAccessor"
+    "SmithingMenuAccessor",
+    "MobEffectInstanceAccessor"
   ],
   "client": [
     "minecraft/RecipeBookComponentMixin",
