@@ -1,6 +1,7 @@
 package daripher.skilltree.skill.bonus.player;
 
-import com.google.gson.*;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import daripher.skilltree.client.tooltip.TooltipHelper;
 import daripher.skilltree.client.widget.editor.SkillTreeEditor;
 import daripher.skilltree.data.serializers.SerializationHelper;
@@ -10,8 +11,6 @@ import daripher.skilltree.skill.bonus.EventListenerBonus;
 import daripher.skilltree.skill.bonus.SkillBonus;
 import daripher.skilltree.skill.bonus.event.AttackEventListener;
 import daripher.skilltree.skill.bonus.event.SkillEventListener;
-import java.util.Objects;
-import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -23,6 +22,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+
+import java.util.Objects;
+import java.util.function.Consumer;
 
 public final class InflictEffectBonus implements EventListenerBonus<InflictEffectBonus> {
   private MobEffectInstance effect;
@@ -41,7 +43,8 @@ public final class InflictEffectBonus implements EventListenerBonus<InflictEffec
 
   @Override
   public void applyEffect(LivingEntity target) {
-    if (target.getRandom().nextFloat() < chance) {
+    if (target.getRandom()
+        .nextFloat() < chance) {
       target.addEffect(new MobEffectInstance(effect));
     }
   }
@@ -60,7 +63,8 @@ public final class InflictEffectBonus implements EventListenerBonus<InflictEffec
   public InflictEffectBonus multiply(double multiplier) {
     if (chance < 1) {
       chance *= (float) multiplier;
-    } else {
+    }
+    else {
       int newDuration = (int) (effect.getDuration() * multiplier);
       effect = new MobEffectInstance(effect.getEffect(), newDuration, effect.getAmplifier());
       return new InflictEffectBonus(chance, effect, eventListener);
@@ -82,7 +86,8 @@ public final class InflictEffectBonus implements EventListenerBonus<InflictEffec
     }
     if (chance < 1) {
       return new InflictEffectBonus(otherBonus.chance + this.chance, effect, eventListener);
-    } else {
+    }
+    else {
       int newDuration = effect.getDuration() + otherBonus.effect.getDuration();
       effect = new MobEffectInstance(effect.getEffect(), newDuration, effect.getAmplifier());
       return new InflictEffectBonus(chance, effect, eventListener);
@@ -93,7 +98,8 @@ public final class InflictEffectBonus implements EventListenerBonus<InflictEffec
   public MutableComponent getTooltip() {
     Component effectDescription = TooltipHelper.getEffectTooltip(effect);
     int duration = effect.getDuration();
-    String targetDescription = eventListener.getTarget().name().toLowerCase();
+    Target target = eventListener.getTarget();
+    String targetDescription = target.getName();
     String bonusDescription = getDescriptionId() + "." + targetDescription;
     if (chance < 1) {
       bonusDescription += ".chance";
@@ -102,13 +108,12 @@ public final class InflictEffectBonus implements EventListenerBonus<InflictEffec
     if (duration > 0) {
       Component durationDescription = getDurationDescription();
       tooltip = Component.translatable(bonusDescription, effectDescription, durationDescription);
-    } else {
+    }
+    else {
       tooltip = Component.translatable(bonusDescription, effectDescription, "");
     }
     if (chance < 1) {
-      tooltip =
-          TooltipHelper.getSkillBonusTooltip(
-              tooltip, chance, AttributeModifier.Operation.MULTIPLY_BASE);
+      tooltip = TooltipHelper.getSkillBonusTooltip(tooltip, chance, AttributeModifier.Operation.MULTIPLY_BASE);
     }
     tooltip = eventListener.getTooltip(tooltip);
     return tooltip.withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
@@ -129,9 +134,8 @@ public final class InflictEffectBonus implements EventListenerBonus<InflictEffec
 
   @Override
   public boolean isPositive() {
-    return chance > 0
-        ^ eventListener.getTarget() == Target.PLAYER
-        ^ effect.getEffect().getCategory() != MobEffectCategory.HARMFUL;
+    return chance > 0 ^ eventListener.getTarget() == Target.PLAYER ^ effect.getEffect()
+        .getCategory() != MobEffectCategory.HARMFUL;
   }
 
   @Override
@@ -140,60 +144,48 @@ public final class InflictEffectBonus implements EventListenerBonus<InflictEffec
   }
 
   @Override
-  public void addEditorWidgets(
-      SkillTreeEditor editor, int row, Consumer<EventListenerBonus<InflictEffectBonus>> consumer) {
+  public void addEditorWidgets(SkillTreeEditor editor, int row, Consumer<EventListenerBonus<InflictEffectBonus>> consumer) {
     editor.addLabel(0, 0, "Effect", ChatFormatting.GOLD);
     editor.addLabel(150, 0, "Chance", ChatFormatting.GOLD);
     editor.increaseHeight(19);
-    editor
-        .addSelectionMenu(0, 0, 145, effect.getEffect())
+    editor.addSelectionMenu(0, 0, 145, effect.getEffect())
         .setResponder(effect -> selectEffect(consumer, effect));
-    editor
-        .addNumericTextField(150, 0, 50, 14, chance)
+    editor.addNumericTextField(150, 0, 50, 14, chance)
         .setNumericResponder(value -> selectChance(consumer, value));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Duration", ChatFormatting.GOLD);
     editor.addLabel(55, 0, "Amplifier", ChatFormatting.GOLD);
     editor.increaseHeight(19);
-    editor
-        .addNumericTextField(0, 0, 50, 14, effect.getDuration())
+    editor.addNumericTextField(0, 0, 50, 14, effect.getDuration())
         .setNumericFilter(value -> value >= -1)
         .setNumericResponder(value -> selectDuration(consumer, value));
-    editor
-        .addNumericTextField(55, 0, 50, 14, effect.getAmplifier())
+    editor.addNumericTextField(55, 0, 50, 14, effect.getAmplifier())
         .setNumericFilter(value -> value >= 0)
         .setNumericResponder(value -> selectAmplifier(consumer, value));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Event", ChatFormatting.GOLD);
     editor.increaseHeight(19);
-    editor
-        .addSelectionMenu(0, 0, 200, eventListener)
+    editor.addSelectionMenu(0, 0, 200, eventListener)
         .setResponder(eventListener -> selectEventListener(editor, consumer, eventListener))
         .setMenuInitFunc(() -> addEventListenerWidgets(editor, consumer));
     editor.increaseHeight(19);
   }
 
-  private void addEventListenerWidgets(
-      SkillTreeEditor editor, Consumer<EventListenerBonus<InflictEffectBonus>> consumer) {
-    eventListener.addEditorWidgets(
-        editor,
-        eventListener -> {
-          setEventListener(eventListener);
-          consumer.accept(this.copy());
-        });
+  private void addEventListenerWidgets(SkillTreeEditor editor, Consumer<EventListenerBonus<InflictEffectBonus>> consumer) {
+    eventListener.addEditorWidgets(editor, eventListener -> {
+      setEventListener(eventListener);
+      consumer.accept(this.copy());
+    });
   }
 
-  private void selectEventListener(
-      SkillTreeEditor editor,
-      Consumer<EventListenerBonus<InflictEffectBonus>> consumer,
-      SkillEventListener eventListener) {
+  private void selectEventListener(SkillTreeEditor editor, Consumer<EventListenerBonus<InflictEffectBonus>> consumer,
+                                   SkillEventListener eventListener) {
     setEventListener(eventListener);
     consumer.accept(this.copy());
     editor.rebuildWidgets();
   }
 
-  private void selectAmplifier(
-      Consumer<EventListenerBonus<InflictEffectBonus>> consumer, Double value) {
+  private void selectAmplifier(Consumer<EventListenerBonus<InflictEffectBonus>> consumer, Double value) {
     setAmplifier(value.intValue());
     consumer.accept(this.copy());
   }
@@ -208,8 +200,7 @@ public final class InflictEffectBonus implements EventListenerBonus<InflictEffec
     consumer.accept(this.copy());
   }
 
-  private void selectEffect(
-      Consumer<EventListenerBonus<InflictEffectBonus>> consumer, MobEffect effect) {
+  private void selectEffect(Consumer<EventListenerBonus<InflictEffectBonus>> consumer, MobEffect effect) {
     setEffect(effect);
     consumer.accept(this);
   }
@@ -219,18 +210,15 @@ public final class InflictEffectBonus implements EventListenerBonus<InflictEffec
   }
 
   public void setEffect(MobEffect effect) {
-    this.effect =
-        new MobEffectInstance(effect, this.effect.getDuration(), this.effect.getAmplifier());
+    this.effect = new MobEffectInstance(effect, this.effect.getDuration(), this.effect.getAmplifier());
   }
 
   public void setDuration(int duration) {
-    this.effect =
-        new MobEffectInstance(this.effect.getEffect(), duration, this.effect.getAmplifier());
+    this.effect = new MobEffectInstance(this.effect.getEffect(), duration, this.effect.getAmplifier());
   }
 
   public void setAmplifier(int amplifier) {
-    this.effect =
-        new MobEffectInstance(this.effect.getEffect(), this.effect.getDuration(), amplifier);
+    this.effect = new MobEffectInstance(this.effect.getEffect(), this.effect.getDuration(), amplifier);
   }
 
   public void setEventListener(SkillEventListener eventListener) {
@@ -240,7 +228,8 @@ public final class InflictEffectBonus implements EventListenerBonus<InflictEffec
   public static class Serializer implements SkillBonus.Serializer {
     @Override
     public InflictEffectBonus deserialize(JsonObject json) throws JsonParseException {
-      float chance = SerializationHelper.getElement(json, "chance").getAsFloat();
+      float chance = SerializationHelper.getElement(json, "chance")
+          .getAsFloat();
       MobEffectInstance effect = SerializationHelper.deserializeEffectInstance(json);
       InflictEffectBonus bonus = new InflictEffectBonus(chance, effect);
       bonus.eventListener = SerializationHelper.deserializeEventListener(json);

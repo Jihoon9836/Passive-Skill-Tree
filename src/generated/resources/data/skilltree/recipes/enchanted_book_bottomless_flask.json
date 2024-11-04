@@ -1,0 +1,18 @@
+{
+  "type": "skilltree:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "skilltree:ancient_alloy_spatial"
+    },
+    {
+      "item": "skilltree:ancient_alloy_enchanted"
+    },
+    {
+      "item": "minecraft:book"
+    }
+  ],
+  "result": {
+    "item": "minecraft:enchanted_book",
+    "nbt": "{StoredEnchantments:[{id:\"skilltree:bottomless_flask\",lvl:1s}]}"
+  }
+}

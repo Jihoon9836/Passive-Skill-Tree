@@ -46,7 +46,7 @@
             "type": "skilltree:attribute",
             "amount": 5,
             "attribute": "minecraft:generic.luck",
-            "id": "abbd808b-8ee6-4be9-be57-b0cf9d3353bd",
+            "id": "50f67327-614f-45c6-94d1-b4005c43875c",
             "name": "Citrine",
             "operation": 0,
             "player_condition": {
@@ -115,7 +115,7 @@
             "type": "skilltree:attribute",
             "amount": 0.2500000037252903,
             "attribute": "minecraft:generic.luck",
-            "id": "b93af81f-6ade-46e2-a740-d011be5e733a",
+            "id": "1c957f3c-3c9f-4adc-bedc-aabd7652b795",
             "name": "Citrine",
             "operation": 1,
             "player_condition": {

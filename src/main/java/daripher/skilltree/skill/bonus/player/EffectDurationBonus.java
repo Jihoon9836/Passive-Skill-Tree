@@ -18,10 +18,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 public final class EffectDurationBonus implements SkillBonus<EffectDurationBonus> {
@@ -29,15 +31,25 @@ public final class EffectDurationBonus implements SkillBonus<EffectDurationBonus
   private float duration;
   private @Nonnull LivingMultiplier playerMultiplier = NoneLivingMultiplier.INSTANCE;
   private @Nonnull LivingCondition playerCondition = NoneLivingCondition.INSTANCE;
+  private SkillBonus.Target target;
+  private @Nonnull LivingMultiplier enemyMultiplier = NoneLivingMultiplier.INSTANCE;
+  private @Nonnull LivingCondition enemyCondition = NoneLivingCondition.INSTANCE;
 
-  public EffectDurationBonus(EffectType effectType, float duration) {
+  public EffectDurationBonus(EffectType effectType, float duration, SkillBonus.Target target) {
     this.effectType = effectType;
     this.duration = duration;
+    this.target = target;
   }
 
-  public float getDuration(Player player) {
-    if (!playerCondition.met(player)) return 0f;
-    return duration * playerMultiplier.getValue(player);
+  public float getDuration(@Nullable Player effectSource, LivingEntity entity) {
+    if (target == Target.PLAYER) {
+      if (!playerCondition.met(entity)) return 0f;
+      return duration * playerMultiplier.getValue(entity);
+    }
+    if (!enemyCondition.met(entity)) return 0f;
+    float duration = this.duration;
+    if (effectSource != null && !playerCondition.met(effectSource)) return 0f;
+    return duration * playerMultiplier.getValue(entity) * enemyMultiplier.getValue(entity);
   }
 
   @Override
@@ -47,9 +59,11 @@ public final class EffectDurationBonus implements SkillBonus<EffectDurationBonus
 
   @Override
   public EffectDurationBonus copy() {
-    EffectDurationBonus bonus = new EffectDurationBonus(effectType, duration);
+    EffectDurationBonus bonus = new EffectDurationBonus(effectType, duration, target);
     bonus.playerMultiplier = this.playerMultiplier;
     bonus.playerCondition = this.playerCondition;
+    bonus.enemyCondition = this.enemyCondition;
+    bonus.enemyMultiplier = this.enemyMultiplier;
     return bonus;
   }
 
@@ -62,6 +76,11 @@ public final class EffectDurationBonus implements SkillBonus<EffectDurationBonus
   @Override
   public boolean canMerge(SkillBonus<?> other) {
     if (!(other instanceof EffectDurationBonus otherBonus)) return false;
+    if (otherBonus.playerCondition != playerCondition) return false;
+    if (otherBonus.playerMultiplier != playerMultiplier) return false;
+    if (otherBonus.target != target) return false;
+    if (otherBonus.enemyCondition != enemyCondition) return false;
+    if (otherBonus.enemyMultiplier != enemyMultiplier) return false;
     return otherBonus.effectType == this.effectType;
   }
 
@@ -70,26 +89,32 @@ public final class EffectDurationBonus implements SkillBonus<EffectDurationBonus
     if (!(other instanceof EffectDurationBonus otherBonus)) {
       throw new IllegalArgumentException();
     }
-    EffectDurationBonus mergedBonus = new EffectDurationBonus(effectType, duration + otherBonus.duration);
+    EffectDurationBonus mergedBonus = new EffectDurationBonus(effectType, duration + otherBonus.duration, target);
     mergedBonus.playerCondition = this.playerCondition;
     mergedBonus.playerMultiplier = this.playerMultiplier;
+    mergedBonus.enemyCondition = this.enemyCondition;
+    mergedBonus.enemyMultiplier = this.enemyMultiplier;
     return mergedBonus;
   }
 
   @Override
   public MutableComponent getTooltip() {
     Component effectTypeDescription = Component.translatable(effectType.getDescriptionId() + ".plural");
-    MutableComponent tooltip = Component.translatable(getDescriptionId(), effectTypeDescription);
+    String key = getDescriptionId() + "." + target.getName();
+    MutableComponent tooltip = Component.translatable(key, effectTypeDescription);
     tooltip = TooltipHelper.getSkillBonusTooltip(tooltip, duration, AttributeModifier.Operation.MULTIPLY_BASE);
-    tooltip = playerMultiplier.getTooltip(tooltip, Target.PLAYER);
-    tooltip = playerCondition.getTooltip(tooltip, Target.PLAYER);
+    tooltip = playerMultiplier.getTooltip(tooltip, target);
+    tooltip = playerCondition.getTooltip(tooltip, target);
+    tooltip = enemyMultiplier.getTooltip(tooltip, target);
+    tooltip = enemyCondition.getTooltip(tooltip, target);
     return tooltip.withStyle(TooltipHelper.getSkillBonusStyle(isPositive()));
   }
 
   @Override
   public boolean isPositive() {
-    return effectType == EffectType.HARMFUL ? duration < 0 : duration > 0;
+    return duration > 0 ^ target == Target.PLAYER ^ effectType != EffectType.HARMFUL;
   }
+
 
   @Override
   public void addEditorWidgets(SkillTreeEditor editor, int index, Consumer<EffectDurationBonus> consumer) {
@@ -100,9 +125,13 @@ public final class EffectDurationBonus implements SkillBonus<EffectDurationBonus
         .setResponder(effectType -> selectEffectType(consumer, effectType));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Duration", ChatFormatting.GOLD);
+    editor.addLabel(65, 0, "Target", ChatFormatting.GOLD);
     editor.increaseHeight(19);
     editor.addNumericTextField(0, 0, 50, 14, duration)
         .setNumericResponder(value -> selectDuration(consumer, value));
+    editor.addSelection(65, 0, 50, 1, target)
+        .setNameGetter(target -> Component.literal(target.toString()))
+        .setResponder(target -> selectTarget(editor, consumer, target));
     editor.increaseHeight(19);
     editor.addLabel(0, 0, "Player Condition", ChatFormatting.GOLD);
     editor.increaseHeight(19);
@@ -116,16 +145,42 @@ public final class EffectDurationBonus implements SkillBonus<EffectDurationBonus
         .setResponder(multiplier -> selectPlayerMultiplier(editor, consumer, multiplier))
         .setMenuInitFunc(() -> addPlayerMultiplierWidgets(editor, consumer));
     editor.increaseHeight(19);
+    if (target == Target.ENEMY) {
+      editor.addLabel(0, 0, "Enemy Condition", ChatFormatting.GOLD);
+      editor.increaseHeight(19);
+      editor.addSelectionMenu(0, 0, 200, enemyCondition)
+          .setResponder(condition -> selectEnemyCondition(editor, consumer, condition))
+          .setMenuInitFunc(() -> addEnemyConditionWidgets(editor, consumer));
+      editor.increaseHeight(19);
+      editor.addLabel(0, 0, "Enemy Multiplier", ChatFormatting.GOLD);
+      editor.increaseHeight(19);
+      editor.addSelectionMenu(0, 0, 200, enemyMultiplier)
+          .setResponder(multiplier -> selectEnemyMultiplier(editor, consumer, multiplier))
+          .setMenuInitFunc(() -> addEnemyMultiplierWidgets(editor, consumer));
+      editor.increaseHeight(19);
+    }
   }
 
   private void selectPlayerMultiplier(SkillTreeEditor editor, Consumer<EffectDurationBonus> consumer, LivingMultiplier multiplier) {
-    setMultiplier(multiplier);
+    setPlayerMultiplier(multiplier);
     consumer.accept(this.copy());
     editor.rebuildWidgets();
   }
 
   private void selectPlayerCondition(SkillTreeEditor editor, Consumer<EffectDurationBonus> consumer, LivingCondition condition) {
-    setCondition(condition);
+    setPlayerCondition(condition);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void selectEnemyMultiplier(SkillTreeEditor editor, Consumer<EffectDurationBonus> consumer, LivingMultiplier multiplier) {
+    setEnemyMultiplier(multiplier);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
+  private void selectEnemyCondition(SkillTreeEditor editor, Consumer<EffectDurationBonus> consumer, LivingCondition condition) {
+    setEnemyCondition(condition);
     consumer.accept(this.copy());
     editor.rebuildWidgets();
   }
@@ -140,16 +195,36 @@ public final class EffectDurationBonus implements SkillBonus<EffectDurationBonus
     consumer.accept(this.copy());
   }
 
+  private void selectTarget(SkillTreeEditor editor, Consumer<EffectDurationBonus> consumer, SkillBonus.Target target) {
+    setTarget(target);
+    consumer.accept(this.copy());
+    editor.rebuildWidgets();
+  }
+
   private void addPlayerConditionWidgets(SkillTreeEditor editor, Consumer<EffectDurationBonus> consumer) {
     playerCondition.addEditorWidgets(editor, c -> {
-      setCondition(c);
+      setPlayerCondition(c);
       consumer.accept(this.copy());
     });
   }
 
   private void addPlayerMultiplierWidgets(SkillTreeEditor editor, Consumer<EffectDurationBonus> consumer) {
     playerMultiplier.addEditorWidgets(editor, m -> {
-      setMultiplier(m);
+      setPlayerMultiplier(m);
+      consumer.accept(this.copy());
+    });
+  }
+
+  private void addEnemyConditionWidgets(SkillTreeEditor editor, Consumer<EffectDurationBonus> consumer) {
+    enemyCondition.addEditorWidgets(editor, c -> {
+      setPlayerCondition(c);
+      consumer.accept(this.copy());
+    });
+  }
+
+  private void addEnemyMultiplierWidgets(SkillTreeEditor editor, Consumer<EffectDurationBonus> consumer) {
+    enemyMultiplier.addEditorWidgets(editor, m -> {
+      setPlayerMultiplier(m);
       consumer.accept(this.copy());
     });
   }
@@ -162,14 +237,30 @@ public final class EffectDurationBonus implements SkillBonus<EffectDurationBonus
     this.effectType = effectType;
   }
 
-  public SkillBonus<?> setCondition(LivingCondition condition) {
+  public SkillBonus<?> setPlayerCondition(LivingCondition condition) {
     this.playerCondition = condition;
     return this;
   }
 
-  public SkillBonus<?> setMultiplier(LivingMultiplier multiplier) {
+  public SkillBonus<?> setPlayerMultiplier(LivingMultiplier multiplier) {
     this.playerMultiplier = multiplier;
     return this;
+  }
+
+  public void setTarget(Target target) {
+    this.target = target;
+  }
+
+  public void setEnemyCondition(@Nonnull LivingCondition enemyCondition) {
+    this.enemyCondition = enemyCondition;
+  }
+
+  public void setEnemyMultiplier(@Nonnull LivingMultiplier enemyMultiplier) {
+    this.enemyMultiplier = enemyMultiplier;
+  }
+
+  public Target getTarget() {
+    return target;
   }
 
   public static class Serializer implements SkillBonus.Serializer {
@@ -179,9 +270,13 @@ public final class EffectDurationBonus implements SkillBonus<EffectDurationBonus
           .getAsString());
       float duration = json.get("duration")
           .getAsFloat();
-      EffectDurationBonus bonus = new EffectDurationBonus(effectType, duration);
+      SkillBonus.Target target = Target.fromName(json.get("target")
+          .getAsString());
+      EffectDurationBonus bonus = new EffectDurationBonus(effectType, duration, target);
       bonus.playerMultiplier = SerializationHelper.deserializeLivingMultiplier(json, "player_multiplier");
       bonus.playerCondition = SerializationHelper.deserializeLivingCondition(json, "player_condition");
+      bonus.enemyMultiplier = SerializationHelper.deserializeLivingMultiplier(json, "enemy_multiplier");
+      bonus.enemyCondition = SerializationHelper.deserializeLivingCondition(json, "enemy_condition");
       return bonus;
     }
 
@@ -192,17 +287,23 @@ public final class EffectDurationBonus implements SkillBonus<EffectDurationBonus
       }
       json.addProperty("effect_type", aBonus.effectType.getName());
       json.addProperty("duration", aBonus.duration);
+      json.addProperty("target", aBonus.target.getName());
       SerializationHelper.serializeLivingMultiplier(json, aBonus.playerMultiplier, "player_multiplier");
       SerializationHelper.serializeLivingCondition(json, aBonus.playerCondition, "player_condition");
+      SerializationHelper.serializeLivingMultiplier(json, aBonus.enemyMultiplier, "enemy_multiplier");
+      SerializationHelper.serializeLivingCondition(json, aBonus.enemyCondition, "enemy_condition");
     }
 
     @Override
     public EffectDurationBonus deserialize(CompoundTag tag) {
       EffectType effectType = EffectType.fromName(tag.getString("effect_type"));
       float duration = tag.getFloat("duration");
-      EffectDurationBonus bonus = new EffectDurationBonus(effectType, duration);
+      SkillBonus.Target target = Target.fromName(tag.getString("target"));
+      EffectDurationBonus bonus = new EffectDurationBonus(effectType, duration, target);
       bonus.playerMultiplier = SerializationHelper.deserializeLivingMultiplier(tag, "player_multiplier");
       bonus.playerCondition = SerializationHelper.deserializeLivingCondition(tag, "player_condition");
+      bonus.enemyMultiplier = SerializationHelper.deserializeLivingMultiplier(tag, "enemy_multiplier");
+      bonus.enemyCondition = SerializationHelper.deserializeLivingCondition(tag, "enemy_condition");
       return bonus;
     }
 
@@ -214,8 +315,11 @@ public final class EffectDurationBonus implements SkillBonus<EffectDurationBonus
       CompoundTag tag = new CompoundTag();
       tag.putString("effect_type", aBonus.effectType.getName());
       tag.putFloat("duration", aBonus.duration);
+      tag.putString("target", aBonus.target.getName());
       SerializationHelper.serializeLivingMultiplier(tag, aBonus.playerMultiplier, "player_multiplier");
       SerializationHelper.serializeLivingCondition(tag, aBonus.playerCondition, "player_condition");
+      SerializationHelper.serializeLivingMultiplier(tag, aBonus.enemyMultiplier, "enemy_multiplier");
+      SerializationHelper.serializeLivingCondition(tag, aBonus.enemyCondition, "enemy_condition");
       return tag;
     }
 
@@ -223,9 +327,12 @@ public final class EffectDurationBonus implements SkillBonus<EffectDurationBonus
     public EffectDurationBonus deserialize(FriendlyByteBuf buf) {
       EffectType effectType = EffectType.values()[buf.readInt()];
       float duration = buf.readFloat();
-      EffectDurationBonus bonus = new EffectDurationBonus(effectType, duration);
+      SkillBonus.Target target = Target.values()[buf.readInt()];
+      EffectDurationBonus bonus = new EffectDurationBonus(effectType, duration, target);
       bonus.playerMultiplier = NetworkHelper.readLivingMultiplier(buf);
       bonus.playerCondition = NetworkHelper.readLivingCondition(buf);
+      bonus.enemyMultiplier = NetworkHelper.readLivingMultiplier(buf);
+      bonus.enemyCondition = NetworkHelper.readLivingCondition(buf);
       return bonus;
     }
 
@@ -236,13 +343,16 @@ public final class EffectDurationBonus implements SkillBonus<EffectDurationBonus
       }
       buf.writeInt(aBonus.effectType.ordinal());
       buf.writeFloat(aBonus.duration);
+      buf.writeInt(aBonus.target.ordinal());
       NetworkHelper.writeLivingMultiplier(buf, aBonus.playerMultiplier);
       NetworkHelper.writeLivingCondition(buf, aBonus.playerCondition);
+      NetworkHelper.writeLivingMultiplier(buf, aBonus.enemyMultiplier);
+      NetworkHelper.writeLivingCondition(buf, aBonus.enemyCondition);
     }
 
     @Override
     public SkillBonus<?> createDefaultInstance() {
-      return new EffectDurationBonus(EffectType.BENEFICIAL, 0.1f);
+      return new EffectDurationBonus(EffectType.BENEFICIAL, 0.1f, Target.PLAYER);
     }
   }
 }

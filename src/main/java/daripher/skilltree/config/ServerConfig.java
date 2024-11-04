@@ -38,7 +38,7 @@ public class ServerConfig {
   private static final ConfigValue<Boolean> USE_POINTS_COSTS_ARRAY;
   private static final ConfigValue<List<? extends Integer>> SKILL_POINTS_COSTS;
   private static final ConfigValue<List<? extends String>> SOCKET_BLACKLIST;
-  public static final int DEFAULT_MAX_SKILLS = 85;
+  public static final int DEFAULT_MAX_SKILLS = 100;
   public static int max_skill_points;
   public static int first_skill_cost;
   public static int last_skill_cost;

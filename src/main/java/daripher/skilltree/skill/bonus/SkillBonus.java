@@ -67,6 +67,10 @@ public interface SkillBonus<T extends SkillBonus<T>> extends Comparable<SkillBon
     public String getName() {
       return name().toLowerCase();
     }
+
+    public static Target fromName(String name) {
+      return valueOf(name.toUpperCase());
+    }
   }
 
   interface Serializer extends daripher.skilltree.data.serializers.Serializer<SkillBonus<?>> {

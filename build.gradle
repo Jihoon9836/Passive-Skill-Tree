@@ -139,9 +139,6 @@ dependencies {
     implementation fg.deobf("curse.maven:apotheosis-313970:5486368")
     implementation fg.deobf("curse.maven:placebo-283644:5414631")
     implementation fg.deobf("curse.maven:apothic-attributes-898963:5529789")
-    // dave's potioneering
-    implementation fg.deobf("curse.maven:daves-potioneering-639653:4770409")
-    implementation fg.deobf("curse.maven:geckolib-388172:4933987")
     // item production lib
     implementation fg.deobf("curse.maven:item-production-lib-950401:5097458")
     // apothic curios

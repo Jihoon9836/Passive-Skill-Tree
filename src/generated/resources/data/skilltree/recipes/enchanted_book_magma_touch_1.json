@@ -2,7 +2,10 @@
   "type": "skilltree:crafting_shapeless",
   "ingredients": [
     {
-      "item": "skilltree:ancient_alloy_curative"
+      "item": "skilltree:ancient_alloy_hot"
+    },
+    {
+      "item": "skilltree:ancient_alloy_enchanted"
     },
     {
       "item": "minecraft:book"
@@ -10,6 +13,6 @@
   ],
   "result": {
     "item": "minecraft:enchanted_book",
-    "nbt": "{StoredEnchantments:[{id:\"skilltree:rapid_recovery\",lvl:1s}]}"
+    "nbt": "{StoredEnchantments:[{id:\"skilltree:magma_touch\",lvl:1s}]}"
   }
 }

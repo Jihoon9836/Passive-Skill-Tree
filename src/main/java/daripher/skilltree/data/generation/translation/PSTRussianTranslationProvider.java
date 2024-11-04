@@ -59,6 +59,10 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTSkillBonuses.DAMAGE_TAKEN.get(), "Получаемый %s");
     add(PSTSkillBonuses.DAMAGE_AVOIDANCE.get(), "Шанс избежать %s");
     add(PSTSkillBonuses.DAMAGE_CONVERSION.get(), "%s%% всего %s конвертируется в %s");
+    add(PSTSkillBonuses.GRANT_ITEM.get(), "Дарует %s при изучении");
+    add(PSTSkillBonuses.GRANT_ITEM.get(), "amount", "Дарует %sx %s при изучении");
+    add(PSTSkillBonuses.EFFECT_DURATION.get(), "player", "Duration of %s on you");
+    add(PSTSkillBonuses.EFFECT_DURATION.get(), "enemy", "Duration of inflicted %s");
     // item bonuses
     add(PSTItemBonuses.SOCKETS.get(), "+%d Гнезда для Самоцветов");
     add(PSTItemBonuses.DURABILITY.get(), "Прочность");
@@ -146,18 +150,9 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "weapon.plural.adjective", "ое Оружие");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "weapon.plural", "Оружие");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "ranged_weapon", "Оружие дальнего боя");
-    add(
-        PSTItemConditions.EQUIPMENT_TYPE.get(),
-        "ranged_weapon.prepositional",
-        "Оружии дальнего боя");
-    add(
-        PSTItemConditions.EQUIPMENT_TYPE.get(),
-        "ranged_weapon.adjective",
-        "ое Оружие дальнего боя");
-    add(
-        PSTItemConditions.EQUIPMENT_TYPE.get(),
-        "ranged_weapon.plural.adjective",
-        "ое Оружие дальнего боя");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "ranged_weapon.prepositional", "Оружии дальнего боя");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "ranged_weapon.adjective", "ое Оружие дальнего боя");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "ranged_weapon.plural.adjective", "ое Оружие дальнего боя");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "ranged_weapon.plural", "Оружие дальнего боя");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "bow", "Лук");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "bow.prepositional", "Луке");
@@ -170,15 +165,9 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "crossbow.plural.adjective", "ые Арбалеты");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "crossbow.plural", "Арбалеты");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "melee_weapon", "Оружие ближнего боя");
-    add(
-        PSTItemConditions.EQUIPMENT_TYPE.get(),
-        "melee_weapon.prepositional",
-        "Оружии ближнего боя");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "melee_weapon.prepositional", "Оружии ближнего боя");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "melee_weapon.adjective", "ое Оружие ближнего боя");
-    add(
-        PSTItemConditions.EQUIPMENT_TYPE.get(),
-        "melee_weapon.plural.adjective",
-        "ое Оружие ближнего боя");
+    add(PSTItemConditions.EQUIPMENT_TYPE.get(), "melee_weapon.plural.adjective", "ое Оружие ближнего боя");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "melee_weapon.plural", "Оружие ближнего боя");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "sword", "Меч");
     add(PSTItemConditions.EQUIPMENT_TYPE.get(), "sword.prepositional", "Мече");
@@ -297,13 +286,9 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
 
     // recipes
     add("recipe.skilltree.weapon_poisoning", "Отравление Оружия");
-    add(
-        "recipe.skilltree.weapon_poisoning.info",
-        "(Объедините оружие ближнего боя и вредящее зелье на верстаке, чтобы отравить оружие)");
+    add("recipe.skilltree.weapon_poisoning.info", "(Объедините оружие ближнего боя и вредящее зелье на верстаке, чтобы отравить оружие)");
     add("recipe.skilltree.potion_mixing", "Смешивание Зелий");
-    add(
-        "recipe.skilltree.potion_mixing.info",
-        "(Объедините два разных зелья на верстаке, чтобы создать микстуру)");
+    add("recipe.skilltree.potion_mixing.info", "(Объедините два разных зелья на верстаке, чтобы создать микстуру)");
     add("upgrade_recipe.chance", "Шанс: %s%%");
     // potions info
     add("potion.superior", "Качественное %s");
@@ -367,29 +352,18 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTItems.ANCIENT_ALLOY_ENCHANTED.get(), "Зачарованный древний сплав");
     add(PSTItems.ANCIENT_ALLOY_SPATIAL.get(), "Пространственный древний сплав");
     add(PSTItems.ANCIENT_ALLOY_DURABLE.get(), "Прочный древний сплав");
+    add(PSTItems.ANCIENT_ALLOY_HOT.get(), "Горячий древний сплав");
     addTooltip(PSTItems.WISDOM_SCROLL.get(), "Дарует одно очко пассивных умений");
     addTooltip(PSTItems.AMNESIA_SCROLL.get(), "Сбрасывает ваше древо пассивных умений");
     addWarning(PSTItems.AMNESIA_SCROLL.get(), "%d%% очков умений будут потеряны");
-    addTooltip(
-        PSTItems.ANCIENT_ALLOY_GILDED.get(),
-        "Позволяет улучшать характеристики связанные с лутом на некоторых предметах");
-    addTooltip(
-        PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT.get(),
-        "Позволяет улучшать характеристики скорости на некоторых предметах");
-    addTooltip(
-        PSTItems.ANCIENT_ALLOY_CURATIVE.get(),
-        "Позволяет улучшать характеристики лечения на некоторых предметах");
-    addTooltip(
-        PSTItems.ANCIENT_ALLOY_TOXIC.get(),
-        "Позволяет улучшать характеристики ядов на некоторых предметах");
-    addTooltip(
-        PSTItems.ANCIENT_ALLOY_ENCHANTED.get(),
-        "Позволяет улучшать магические характеристики на некоторых предметах");
-    addTooltip(
-        PSTItems.ANCIENT_ALLOY_SPATIAL.get(),
-        "Позволяет улучшать количество гнёзд на некоторых предметах");
-    addTooltip(
-        PSTItems.ANCIENT_ALLOY_DURABLE.get(), "Позволяет улучшать прочность некоторых предметов");
+    addTooltip(PSTItems.ANCIENT_ALLOY_GILDED.get(), "Невозможно налюбоваться");
+    addTooltip(PSTItems.ANCIENT_ALLOY_LIGHTWEIGHT.get(), "Гораздо легче чем кажется");
+    addTooltip(PSTItems.ANCIENT_ALLOY_CURATIVE.get(), "Вы успокаиваетесь держа его в руках");
+    addTooltip(PSTItems.ANCIENT_ALLOY_TOXIC.get(), "Крайне опасен");
+    addTooltip(PSTItems.ANCIENT_ALLOY_ENCHANTED.get(), "Излучает магическую энергию");
+    addTooltip(PSTItems.ANCIENT_ALLOY_SPATIAL.get(), "Искревляет пространство вокруг себя");
+    addTooltip(PSTItems.ANCIENT_ALLOY_DURABLE.get(), "На слитке ни царапины");
+    addTooltip(PSTItems.ANCIENT_ALLOY_HOT.get(), "Обжигает ладони");
     add("ancient_material.tooltip", "Требует определенных знаний для использования");
     // slots
     addCurioSlot("ring", "Слот кольца");
@@ -412,9 +386,7 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTEffects.DAMAGE_BONUS.get(), "Урон");
     add(PSTEffects.LIFE_REGENERATION_BONUS.get(), "Регенерация здоровья");
     // system messages
-    add(
-        "skilltree.message.reset",
-        "Древо пассивных умений изменилось. Ваши очки умений были восстановлены.");
+    add("skilltree.message.reset", "Древо пассивных умений изменилось. Ваши очки умений были восстановлены.");
     add("skilltree.message.reset_command", "Ваше древо пассивных умений было сброшено.");
     add("skilltree.message.point_command", "Получено очко пассивных умений.");
     // screen info
@@ -429,9 +401,8 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add("key.display_skill_tree", "Открыть древо пассивных умений");
     add("skill.limitation", "Ограничение: %s");
     // jei info
-    add(
-        "skilltree.jei.gem_info",
-        "Самоцветы можно вставлять в предметы с гнёздами на кузнечном столе. Выпадают из любой руды с небольшим шансом (требуется инструмент без шёлкового касания).");
+    add("skilltree.jei.gem_info", "Самоцветы можно вставлять в предметы с гнёздами на кузнечном столе. Выпадают из любой руды с небольшим шансом " +
+        "(требуется инструмент без шёлкового касания).");
     // curios info
     add("curios.identifier.quiver", "Колчан");
     add("curios.modifiers.quiver", "Когда надет:");
@@ -460,6 +431,9 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add("affix.skilltree:jewelry/attribute/healthy.suffix", "Здоровья");
     // enchantments
     add(PSTEnchantments.DEEP_THOUGHTS.get(), "Глубокие раздумья");
+    add(PSTEnchantments.MAGIC_FLOW.get(), "Магический поток");
+    add(PSTEnchantments.MAGMA_TOUCH.get(), "Быстрое восстановление");
+    add(PSTEnchantments.BOTTOMLESS_FLASK.get(), "Бездонный флакон");
   }
 
   protected void addMixture(String name, MobEffect... effects) {
@@ -469,14 +443,6 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
   }
 
   protected void addGem(String type, String name) {
-    super.addGem(
-        type,
-        name,
-        "Раскрошенный",
-        "Сломанный",
-        "Некачественный",
-        "Большой",
-        "Редкий",
-        "Исключительный");
+    super.addGem(type, name, "Раскрошенный", "Сломанный", "Некачественный", "Большой", "Редкий", "Исключительный");
   }
 }

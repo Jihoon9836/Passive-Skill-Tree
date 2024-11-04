@@ -1,11 +1,11 @@
 package daripher.skilltree.init;
 
-import net.minecraft.world.item.ShieldItem;
-import net.minecraft.world.item.UseAnim;
+import daripher.skilltree.skill.bonus.condition.item.EquipmentCondition;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraftforge.common.Tags;
 
 public class PSTEnchantmentCategories {
-  public static EnchantmentCategory SHIELD = EnchantmentCategory.create("shield", item -> item.getDefaultInstance()
-      .is(Tags.Items.TOOLS_SHIELDS) || item instanceof ShieldItem || item.getUseAnimation(item.getDefaultInstance()) == UseAnim.BLOCK);
+  public static EnchantmentCategory SHIELD = EnchantmentCategory.create("shield", item -> EquipmentCondition.isShield(new ItemStack(item)));
+  public static EnchantmentCategory POTION = EnchantmentCategory.create("potion", item -> item instanceof PotionItem);
 }

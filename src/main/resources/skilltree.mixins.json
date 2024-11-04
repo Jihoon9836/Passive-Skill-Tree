@@ -21,6 +21,7 @@
     "minecraft/ArmorSlotMixin",
     "minecraft/MobEffectMixin",
     "minecraft/ThrownPotionMixin",
+    "minecraft/ThrowablePotionItemMixin",
     "AbstractArrowAccessor",
     "LivingEntityAccessor",
     "CampfireBlockEntityAccessor",

@@ -80,28 +80,39 @@ public class PSTRecipesProvider extends RecipeProvider {
         .save(consumer, new ResourceLocation(SkillTreeMod.MOD_ID, "enchanted_book_deep_thoughts_3"));
     StackResultShapelessRecipeBuilder.create(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.MAGIC_FLOW.get(), 1)))
         .requires(PSTItems.ANCIENT_ALLOY_ENCHANTED.get())
+        .requires(PSTItems.ANCIENT_ALLOY_ENCHANTED.get())
         .requires(Items.BOOK)
         .save(consumer, new ResourceLocation(SkillTreeMod.MOD_ID, "enchanted_book_magic_flow_1"));
     StackResultShapelessRecipeBuilder.create(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.MAGIC_FLOW.get(), 2)))
+        .requires(PSTItems.ANCIENT_ALLOY_ENCHANTED.get())
         .requires(PSTItems.ANCIENT_ALLOY_ENCHANTED.get())
         .requires(StrictNBTIngredient.of(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.MAGIC_FLOW.get(), 1))))
         .save(consumer, new ResourceLocation(SkillTreeMod.MOD_ID, "enchanted_book_magic_flow_2"));
     StackResultShapelessRecipeBuilder.create(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.MAGIC_FLOW.get(), 3)))
         .requires(PSTItems.ANCIENT_ALLOY_ENCHANTED.get())
+        .requires(PSTItems.ANCIENT_ALLOY_ENCHANTED.get())
         .requires(StrictNBTIngredient.of(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.MAGIC_FLOW.get(), 2))))
         .save(consumer, new ResourceLocation(SkillTreeMod.MOD_ID, "enchanted_book_magic_flow_3"));
-    StackResultShapelessRecipeBuilder.create(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.RAPID_RECOVERY.get(), 1)))
-        .requires(PSTItems.ANCIENT_ALLOY_CURATIVE.get())
+    StackResultShapelessRecipeBuilder.create(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.MAGMA_TOUCH.get(), 1)))
+        .requires(PSTItems.ANCIENT_ALLOY_HOT.get())
+        .requires(PSTItems.ANCIENT_ALLOY_ENCHANTED.get())
         .requires(Items.BOOK)
-        .save(consumer, new ResourceLocation(SkillTreeMod.MOD_ID, "enchanted_book_rapid_recovery_1"));
-    StackResultShapelessRecipeBuilder.create(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.RAPID_RECOVERY.get(), 2)))
-        .requires(PSTItems.ANCIENT_ALLOY_CURATIVE.get())
-        .requires(StrictNBTIngredient.of(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.RAPID_RECOVERY.get(), 1))))
-        .save(consumer, new ResourceLocation(SkillTreeMod.MOD_ID, "enchanted_book_rapid_recovery_2"));
-    StackResultShapelessRecipeBuilder.create(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.RAPID_RECOVERY.get(), 3)))
-        .requires(PSTItems.ANCIENT_ALLOY_CURATIVE.get())
-        .requires(StrictNBTIngredient.of(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.RAPID_RECOVERY.get(), 2))))
-        .save(consumer, new ResourceLocation(SkillTreeMod.MOD_ID, "enchanted_book_rapid_recovery_3"));
+        .save(consumer, new ResourceLocation(SkillTreeMod.MOD_ID, "enchanted_book_magma_touch_1"));
+    StackResultShapelessRecipeBuilder.create(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.MAGMA_TOUCH.get(), 2)))
+        .requires(PSTItems.ANCIENT_ALLOY_HOT.get())
+        .requires(PSTItems.ANCIENT_ALLOY_ENCHANTED.get())
+        .requires(StrictNBTIngredient.of(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.MAGMA_TOUCH.get(), 1))))
+        .save(consumer, new ResourceLocation(SkillTreeMod.MOD_ID, "enchanted_book_magma_touch_2"));
+    StackResultShapelessRecipeBuilder.create(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.MAGMA_TOUCH.get(), 3)))
+        .requires(PSTItems.ANCIENT_ALLOY_HOT.get())
+        .requires(PSTItems.ANCIENT_ALLOY_ENCHANTED.get())
+        .requires(StrictNBTIngredient.of(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.MAGMA_TOUCH.get(), 2))))
+        .save(consumer, new ResourceLocation(SkillTreeMod.MOD_ID, "enchanted_book_magma_touch_3"));
+    StackResultShapelessRecipeBuilder.create(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(PSTEnchantments.BOTTOMLESS_FLASK.get(), 1)))
+        .requires(PSTItems.ANCIENT_ALLOY_SPATIAL.get())
+        .requires(PSTItems.ANCIENT_ALLOY_ENCHANTED.get())
+        .requires(Items.BOOK)
+        .save(consumer, new ResourceLocation(SkillTreeMod.MOD_ID, "enchanted_book_bottomless_flask"));
     // upgrades
     ItemUpgradeRecipeBuilder.create()
         .baseCondition(new EquipmentCondition(EquipmentCondition.Type.WEAPON))

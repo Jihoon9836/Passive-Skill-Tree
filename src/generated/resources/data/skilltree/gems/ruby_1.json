@@ -75,7 +75,7 @@
             "type": "skilltree:attribute",
             "amount": 0.02,
             "attribute": "minecraft:generic.max_health",
-            "id": "0548a8b1-f8f3-4aa2-a26f-e51c61b81943",
+            "id": "4930e517-6217-4a42-8223-21e35d331197",
             "name": "Ruby",
             "operation": 1,
             "player_condition": {
@@ -103,7 +103,7 @@
             "type": "skilltree:attribute",
             "amount": 0.2,
             "attribute": "skilltree:regeneration",
-            "id": "f1b435b6-7f93-4bad-b350-365edb72a381",
+            "id": "382c5f8b-cb51-4b03-87c9-7b9b3e79ec95",
             "name": "Ruby",
             "operation": 0,
             "player_condition": {

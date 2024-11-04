@@ -52,6 +52,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -708,12 +709,29 @@ public class SkillBonusHandler {
 
   @SubscribeEvent
   public static void applyEffectDurationBonuses(MobEffectEvent.Added event) {
-    if (!(event.getEntity() instanceof Player player)) return;
+    Player source = null;
+    if (event.getEffectSource() instanceof Player player) {
+      source = player;
+    }
+    if (event.getEffectSource() instanceof Projectile projectile && projectile.getOwner() instanceof Player player) {
+      source = player;
+    }
+    final Player playerSource = source;
     float durationMultiplier = 1;
-    durationMultiplier += getSkillBonuses(player, EffectDurationBonus.class).stream()
-        .map(b -> b.getDuration(player))
-        .reduce(Float::sum)
-        .orElse(0f);
+    if (source != null) {
+      durationMultiplier += getSkillBonuses(playerSource, EffectDurationBonus.class).stream()
+          .filter(b -> b.getTarget() == SkillBonus.Target.ENEMY)
+          .map(b -> b.getDuration(playerSource, event.getEntity()))
+          .reduce(Float::sum)
+          .orElse(0f);
+    }
+    if (event.getEntity() instanceof Player player) {
+      durationMultiplier += getSkillBonuses(player, EffectDurationBonus.class).stream()
+          .filter(b -> b.getTarget() == SkillBonus.Target.PLAYER)
+          .map(b -> b.getDuration(playerSource, player))
+          .reduce(Float::sum)
+          .orElse(0f);
+    }
     if (durationMultiplier == 1) return;
     MobEffectInstance effectInstance = event.getEffectInstance();
     int newDuration = (int) (effectInstance.getDuration() * durationMultiplier);
