@@ -379,8 +379,6 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     addInfo(PSTAttributes.STRENGTH.get(), "По умолчанию, 1 сила дарует +1% к урону в ближнем бою");
     add(PSTAttributes.INTELLIGENCE.get(), "Интеллект");
     addInfo(PSTAttributes.INTELLIGENCE.get(), "По умолчанию, 1 интеллект дарует +1% к урону магией");
-    add(PSTAttributes.VITALITY.get(), "Живучесть");
-    addInfo(PSTAttributes.VITALITY.get(), "По умолчанию, 1 живучесть дарует +1% к максимальному здоровью");
     // effects
     add(PSTEffects.CRIT_DAMAGE_BONUS.get(), "Критический урон");
     add(PSTEffects.DAMAGE_BONUS.get(), "Урон");

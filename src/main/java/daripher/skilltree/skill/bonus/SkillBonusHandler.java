@@ -48,7 +48,6 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -889,8 +888,6 @@ public class SkillBonusHandler {
 
   private static List<SkillBonus<?>> getAttributeBonuses() {
     List<SkillBonus<?>> list = new ArrayList<>();
-    list.add(new AttributeBonus(Attributes.MAX_HEALTH, new AttributeModifier(UUID.fromString("d446a7b4-9bba-480c-8f83-1e77c6d6d8b2"), "Vitality",
-        0.01f, AttributeModifier.Operation.MULTIPLY_BASE)).setMultiplier(new NumericValueMultiplier(new AttributeValueProvider(PSTAttributes.VITALITY.get()), 1)));
     list.add(new DamageBonus(0.01f, AttributeModifier.Operation.MULTIPLY_BASE).setPlayerMultiplier(new NumericValueMultiplier(new AttributeValueProvider(PSTAttributes.INTELLIGENCE.get()), 1))
         .setDamageCondition(new MagicDamageCondition()));
     list.add(new DamageBonus(0.01f, AttributeModifier.Operation.MULTIPLY_BASE).setPlayerMultiplier(new NumericValueMultiplier(new AttributeValueProvider(PSTAttributes.STRENGTH.get()), 1))

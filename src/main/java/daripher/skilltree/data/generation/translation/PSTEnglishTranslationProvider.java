@@ -447,8 +447,6 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     addInfo(PSTAttributes.STRENGTH.get(), "By default, 1 Strength grants +1% Melee Damage");
     add(PSTAttributes.INTELLIGENCE.get(), "Intelligence");
     addInfo(PSTAttributes.INTELLIGENCE.get(), "By default, 1 Intelligence grants +1% Magic Damage");
-    add(PSTAttributes.VITALITY.get(), "Vitality");
-    addInfo(PSTAttributes.VITALITY.get(), "By default, 1 Vitality grants +1% Max Health");
     // effects
     add(PSTEffects.CRIT_DAMAGE_BONUS.get(), "Critical Damage");
     add(PSTEffects.DAMAGE_BONUS.get(), "Damage");
