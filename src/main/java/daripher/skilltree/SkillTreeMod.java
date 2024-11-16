@@ -24,7 +24,7 @@ public class SkillTreeMod {
     PSTItems.REGISTRY.register(eventBus);
     PSTAttributes.REGISTRY.register(eventBus);
     PSTRecipeSerializers.REGISTRY.register(eventBus);
-    PSTEffects.REGISTRY.register(eventBus);
+    PSTMobEffects.REGISTRY.register(eventBus);
     PSTCreativeTabs.REGISTRY.register(eventBus);
     PSTSkillBonuses.REGISTRY.register(eventBus);
     PSTLivingConditions.REGISTRY.register(eventBus);
@@ -39,6 +39,7 @@ public class SkillTreeMod {
     PSTLootModifiers.REGISTRY.register(eventBus);
     PSTEnchantments.REGISTRY.register(eventBus);
     PSTNumericValueProviders.REGISTRY.register(eventBus);
+    PSTPotions.REGISTRY.register(eventBus);
     ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);
     ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
     addCompatibilities();

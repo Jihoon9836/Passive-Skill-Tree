@@ -9,7 +9,7 @@
             "type": "skilltree:attribute",
             "amount": 0.09999999776482582,
             "attribute": "minecraft:generic.attack_speed",
-            "id": "c70a75fe-1d9c-4868-b84f-f6347f8c98fa",
+            "id": "1d252a17-10e3-4a98-9f33-4a57c81b9703",
             "name": "Jade",
             "operation": 1,
             "player_condition": {
@@ -172,7 +172,10 @@
           "skill_bonus": {
             "type": "skilltree:gained_experience",
             "experience_source": "mobs",
-            "multiplier": 0.5
+            "multiplier": 0.5,
+            "player_multiplier": {
+              "type": "skilltree:none"
+            }
           }
         }
       },

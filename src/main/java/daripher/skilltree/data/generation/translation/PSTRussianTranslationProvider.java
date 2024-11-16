@@ -7,6 +7,8 @@ import daripher.skilltree.skill.bonus.player.LootDuplicationBonus;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
 
 public class PSTRussianTranslationProvider extends PSTTranslationProvider {
   public PSTRussianTranslationProvider(DataGenerator gen) {
@@ -380,9 +382,10 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     add(PSTAttributes.INTELLIGENCE.get(), "Интеллект");
     addInfo(PSTAttributes.INTELLIGENCE.get(), "По умолчанию, 1 интеллект дарует +1% к урону магией");
     // effects
-    add(PSTEffects.CRIT_DAMAGE_BONUS.get(), "Критический урон");
-    add(PSTEffects.DAMAGE_BONUS.get(), "Урон");
-    add(PSTEffects.LIFE_REGENERATION_BONUS.get(), "Регенерация здоровья");
+    add(PSTMobEffects.LIQUID_FIRE.get(), "Жидкий огонь");
+    // potions
+    add(PSTPotions.LIQUID_FIRE_1.get(), "жидкого огня");
+    add(PSTPotions.LIQUID_FIRE_2.get(), "жидкого огня");
     // system messages
     add("skilltree.message.reset", "Древо пассивных умений изменилось. Ваши очки умений были восстановлены.");
     add("skilltree.message.reset_command", "Ваше древо пассивных умений было сброшено.");
@@ -438,6 +441,12 @@ public class PSTRussianTranslationProvider extends PSTTranslationProvider {
     addMixture("Микстура " + name, "potion", effects);
     addMixture("Взрывная микстура" + name, "splash_potion", effects);
     addMixture("Туманная микстура " + name, "lingering_potion", effects);
+  }
+
+  protected void add(Potion potion, String name) {
+    add(potion.getName(Items.POTION.getDescriptionId() + ".effect."), "Зелье " + name);
+    add(potion.getName(Items.SPLASH_POTION.getDescriptionId() + ".effect."), "Взрывное зелье " + name);
+    add(potion.getName(Items.LINGERING_POTION.getDescriptionId() + ".effect."), "Туманное зелье " + name);
   }
 
   protected void addGem(String type, String name) {

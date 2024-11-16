@@ -7,10 +7,10 @@
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
             "type": "skilltree:healing",
-            "amount": 0.3,
+            "amount": 1.5,
             "chance": 1.0,
             "event_listener": {
-              "type": "skilltree:block",
+              "type": "skilltree:attack",
               "damage_condition": {
                 "type": "skilltree:none"
               },
@@ -33,7 +33,7 @@
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "shield"
+        "equipment_type": "weapon"
       }
     },
     {
@@ -89,7 +89,7 @@
             "type": "skilltree:attribute",
             "amount": 0.30000000447034836,
             "attribute": "skilltree:regeneration",
-            "id": "595e1aae-2e2b-4d7b-ba2c-2e2f628a2f30",
+            "id": "4dcb65e8-05ee-45a7-997c-b8dee7860a13",
             "name": "Ruby",
             "operation": 0,
             "player_condition": {
@@ -112,37 +112,11 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
-            "type": "skilltree:attribute",
-            "amount": 0.029999999329447746,
-            "attribute": "minecraft:generic.max_health",
-            "id": "d65aaee3-d211-4c82-b950-f0d803104dd4",
-            "name": "Ruby",
-            "operation": 1,
-            "player_condition": {
-              "type": "skilltree:none"
-            },
-            "player_multiplier": {
-              "type": "skilltree:none"
-            }
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "helmet"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
             "type": "skilltree:healing",
-            "amount": 1.5,
+            "amount": 0.3,
             "chance": 1.0,
             "event_listener": {
-              "type": "skilltree:attack",
+              "type": "skilltree:block",
               "damage_condition": {
                 "type": "skilltree:none"
               },
@@ -165,7 +139,33 @@
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "weapon"
+        "equipment_type": "shield"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:attribute",
+            "amount": 0.029999999329447746,
+            "attribute": "minecraft:generic.max_health",
+            "id": "5d347114-6860-4314-8783-d7e30d3d1cb5",
+            "name": "Ruby",
+            "operation": 1,
+            "player_condition": {
+              "type": "skilltree:none"
+            },
+            "player_multiplier": {
+              "type": "skilltree:none"
+            }
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "helmet"
       }
     }
   ],

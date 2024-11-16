@@ -6,16 +6,21 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
-            "type": "skilltree:attribute",
-            "amount": 0.07500000111758709,
-            "attribute": "minecraft:generic.luck",
-            "id": "ba5f7a31-8167-495b-a151-3f2c4f0ed454",
-            "name": "Citrine",
-            "operation": 1,
+            "type": "skilltree:crit_chance",
+            "chance": 0.03,
+            "damage_condition": {
+              "type": "skilltree:none"
+            },
+            "enemy_multiplier": {
+              "type": "skilltree:none"
+            },
             "player_condition": {
               "type": "skilltree:none"
             },
             "player_multiplier": {
+              "type": "skilltree:none"
+            },
+            "target_condition": {
               "type": "skilltree:none"
             }
           }
@@ -23,7 +28,7 @@
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "shield"
+        "equipment_type": "weapon"
       }
     },
     {
@@ -35,7 +40,7 @@
             "type": "skilltree:attribute",
             "amount": 1.5,
             "attribute": "minecraft:generic.luck",
-            "id": "83409e67-56dc-439e-ba57-d7160de30295",
+            "id": "5795fffb-c206-4a3c-8293-76799378b915",
             "name": "Citrine",
             "operation": 0,
             "player_condition": {
@@ -95,6 +100,32 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
+            "type": "skilltree:attribute",
+            "amount": 0.07500000111758709,
+            "attribute": "minecraft:generic.luck",
+            "id": "7fa41786-4fd1-43fc-ab97-effbbe1b6876",
+            "name": "Citrine",
+            "operation": 1,
+            "player_condition": {
+              "type": "skilltree:none"
+            },
+            "player_multiplier": {
+              "type": "skilltree:none"
+            }
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "shield"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
             "type": "skilltree:loot_duplication",
             "chance": 0.03,
             "loot_type": "gems",
@@ -105,37 +136,6 @@
       "item_condition": {
         "type": "skilltree:equipment_type",
         "equipment_type": "helmet"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
-            "type": "skilltree:crit_chance",
-            "chance": 0.03,
-            "damage_condition": {
-              "type": "skilltree:none"
-            },
-            "enemy_multiplier": {
-              "type": "skilltree:none"
-            },
-            "player_condition": {
-              "type": "skilltree:none"
-            },
-            "player_multiplier": {
-              "type": "skilltree:none"
-            },
-            "target_condition": {
-              "type": "skilltree:none"
-            }
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "weapon"
       }
     }
   ],

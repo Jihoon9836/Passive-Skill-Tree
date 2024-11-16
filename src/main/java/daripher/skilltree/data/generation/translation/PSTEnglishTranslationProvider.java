@@ -7,6 +7,8 @@ import daripher.skilltree.skill.bonus.player.LootDuplicationBonus;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
 
 public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
   public PSTEnglishTranslationProvider(DataGenerator gen) {
@@ -448,9 +450,10 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add(PSTAttributes.INTELLIGENCE.get(), "Intelligence");
     addInfo(PSTAttributes.INTELLIGENCE.get(), "By default, 1 Intelligence grants +1% Magic Damage");
     // effects
-    add(PSTEffects.CRIT_DAMAGE_BONUS.get(), "Critical Damage");
-    add(PSTEffects.DAMAGE_BONUS.get(), "Damage");
-    add(PSTEffects.LIFE_REGENERATION_BONUS.get(), "Life Regeneration");
+    add(PSTMobEffects.LIQUID_FIRE.get(), "Liquid Fire");
+    // potions
+    add(PSTPotions.LIQUID_FIRE_1.get(), "Liquid Fire");
+    add(PSTPotions.LIQUID_FIRE_2.get(), "Liquid Fire");
     // system messages
     add("skilltree.message.reset", "Skill Tree has changed. Your skill points have been restored.");
     add("skilltree.message.reset_command", "Your skill tree has been reset.");
@@ -467,8 +470,9 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     add("key.display_skill_tree", "Open Skill Tree");
     add("skill.limitation", "Limited to: %s");
     // jei info
-    add("skilltree.jei.gem_info", "Gems can be inserted into items with sockets on a smithing table. Drop from any ore with" + " a small chance " +
-        "(requires no silk touch tool).");
+    add("skilltree.jei.gem_info",
+        "Gems can be inserted into items with sockets on a smithing table. Drop from any ore with" + " a small chance " + "(requires no silk touch " +
+            "tool).");
     // tabs
     add("itemGroup.skilltree", "Passive Skill Tree");
     // misc
@@ -504,6 +508,12 @@ public class PSTEnglishTranslationProvider extends PSTTranslationProvider {
     addMixture(name, "potion", effects);
     addMixture("Splash " + name, "splash_potion", effects);
     addMixture("Lingering " + name, "lingering_potion", effects);
+  }
+
+  protected void add(Potion potion, String name) {
+    add(potion.getName(Items.POTION.getDescriptionId() + ".effect."), "Potion of " + name);
+    add(potion.getName(Items.SPLASH_POTION.getDescriptionId() + ".effect."), "Splash Potion of " + name);
+    add(potion.getName(Items.LINGERING_POTION.getDescriptionId() + ".effect."), "Lingering Potion of " + name);
   }
 
   protected void addGem(String type, String name) {

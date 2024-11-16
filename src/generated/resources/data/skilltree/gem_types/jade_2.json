@@ -6,17 +6,12 @@
         "item_bonus": {
           "type": "skilltree:skill_bonus",
           "skill_bonus": {
-            "type": "skilltree:damage_avoidance",
-            "attacker_condition": {
-              "type": "skilltree:none"
-            },
-            "attacker_multiplier": {
-              "type": "skilltree:none"
-            },
-            "chance": 0.03,
-            "damage_condition": {
-              "type": "skilltree:melee"
-            },
+            "type": "skilltree:attribute",
+            "amount": 0.029999999329447746,
+            "attribute": "minecraft:generic.attack_speed",
+            "id": "f31f14ec-b331-4cc8-ac6f-68518d5dd654",
+            "name": "Jade",
+            "operation": 1,
             "player_condition": {
               "type": "skilltree:none"
             },
@@ -28,7 +23,7 @@
       },
       "item_condition": {
         "type": "skilltree:equipment_type",
-        "equipment_type": "shield"
+        "equipment_type": "weapon"
       }
     },
     {
@@ -70,7 +65,10 @@
           "skill_bonus": {
             "type": "skilltree:gained_experience",
             "experience_source": "mobs",
-            "multiplier": 0.15
+            "multiplier": 0.15,
+            "player_multiplier": {
+              "type": "skilltree:none"
+            }
           }
         }
       },
@@ -125,6 +123,37 @@
             },
             "chance": 0.03,
             "damage_condition": {
+              "type": "skilltree:melee"
+            },
+            "player_condition": {
+              "type": "skilltree:none"
+            },
+            "player_multiplier": {
+              "type": "skilltree:none"
+            }
+          }
+        }
+      },
+      "item_condition": {
+        "type": "skilltree:equipment_type",
+        "equipment_type": "shield"
+      }
+    },
+    {
+      "bonus_provider": {
+        "type": "skilltree:simple",
+        "item_bonus": {
+          "type": "skilltree:skill_bonus",
+          "skill_bonus": {
+            "type": "skilltree:damage_avoidance",
+            "attacker_condition": {
+              "type": "skilltree:none"
+            },
+            "attacker_multiplier": {
+              "type": "skilltree:none"
+            },
+            "chance": 0.03,
+            "damage_condition": {
               "type": "skilltree:projectile"
             },
             "player_condition": {
@@ -139,32 +168,6 @@
       "item_condition": {
         "type": "skilltree:equipment_type",
         "equipment_type": "helmet"
-      }
-    },
-    {
-      "bonus_provider": {
-        "type": "skilltree:simple",
-        "item_bonus": {
-          "type": "skilltree:skill_bonus",
-          "skill_bonus": {
-            "type": "skilltree:attribute",
-            "amount": 0.029999999329447746,
-            "attribute": "minecraft:generic.attack_speed",
-            "id": "e275834a-22fd-4053-9388-0ce8598f4f8e",
-            "name": "Jade",
-            "operation": 1,
-            "player_condition": {
-              "type": "skilltree:none"
-            },
-            "player_multiplier": {
-              "type": "skilltree:none"
-            }
-          }
-        }
-      },
-      "item_condition": {
-        "type": "skilltree:equipment_type",
-        "equipment_type": "weapon"
       }
     }
   ],
